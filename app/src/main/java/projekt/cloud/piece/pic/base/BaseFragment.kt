@@ -19,17 +19,11 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     protected val binding: VB
         get() = _binding!!
     
-    protected lateinit var args: Bundle
-        private set
+    protected val args by lazy { requireArguments() }
     
     protected abstract fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB
     
     protected open fun setViewModels(binding: VB) = Unit
-    
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        args = requireArguments()
-    }
     
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (_binding == null) {
