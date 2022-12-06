@@ -26,20 +26,14 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     protected open fun setViewModels(binding: VB) = Unit
     
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        if (_binding == null) {
-            _binding = inflateViewBinding(inflater, container)
-            setViewModels(binding)
-            setUpContainerTransitionName()?.let { binding.root.transitionName = it }
-            needInitialSetUp = true
-        }
-        return binding.root
+        _binding = inflateViewBinding(inflater, container)
+        setViewModels(binding)
+        return binding.root.apply { containerTransitionName?.let { transitionName = it } }
     }
     
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setUpToolbar()
-        if (needInitialSetUp) {
-            setUpViews()
-        }
+        setUpViews()
     }
     
     override fun onDestroyView() {
@@ -50,7 +44,8 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     protected open fun setUpToolbar() = Unit
     
     protected abstract fun setUpViews()
-    protected abstract fun setUpContainerTransitionName(): String?
+    protected open val containerTransitionName: String?
+        get() = null
     
     protected inline fun <reified F: Fragment> findParentAs(): F {
         var parent = requireParentFragment()

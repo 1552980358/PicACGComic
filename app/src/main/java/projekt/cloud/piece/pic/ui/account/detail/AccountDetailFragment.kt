@@ -84,8 +84,6 @@ class AccountDetailFragment: BaseFragment<FragmentAccountDetailBinding>() {
         binding.lifecycleOwner = viewLifecycleOwner
     }
     
-    override fun setUpContainerTransitionName(): String? = null
-    
     override fun setUpToolbar() {
         setSupportActionBar(toolbar)
         toolbar.setupWithNavController(findNavController())

@@ -64,8 +64,6 @@ class LoginFragment: BaseAccountFragment<FragmentLoginBinding>() {
         binding.lifecycleOwner = viewLifecycleOwner
     }
     
-    override fun setUpContainerTransitionName(): String? = null
-    
     override fun setUpViews() {
         var accountIcon = R.drawable.ic_round_account_circle_24
         account.editText?.let { editText ->

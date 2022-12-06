@@ -145,8 +145,8 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
     override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
         FragmentListBinding.inflate(inflater, container, false)
     
-    override fun setUpContainerTransitionName() =
-        args.getString(getString(R.string.list_transition))
+    override val containerTransitionName: String?
+        get() = args.getString(getString(R.string.list_transition))
     
     override fun setUpToolbar() {
         setSupportActionBar(toolbar)

@@ -33,6 +33,4 @@ class AccountFragment: BaseFragment<FragmentAccountBinding>() {
         }
     }
     
-    override fun setUpContainerTransitionName(): String? = null
-    
 }

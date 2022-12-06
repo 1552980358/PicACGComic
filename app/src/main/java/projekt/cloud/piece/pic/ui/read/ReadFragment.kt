@@ -28,10 +28,8 @@ class ReadFragment: BaseFragment<FragmentReadBinding>() {
         sharedElementEnterTransition = MaterialContainerTransform()
     }
     
-    override fun setUpContainerTransitionName(): String? {
-        val transitionName = getString(R.string.read_transition)
-        return args.getString(transitionName, transitionName)
-    }
+    override val containerTransitionName: String?
+        get() = getString(R.string.read_transition).let { args.getString(it, it) }
     
     override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
         FragmentReadBinding.inflate(layoutInflater, container, false)

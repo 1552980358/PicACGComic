@@ -185,8 +185,8 @@ class ComicDetailFragment: BaseFragment<FragmentComicDetailBinding>(), OnClickLi
         }
     }
     
-    override fun setUpContainerTransitionName() =
-        args.getString(getString(R.string.comic_detail_transition))
+    override val containerTransitionName: String?
+        get() = args.getString(getString(R.string.comic_detail_transition))
 
     private fun addTags(tags: List<String>) {
         tags.forEach { tag ->

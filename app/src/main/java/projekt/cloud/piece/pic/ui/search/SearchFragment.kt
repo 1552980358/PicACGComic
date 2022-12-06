@@ -39,8 +39,6 @@ class SearchFragment: BaseFragment<FragmentSearchBinding>() {
     override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
         FragmentSearchBinding.inflate(inflater, container, false)
     
-    override fun setUpContainerTransitionName(): String? = null
-    
     override fun setViewModels(binding: FragmentSearchBinding) {
         binding.applicationConfigs = applicationConfigs
         binding.lifecycleOwner = viewLifecycleOwner

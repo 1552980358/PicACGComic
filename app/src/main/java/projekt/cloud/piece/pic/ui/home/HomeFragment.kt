@@ -182,8 +182,6 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
             )
         }
     }
-    
-    override fun setUpContainerTransitionName(): String? = null
 
     private fun updateCategories() {
         @Suppress("NotifyDataSetChanged")

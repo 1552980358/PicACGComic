@@ -76,8 +76,6 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
     override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
         FragmentComicContentBinding.inflate(inflater, container, false)
     
-    override fun setUpContainerTransitionName(): String? = null
-    
     override fun setUpToolbar() {
         setSupportActionBar(toolbar)
         toolbar.setupWithNavController(navController)
