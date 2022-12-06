@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView.State
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.transition.platform.Hold
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
@@ -138,6 +139,7 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
         super.onCreate(savedInstanceState)
         navController = findNavController()
         sharedElementEnterTransition = MaterialContainerTransform()
+        exitTransition = Hold()
     }
     
     override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
