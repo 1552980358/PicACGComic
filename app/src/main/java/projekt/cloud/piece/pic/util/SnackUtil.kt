@@ -1,22 +1,24 @@
 package projekt.cloud.piece.pic.util
 
+import android.view.View
 import androidx.annotation.StringRes
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import com.google.android.material.snackbar.Snackbar
 
+typealias SnackBlock = Snackbar.() -> Unit
+
 object SnackUtil {
 
-    fun CoordinatorLayout.snack(@StringRes resId: Int, length: Int = LENGTH_SHORT) =
-        Snackbar.make(this, resId, length)
+    fun View.snack(@StringRes resId: Int, length: Int = LENGTH_SHORT, block: SnackBlock = {}) =
+        Snackbar.make(this, resId, length).apply(block)
 
-    fun CoordinatorLayout.snack(message: String, length: Int = LENGTH_SHORT) =
-        Snackbar.make(this, message, length)
+    fun View.snack(message: String, length: Int = LENGTH_SHORT, block: SnackBlock = {}) =
+        Snackbar.make(this, message, length).apply(block)
 
-    fun CoordinatorLayout.showSnack(@StringRes resId: Int, length: Int = LENGTH_SHORT) =
-        snack(resId, length).show()
+    fun View.showSnack(@StringRes resId: Int, length: Int = LENGTH_SHORT, block: SnackBlock = {}) =
+        snack(resId, length, block).show()
 
-    fun CoordinatorLayout.showSnack(message: String, length: Int = LENGTH_SHORT) =
-        snack(message, length).show()
+    fun View.showSnack(message: String, length: Int = LENGTH_SHORT, block: SnackBlock = {}) =
+        snack(message, length, block).show()
 
 }
