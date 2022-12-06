@@ -2,7 +2,6 @@ package projekt.cloud.piece.pic.ui.read
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -14,40 +13,32 @@ import projekt.cloud.piece.pic.base.BaseFragment
 import projekt.cloud.piece.pic.databinding.FragmentReadBinding
 import projekt.cloud.piece.pic.ui.read.content.ComicContentFragment
 
-class ReadFragment: BaseFragment() {
+class ReadFragment: BaseFragment<FragmentReadBinding>() {
     
     private companion object {
         const val ARG_INDEX = "index"
     }
     
-    private var _binding: FragmentReadBinding? = null
-    private val binding: FragmentReadBinding
-        get() = _binding!!
-    private val root get() = binding.root
-    
     private val readComic: ReadComic by viewModels()
+    
+    private var currentContentFragment: Fragment? = null
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = MaterialContainerTransform()
     }
     
-    private var currentContentFragment: Fragment? = null
-    
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentReadBinding.inflate(inflater, container, false)
-        
-        val arguments = requireArguments()
-        var transitionName = getString(R.string.read_transition)
-        transitionName = arguments.getString(transitionName, transitionName)
-        binding.root.transitionName = transitionName
-        
-        readComic.index = arguments.getInt(ARG_INDEX)
-        
-        return root
+    override fun setUpContainerTransitionName(): String? {
+        val transitionName = getString(R.string.read_transition)
+        return args.getString(transitionName, transitionName)
     }
     
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentReadBinding.inflate(layoutInflater, container, false)
+    
+    override fun setUpViews() {
+        readComic.index = args.getInt(ARG_INDEX)
+        
         updateContentFragment(requireAnimation = false)
         readComic.prev.observe(viewLifecycleOwner) {
             updateContentFragment()
@@ -73,7 +64,7 @@ class ReadFragment: BaseFragment() {
     }
     
     private fun updateRootTransitionName(index: Int) {
-        root.transitionName = getString(R.string.read_transition_prefix) + index
+        // root.transitionName = getString(R.string.read_transition_prefix) + index
     }
     
 }

@@ -3,12 +3,9 @@ package projekt.cloud.piece.pic.ui.account.detail
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
@@ -33,8 +30,9 @@ import projekt.cloud.piece.pic.base.BaseFragment
 import projekt.cloud.piece.pic.databinding.FragmentAccountDetailBinding
 import projekt.cloud.piece.pic.util.CircularCroppedDrawable
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
+import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 
-class AccountDetailFragment: BaseFragment() {
+class AccountDetailFragment: BaseFragment<FragmentAccountDetailBinding>() {
 
     class AccountDetail: ViewModel() {
 
@@ -71,36 +69,33 @@ class AccountDetailFragment: BaseFragment() {
 
     private val accountDetail: AccountDetail by viewModels()
 
-    private var _binding: FragmentAccountDetailBinding? = null
-    private val binding: FragmentAccountDetailBinding
-        get() = _binding!!
-    private val root get() = binding.root
     private val toolbar: MaterialToolbar
         get() = binding.materialToolbar
     private val appBarLayout: AppBarLayout
         get() = binding.appBarLayout
     private val recyclerView: RecyclerView
         get() = binding.recyclerView
-
-    private val recyclerViewAdapter = RecyclerViewAdapter()
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentAccountDetailBinding.inflate(inflater, container, false)
+    
+    override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentAccountDetailBinding.inflate(inflater, container, false)
+    
+    override fun setViewModels(binding: FragmentAccountDetailBinding) {
         binding.accountDetail = accountDetail
         binding.lifecycleOwner = viewLifecycleOwner
+    }
+    
+    override fun setUpContainerTransitionName(): String? = null
+    
+    override fun setUpToolbar() {
+        setSupportActionBar(toolbar)
+        toolbar.setupWithNavController(findNavController())
+    }
+    
+    override fun setUpViews() {
         applicationConfigs.token.observe(viewLifecycleOwner) {
             it?.let { accountDetail.receiveToken(it, resources) }
         }
-        return root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        with(requireActivity() as AppCompatActivity) {
-            setSupportActionBar(toolbar)
-            val navController = findNavController()
-            toolbar.setupWithNavController(navController)
-        }
-
+        val recyclerViewAdapter = RecyclerViewAdapter()
         recyclerView.adapter = recyclerViewAdapter
         accountDetail.profile.observe(viewLifecycleOwner) {
             recyclerViewAdapter.setDetails(
@@ -112,7 +107,7 @@ class AccountDetailFragment: BaseFragment() {
                 )
             )
         }
-
+    
         var toolbarImageView: ImageView? = null
         val appBarLayoutListener = OnOffsetChangedListener { _, verticalOffset ->
             applicationConfigs.windowInsetTop.value?.let { windowInsetTop ->

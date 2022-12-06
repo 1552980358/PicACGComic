@@ -42,7 +42,7 @@ import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.HttpUtil.RESPONSE_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
 
-class ComicContentFragment: BaseFragment(), OnClickListener {
+class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClickListener {
 
     private val readFragment: ReadFragment
         get() = findParentAs()
@@ -53,10 +53,6 @@ class ComicContentFragment: BaseFragment(), OnClickListener {
         ownerProducer = { readFragment }
     )
     
-    private var _binding: FragmentComicContentBinding? = null
-    private val binding: FragmentComicContentBinding
-        get() = _binding!!
-    private val root get() = binding.root
     private val toolbar: MaterialToolbar
         get() = binding.materialToolbar
     private val recyclerView: RecyclerView
@@ -77,15 +73,17 @@ class ComicContentFragment: BaseFragment(), OnClickListener {
         navController = findNavController()
     }
     
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentComicContentBinding.inflate(inflater, container, false)
-        return root
-    }
+    override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentComicContentBinding.inflate(inflater, container, false)
     
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun setUpContainerTransitionName(): String? = null
+    
+    override fun setUpToolbar() {
         setSupportActionBar(toolbar)
         toolbar.setupWithNavController(navController)
-        
+    }
+    
+    override fun setUpViews() {
         val pages = arrayListOf<Pages>()
         val images = mutableMapOf<String, Bitmap?>()
         val recyclerViewAdapter = RecyclerViewAdapter(lifecycleScope, docs, images)
@@ -147,7 +145,7 @@ class ComicContentFragment: BaseFragment(), OnClickListener {
                 updateMargins(bottom = it + extendedFabMarginBottom)
             }
         }
-        
+    
         page.hide()
         if (readComic.index == 0) {
             prev.visibility = GONE
@@ -155,14 +153,14 @@ class ComicContentFragment: BaseFragment(), OnClickListener {
         page.setOnClickListener(this)
         prev.setOnClickListener(this)
         next.setOnClickListener(this)
-        
+    
         lifecycleScope.ui {
             val token = applicationConfigs.token.value ?: return@ui failed(R.string.request_not_logged)
             val id = comic.id ?: return@ui failed(R.string.comic_content_snack_arg_required)
-            
+        
             toolbar.title = comic.docList[readComic.index].title
             toolbar.subtitle = comic.comic.value?.title
-            
+        
             var response: Response?
             var data: Data?
             while (true) {
@@ -173,12 +171,12 @@ class ComicContentFragment: BaseFragment(), OnClickListener {
                     return@ui failed(R.string.comic_content_snack_error_code)
                 }
                 data = response.decodeJson<ApiComics.EpisodeContentResponseBody>().data
-                
+            
                 pages.add(data.pages)
                 docs.addAll(data.pages.docs)
-    
+            
                 succeed()
-                
+            
                 if (pages.size == data.pages.pages) {
                     break
                 }
@@ -214,7 +212,6 @@ class ComicContentFragment: BaseFragment(), OnClickListener {
     }
     
     private fun failed(@StringRes message: Int) {
-        sendMessage(message)
         navController.navigateUp()
     }
     

@@ -1,40 +1,62 @@
 package projekt.cloud.piece.pic.base
 
-import androidx.annotation.StringRes
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
-import com.google.android.material.snackbar.Snackbar
-import kotlin.reflect.jvm.jvmName
+import androidx.viewbinding.ViewBinding
 import projekt.cloud.piece.pic.ApplicationConfigs
 
-open class BaseFragment: Fragment() {
+abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     
-    protected class SnackMessage(private val sender: String,
-                                 val message: String,
-                                 val length: Int,
-                                 val snack: Snackbar.() -> Unit) {
-        
-        fun checkFragment(fragment: Fragment) =
-            fragment::class.jvmName != sender
-        
+    protected val applicationConfigs: ApplicationConfigs by activityViewModels()
+    
+    private var needInitialSetUp = false
+    
+    private var _binding: VB? = null
+    protected val binding: VB
+        get() = _binding!!
+    
+    protected lateinit var args: Bundle
+        private set
+    
+    protected abstract fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB
+    
+    protected open fun setViewModels(binding: VB) = Unit
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        args = requireArguments()
     }
     
-    protected class Message: ViewModel() {
-        private val _message = MutableLiveData<SnackMessage?>()
-        val message: LiveData<SnackMessage?>
-            get() = _message
-        fun putMessage(snackMessage: SnackMessage?) {
-            _message.value = snackMessage
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        if (_binding == null) {
+            _binding = inflateViewBinding(inflater, container)
+            setViewModels(binding)
+            setUpContainerTransitionName()?.let { binding.root.transitionName = it }
+            needInitialSetUp = true
+        }
+        return binding.root
+    }
+    
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setUpToolbar()
+        if (needInitialSetUp) {
+            setUpViews()
         }
     }
     
-    private val message: Message by activityViewModels()
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
     
-    protected val applicationConfigs: ApplicationConfigs by activityViewModels()
+    protected open fun setUpToolbar() = Unit
+    
+    protected abstract fun setUpViews()
+    protected abstract fun setUpContainerTransitionName(): String?
     
     protected inline fun <reified F: Fragment> findParentAs(): F {
         var parent = requireParentFragment()
@@ -43,26 +65,5 @@ open class BaseFragment: Fragment() {
         }
         return parent
     }
-    
-    override fun onStart() {
-        super.onStart()
-        message.message.observe(viewLifecycleOwner) { snackMessage ->
-            if (snackMessage != null && snackMessage.checkFragment(this)) {
-                onMessageReceived(snackMessage.message, snackMessage.length, snackMessage.snack)
-                message.putMessage(null)
-            }
-        }
-    }
-    
-    protected fun sendMessage(@StringRes resId: Int, length: Int = LENGTH_SHORT, snack: Snackbar.() -> Unit = {}) =
-        sendMessage(getString(resId, length, snack))
-    
-    protected fun sendMessage(message: String, length: Int = LENGTH_SHORT, snack: Snackbar.() -> Unit = {}) {
-        this.message.putMessage(
-            SnackMessage(this::class.jvmName, message, length, snack)
-        )
-    }
-    
-    protected open fun onMessageReceived(message: String, length: Int, snack: Snackbar.() -> Unit = {}) = Unit
     
 }

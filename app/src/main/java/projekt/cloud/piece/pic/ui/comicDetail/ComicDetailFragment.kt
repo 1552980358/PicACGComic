@@ -45,18 +45,13 @@ import projekt.cloud.piece.pic.databinding.FragmentComicDetailBinding
 import projekt.cloud.piece.pic.util.DisplayUtil.deviceBounds
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.NestedScrollViewUtil.isScrollable
-import projekt.cloud.piece.pic.util.SnackUtil.showSnack
 
-class ComicDetailFragment: BaseFragment(), OnClickListener {
+class ComicDetailFragment: BaseFragment<FragmentComicDetailBinding>(), OnClickListener {
 
     companion object {
         private const val ARG_ID = "id"
     }
-
-    private var _binding: FragmentComicDetailBinding? = null
-    private val binding: FragmentComicDetailBinding
-        get() = _binding!!
-    private val root get() = binding.root
+    
     private val appBarLayout: AppBarLayout
         get() = binding.appBarLayout
     private val collapsingToolbarLayout: CollapsingToolbarLayout
@@ -94,22 +89,32 @@ class ComicDetailFragment: BaseFragment(), OnClickListener {
         navController = findNavController()
         sharedElementEnterTransition = MaterialContainerTransform()
         exitTransition = Hold()
-        val arguments = requireArguments()
-        if (arguments.containsKey(ARG_ID)) {
-            comic.id = requireArguments().getString(ARG_ID)
+        if (args.containsKey(ARG_ID)) {
+            comic.id = args.getString(ARG_ID)
         }
     }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentComicDetailBinding.inflate(inflater, container, false)
-        binding.root.transitionName = requireArguments().getString(getString(R.string.comic_detail_transition))
-        collapsingToolbarLayout.updateLayoutParams<AppBarLayout.LayoutParams> {
-            height = requireContext().deviceBounds.width() * 4 / 3
-        }
+    
+    override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentComicDetailBinding.inflate(inflater, container, false)
+    
+    override fun setViewModels(binding: FragmentComicDetailBinding) {
         binding.applicationConfigs = applicationConfigs
         binding.comic = comic
         binding.lifecycleOwner = viewLifecycleOwner
+    }
+    
+    override fun setUpToolbar() {
+        setSupportActionBar(bottomAppBar)
+        toolbar.setupWithNavController(navController)
+    }
+    
+    override fun setUpViews() {
+        postponeEnterTransition()
         
+        collapsingToolbarLayout.updateLayoutParams<AppBarLayout.LayoutParams> {
+            height = requireContext().deviceBounds.width() * 4 / 3
+        }
+    
         val fabMarginBottom = floatingActionButton.marginBottom
         applicationConfigs.windowInsetBottom.observe(viewLifecycleOwner) {
             floatingActionButton.updateLayoutParams<CoordinatorLayout.LayoutParams> {
@@ -118,14 +123,6 @@ class ComicDetailFragment: BaseFragment(), OnClickListener {
         }
         floatingActionButton.setOnClickListener(this)
     
-        postponeEnterTransition()
-        return root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setSupportActionBar(bottomAppBar)
-        bottomAppBar.performHide(false)
-        toolbar.setupWithNavController(navController)
         nestedScrollView.setOnScrollChangeListener { v: NestedScrollView, _, scrollY, _, _ ->
             when {
                 scrollY >= v[0].measuredHeight - v.measuredHeight -> {
@@ -161,17 +158,17 @@ class ComicDetailFragment: BaseFragment(), OnClickListener {
             launchToComicDetail(index, v)
         }
         recyclerView.doOnPreDraw { startPostponedEnterTransition() }
-        
+    
         applicationConfigs.token.observe(viewLifecycleOwner) {
             if (docList.isEmpty()) {
                 comic.requestComicInfo(
                     it,
                     success = { (recyclerView.adapter as RecyclerViewAdapter).notifyDataUpdated() },
-                    failed = { resId -> root.showSnack(resId) }
+                    failed = { resId -> /*root.showSnack(resId)*/ }
                 )
             }
         }
-        
+    
         appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             when {
                 abs(verticalOffset) >= appBarLayout.totalScrollRange -> {
@@ -187,6 +184,9 @@ class ComicDetailFragment: BaseFragment(), OnClickListener {
             }
         }
     }
+    
+    override fun setUpContainerTransitionName() =
+        args.getString(getString(R.string.comic_detail_transition))
 
     private fun addTags(tags: List<String>) {
         tags.forEach { tag ->
@@ -201,7 +201,6 @@ class ComicDetailFragment: BaseFragment(), OnClickListener {
     }
     
     override fun onDestroyView() {
-        _binding = null
         if (clearComicData) {
             comic.clearAll()
         }

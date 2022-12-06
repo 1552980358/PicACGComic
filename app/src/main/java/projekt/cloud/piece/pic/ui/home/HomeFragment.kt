@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.marginBottom
@@ -25,8 +24,6 @@ import androidx.recyclerview.widget.RecyclerView.State
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.platform.Hold
 import kotlinx.coroutines.withContext
 import projekt.cloud.piece.pic.R
@@ -37,19 +34,18 @@ import projekt.cloud.piece.pic.base.BaseFragment
 import projekt.cloud.piece.pic.databinding.FragmentHomeBinding
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
+import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.HttpUtil.RESPONSE_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
-import projekt.cloud.piece.pic.util.SnackUtil.showSnack
-import projekt.cloud.piece.pic.util.SnackUtil.snack
 
-class HomeFragment: BaseFragment(), OnClickListener {
+class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
 
     companion object {
         private const val RECYCLER_VIEW_MAX_SPAN = 2
     }
 
     class Categories: ViewModel() {
-
+        
         val categories = mutableListOf<Category>()
         val thumbs = mutableMapOf<String, Bitmap?>()
         
@@ -85,10 +81,6 @@ class HomeFragment: BaseFragment(), OnClickListener {
 
     }
 
-    private var _binding: FragmentHomeBinding? = null
-    private val binding: FragmentHomeBinding
-        get() = _binding!!
-    private val root get() = binding.root
     private val bottomAppBar: BottomAppBar
         get() = binding.bottomAppBar
     private val search: MaterialCardView
@@ -107,28 +99,32 @@ class HomeFragment: BaseFragment(), OnClickListener {
         exitTransition = Hold()
         navController = findNavController()
     }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+    
+    override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentHomeBinding.inflate(inflater, container, false)
+    
+    override fun setViewModels(binding: FragmentHomeBinding) {
         binding.applicationConfigs = applicationConfigs
         binding.lifecycleOwner = viewLifecycleOwner
-
+    }
+    
+    override fun setUpToolbar() {
+        setSupportActionBar(bottomAppBar)
+    }
+    
+    override fun setUpViews() {
+        postponeEnterTransition()
+    
         val floatingActionButtonMarginBottom = floatingActionButton.marginBottom
         applicationConfigs.windowInsetBottom.observe(viewLifecycleOwner) {
             floatingActionButton.updateLayoutParams<CoordinatorLayout.LayoutParams> {
                 updateMargins(bottom = floatingActionButtonMarginBottom + it)
             }
         }
-
-        postponeEnterTransition()
-        return root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        (requireActivity() as AppCompatActivity).setSupportActionBar(bottomAppBar)
+    
         search.setOnClickListener(this)
         floatingActionButton.setOnClickListener(this)
-
+    
         val recyclerViewAdapter = RecyclerViewAdapter(categories.categories, categories.thumbs) { category, v ->
             navController.navigate(
                 HomeFragmentDirections.actionHomeToList(category = category.title, listTransition = v.transitionName),
@@ -138,7 +134,7 @@ class HomeFragment: BaseFragment(), OnClickListener {
         recyclerView.adapter = recyclerViewAdapter
         recyclerView.layoutManager = GridLayoutManager(requireContext(), RECYCLER_VIEW_MAX_SPAN)
         recyclerView.doOnPreDraw { startPostponedEnterTransition() }
-
+    
         val spacingOuterHor = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_hor_8)
         val spacingInnerHor = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_hor_4)
         val spacingInnerVer = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_ver_8)
@@ -146,7 +142,7 @@ class HomeFragment: BaseFragment(), OnClickListener {
             object : RecyclerView.ItemDecoration() {
                 override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: State) {
                     super.getItemOffsets(outRect, view, parent, state)
-
+                
                     val pos = parent.getChildLayoutPosition(view)
                     when (pos % RECYCLER_VIEW_MAX_SPAN) {
                         0 -> {
@@ -168,39 +164,33 @@ class HomeFragment: BaseFragment(), OnClickListener {
                 }
             }
         )
-
+    
         applicationConfigs.token.observe(viewLifecycleOwner) {
             if (it == null) {
-                root.snack(R.string.home_snack_not_logged_in, LENGTH_INDEFINITE)
-                    .setAction(R.string.home_snack_button_login) { floatingActionButton.callOnClick() }
-                    .setAnchorView(bottomAppBar)
-                    .show()
+                // root.snack(R.string.home_snack_not_logged_in, LENGTH_INDEFINITE)
+                //     .setAction(R.string.home_snack_button_login) { floatingActionButton.callOnClick() }
+                //     .setAnchorView(bottomAppBar)
+                //     .show()
             }
             categories.updateCategories(
                 it,
                 success = { updateCategories() },
                 failed = { resId ->
-                    root.showSnack(resId)
+                    // root.showSnack(resId)
                     updateCategories()
                 }
             )
         }
     }
+    
+    override fun setUpContainerTransitionName(): String? = null
 
     private fun updateCategories() {
         @Suppress("NotifyDataSetChanged")
         (recyclerView.adapter as RecyclerViewAdapter)
             .notifyDataSetChanged()
     }
-    
-    override fun onMessageReceived(message: String, length: Int, snack: Snackbar.() -> Unit) {
-        root.snack(message, length).apply(snack).setAnchorView(bottomAppBar).show()
-    }
 
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
-    }
 
     override fun onClick(v: View?) {
         when (v) {

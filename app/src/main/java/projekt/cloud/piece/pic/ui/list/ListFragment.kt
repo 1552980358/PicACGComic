@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -21,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView.State
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
@@ -38,9 +38,8 @@ import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.HttpUtil.RESPONSE_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
-import projekt.cloud.piece.pic.util.SnackUtil.snack
 
-class ListFragment: BaseFragment() {
+class ListFragment: BaseFragment<FragmentListBinding>() {
 
     companion object {
 
@@ -113,10 +112,6 @@ class ListFragment: BaseFragment() {
 
     }
     
-    private var _binding: FragmentListBinding? = null
-    private val binding: FragmentListBinding
-        get() = _binding!!
-    private val root get() = binding.root
     private val toolbar: MaterialToolbar
         get() = binding.materialToolbar
     private val recyclerView: RecyclerView
@@ -137,22 +132,28 @@ class ListFragment: BaseFragment() {
 
     private var requireCaching = false
 
+    private lateinit var navController: NavController
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        navController = findNavController()
         sharedElementEnterTransition = MaterialContainerTransform()
     }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentListBinding.inflate(inflater)
-        binding.root.transitionName = requireArguments().getString(getString(R.string.list_transition))
-        postponeEnterTransition()
-        return root
+    
+    override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentListBinding.inflate(inflater, container, false)
+    
+    override fun setUpContainerTransitionName() =
+        args.getString(getString(R.string.list_transition))
+    
+    override fun setUpToolbar() {
+        setSupportActionBar(toolbar)
+        toolbar.setupWithNavController(navController)
     }
     
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setSupportActionBar(toolbar)
-        val navController = findNavController()
-        toolbar.setupWithNavController(navController)
+    override fun setUpViews() {
+        postponeEnterTransition()
+        
         val category = category
         when {
             !category.isNullOrBlank() -> toolbar.title = category
@@ -168,14 +169,14 @@ class ListFragment: BaseFragment() {
         recyclerView.adapter = recyclerViewAdapter
         recyclerView.layoutManager = StaggeredGridLayoutManager(GRID_SPAN, VERTICAL)
         recyclerView.doOnPreDraw { startPostponedEnterTransition() }
-
+    
         val spacingInnerHor = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_hor_8)
         val spacingOuterVer = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_ver_8)
         var bottomInset = 0
         applicationConfigs.windowInsetBottom.value?.let {
             bottomInset = it
         }
-        
+    
         recyclerView.addItemDecoration(
             object : ItemDecoration() {
                 override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: State) {
@@ -191,27 +192,25 @@ class ListFragment: BaseFragment() {
                 }
             }
         )
-        
+    
         val success = {
             recyclerViewAdapter.notifyListUpdate()
             recyclerView.invalidateItemDecorations()
         }
         val failed: (Int) -> Unit = { resId ->
-            sendMessage(resId)
             navController.navigateUp()
         }
-        val argument = requireArguments()
         when {
-            argument.containsKey(ARG_CATEGORY) -> {
-                comics.category = argument.getString(ARG_CATEGORY)
+            args.containsKey(ARG_CATEGORY) -> {
+                comics.category = args.getString(ARG_CATEGORY)
                 comics.initialWithCategory(applicationConfigs.token.value, sort, success, failed)
             }
-            argument.containsKey(ARG_KEYWORD) -> {
-                comics.keyword = argument.getString(ARG_KEYWORD)
+            args.containsKey(ARG_KEYWORD) -> {
+                comics.keyword = args.getString(ARG_KEYWORD)
             }
             else -> failed.invoke(R.string.list_snack_arg_required)
         }
-        
+    
         recyclerView.addOnScrollListener(object: OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (!recyclerView.canScrollVertically(1)) {
@@ -219,19 +218,14 @@ class ListFragment: BaseFragment() {
                 }
             }
         })
-        
     }
     
-    override fun onMessageReceived(message: String, length: Int, snack: Snackbar.() -> Unit) {
-        root.snack(message, length).apply(snack).show()
-    }
 
     override fun onDestroyView() {
         if (!requireCaching) {
             docs.clear()
             covers.clear()
         }
-        _binding = null
         super.onDestroyView()
     }
     

@@ -2,11 +2,12 @@ package projekt.cloud.piece.pic.ui.account.base
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.viewbinding.ViewBinding
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.base.BaseFragment
 import projekt.cloud.piece.pic.ui.account.AccountFragment
 
-open class BaseAccountFragment: BaseFragment() {
+abstract class BaseAccountFragment<VB: ViewBinding>: BaseFragment<VB>() {
 
     private val accountFragment: AccountFragment
         get() = findParentAs()

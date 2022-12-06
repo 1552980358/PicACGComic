@@ -1,13 +1,11 @@
 package projekt.cloud.piece.pic.ui.account.login.login
 
 import android.content.Context
-import android.os.Bundle
 import android.text.Editable
 import android.text.InputFilter
 import android.text.InputType.TYPE_CLASS_TEXT
 import android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.DrawableRes
@@ -30,11 +28,10 @@ import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.HttpUtil.RESPONSE_CODE_BAD_REQUEST
 import projekt.cloud.piece.pic.util.HttpUtil.RESPONSE_CODE_SUCCESS
-import projekt.cloud.piece.pic.util.SnackUtil.showSnack
 import projekt.cloud.piece.pic.util.StorageUtil.Account
 import projekt.cloud.piece.pic.util.StorageUtil.saveAccount
 
-class LoginFragment: BaseAccountFragment() {
+class LoginFragment: BaseAccountFragment<FragmentLoginBinding>() {
 
     private companion object {
         val EMAIL_REGEX = "([0-9a-zA-Z]+.)*[0-9a-zA-Z]+@([0-9a-zA-Z].)+.([0-9a-zA-Z])+".toRegex()
@@ -48,10 +45,6 @@ class LoginFragment: BaseAccountFragment() {
         const val EMPTY_STR = ""
     }
 
-    private var _binding: FragmentLoginBinding? = null
-    private val binding: FragmentLoginBinding
-        get() = _binding!!
-    private val root get() = binding.root
     private val linearProgressIndicator: LinearProgressIndicator
         get() = binding.linearProgressIndicator
     private val account: TextInputLayout
@@ -62,15 +55,18 @@ class LoginFragment: BaseAccountFragment() {
         get() = binding.materialButtonLogin
 
     private var job: Job? = null
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+    
+    override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentLoginBinding.inflate(inflater, container, false)
+    
+    override fun setViewModels(binding: FragmentLoginBinding) {
         binding.applicationConfigs = applicationConfigs
         binding.lifecycleOwner = viewLifecycleOwner
-        return root
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    
+    override fun setUpContainerTransitionName(): String? = null
+    
+    override fun setUpViews() {
         var accountIcon = R.drawable.ic_round_account_circle_24
         account.editText?.let { editText ->
             editText.filters = arrayOf(
@@ -81,7 +77,7 @@ class LoginFragment: BaseAccountFragment() {
                     }
                 },
                 InputFilter.LengthFilter(ACCOUNT_MAX_LENGTH)
-                )
+            )
             editText.addTextChangedListener {
                 val drawableId = when {
                     it.isEmail -> R.drawable.ic_round_email_24
@@ -94,14 +90,14 @@ class LoginFragment: BaseAccountFragment() {
                 checkIfAccountPasswordFilled()
             }
         }
-
+    
         with(password) {
             editText?.let { editText ->
                 editText.inputType = TYPE_CLASS_TEXT or TYPE_TEXT_VARIATION_PASSWORD
                 editText.addTextChangedListener {
                     checkIfAccountPasswordFilled()
                 }
-
+            
                 editText.filters = arrayOf(
                     InputFilter { source, _, _, _, _, _ ->
                         when {
@@ -110,12 +106,12 @@ class LoginFragment: BaseAccountFragment() {
                         }
                     },
                     InputFilter.LengthFilter(PASSWORD_MAX_LENGTH)
-                    )
-
+                )
+            
                 var isPasswordVisible = false
                 setEndIconOnClickListener {
                     isPasswordVisible = !isPasswordVisible
-
+                
                     val currentCursor = editText.selectionEnd
                     val inputType: Int
                     @DrawableRes val icon: Int
@@ -131,17 +127,17 @@ class LoginFragment: BaseAccountFragment() {
                     }
                     editText.inputType = inputType
                     editText.setSelection(currentCursor)
-
+                
                     password.setEndIconDrawable(icon)
                 }
             }
-
+        
         }
-
+    
         linearProgressIndicator.hide()
         login.setOnClickListener {
             (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-                .hideSoftInputFromWindow(root.windowToken, 0)
+                .hideSoftInputFromWindow(view?.windowToken, 0)
             if (job != null) {
                 return@setOnClickListener
             }
@@ -196,9 +192,9 @@ class LoginFragment: BaseAccountFragment() {
     }
 
     private fun authCompleteTask(message: String?, block: (() -> Unit)? = null) = ui {
-        message?.let { root.showSnack(it) }
+        message?.let { /*root.showSnack(it)*/ }
         linearProgressIndicator.hide()
         block?.invoke()
     }
-
+    
 }
