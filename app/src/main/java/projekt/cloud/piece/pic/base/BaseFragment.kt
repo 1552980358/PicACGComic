@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.viewbinding.ViewBinding
@@ -25,6 +26,19 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     
     protected open fun setViewModels(binding: VB) = Unit
     
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        
+        requireActivity().onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (onBackPressed()) {
+                    isEnabled = false
+                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        })
+    }
+    
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = inflateViewBinding(inflater, container)
         setViewModels(binding)
@@ -39,6 +53,10 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+    
+    protected open fun onBackPressed(): Boolean {
+        return true
     }
     
     protected open fun setUpToolbar() = Unit
