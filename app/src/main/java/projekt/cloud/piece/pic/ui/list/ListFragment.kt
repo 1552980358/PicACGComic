@@ -45,7 +45,6 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
     companion object {
 
         private const val ARG_CATEGORY = "category"
-        private const val ARG_KEYWORD = "keyword"
 
         private const val GRID_SPAN = 2
         
@@ -55,7 +54,6 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
     class Comics: ViewModel() {
 
         var category: String? = null
-        var keyword: String? = null
 
         private val comicsList = arrayListOf<ComicsResponseBody.Data.Comics>()
 
@@ -206,9 +204,6 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
             args.containsKey(ARG_CATEGORY) -> {
                 comics.category = args.getString(ARG_CATEGORY)
                 comics.initialWithCategory(applicationConfigs.token.value, sort, success, failed)
-            }
-            args.containsKey(ARG_KEYWORD) -> {
-                comics.keyword = args.getString(ARG_KEYWORD)
             }
             else -> failed.invoke(R.string.list_snack_arg_required)
         }
