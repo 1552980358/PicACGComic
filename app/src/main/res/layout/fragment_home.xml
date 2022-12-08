@@ -13,52 +13,7 @@
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         app:statusBarBackground="?attr/colorSurface">
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true">
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/material_card_view_search"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/home_search_height"
-                android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_8"
-                android:layout_marginVertical="@dimen/md_spec_spacing_ver_8"
-                android:foreground="?attr/selectableItemBackground"
-                android:transitionName="@string/search_transition"
-                app:cardBackgroundColor="?attr/colorSurfaceVariant"
-                app:cardCornerRadius="@dimen/home_search_radius"
-                app:cardPreventCornerOverlap="false"
-                app:strokeWidth="0dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingHorizontal="@dimen/home_search_padding_hor">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/app_compat_image_view"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/md_spec_spacing_hor_16"
-                        android:src="@drawable/ic_round_search_24"
-                        android:tint="?attr/colorOnSurfaceVariant" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_toEndOf="@id/app_compat_image_view"
-                        android:layout_centerVertical="true" />
-
-                </RelativeLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -88,6 +43,26 @@
             android:layout_marginBottom="@dimen/md_spec_fab_spacing_bottom"
             app:layout_anchor="@id/bottom_app_bar"
             tools:ignore="ContentDescription" />
+    
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@{applicationConfigs.windowInsetTop}">
+                <com.google.android.material.search.SearchBar
+                    android:id="@+id/search_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </FrameLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+        
+        <com.google.android.material.search.SearchView
+            android:id="@+id/search_View"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_anchor="@id/search_bar" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

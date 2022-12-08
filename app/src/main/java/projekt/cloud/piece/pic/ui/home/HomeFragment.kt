@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.State
 import com.google.android.material.bottomappbar.BottomAppBar
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.transition.platform.Hold
 import kotlinx.coroutines.withContext
@@ -83,8 +82,6 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
 
     private val bottomAppBar: BottomAppBar
         get() = binding.bottomAppBar
-    private val search: MaterialCardView
-        get() = binding.materialCardViewSearch
     private val floatingActionButton: FloatingActionButton
         get() = binding.floatingActionButton
     private val recyclerView: RecyclerView
@@ -121,8 +118,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
                 updateMargins(bottom = floatingActionButtonMarginBottom + it)
             }
         }
-    
-        search.setOnClickListener(this)
+        
         floatingActionButton.setOnClickListener(this)
     
         val recyclerViewAdapter = RecyclerViewAdapter(categories.categories, categories.thumbs) { category, v ->
@@ -192,10 +188,6 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
 
     override fun onClick(v: View?) {
         when (v) {
-            search -> navController.navigate(
-                HomeFragmentDirections.actionHomeToSearch(),
-                FragmentNavigatorExtras(search to search.transitionName)
-            )
             floatingActionButton -> navController.navigate(
                 HomeFragmentDirections.actionHomeToAccount(),
                 FragmentNavigatorExtras(floatingActionButton to floatingActionButton.transitionName)
