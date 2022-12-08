@@ -11,23 +11,39 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:transitionName="@string/search_transition"
-        android:background="?attr/colorSurfaceVariant"
-        android:paddingTop="@{applicationConfigs.windowInsetTop}"
-        app:statusBarBackground="?attr/colorSurfaceVariant">
+        android:background="?colorSurface"
+        android:transitionName="@string/search_transition">
+    
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="@dimen/md_spec_spacing_hor_8"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/material_toolbar"
+            
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorSurfaceVariant"
-                app:navigationIconTint="?attr/colorOnSurfaceVariant" />
-
+                android:layout_height="wrap_content"
+                android:paddingTop="@{applicationConfigs.windowInsetTop}">
+                
+                <com.google.android.material.search.SearchBar
+                    android:id="@+id/search_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                
+            </FrameLayout>
+            
         </com.google.android.material.appbar.AppBarLayout>
+        
+        <com.google.android.material.search.SearchView
+            android:id="@+id/search_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_anchor="@id/search_bar" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
