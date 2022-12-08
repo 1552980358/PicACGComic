@@ -215,6 +215,14 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
             )
         }
     }
+    
+    override fun onBackPressed() = when (searchView.currentTransitionState) {
+        SearchView.TransitionState.SHOWN, SearchView.TransitionState.SHOWING -> {
+            searchView.hide()
+            false
+        }
+        else -> super.onBackPressed()
+    }
 
     private fun updateCategories() {
         @Suppress("NotifyDataSetChanged")
