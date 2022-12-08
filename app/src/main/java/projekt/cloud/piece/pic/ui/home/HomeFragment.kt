@@ -12,6 +12,7 @@ import androidx.core.view.doOnPreDraw
 import androidx.core.view.marginBottom
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,6 +24,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.State
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.search.SearchBar
+import com.google.android.material.search.SearchView
+import com.google.android.material.search.SearchView.TransitionListener
 import com.google.android.material.transition.platform.Hold
 import kotlinx.coroutines.withContext
 import projekt.cloud.piece.pic.R
@@ -86,6 +90,10 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
         get() = binding.floatingActionButton
     private val recyclerView: RecyclerView
         get() = binding.recyclerView
+    private val searchBar: SearchBar
+        get() = binding.searchBar
+    private val searchView: SearchView
+        get() = binding.searchView
 
     private lateinit var navController: NavController
 
@@ -160,6 +168,35 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
                 }
             }
         )
+    
+        searchView.editText.addTextChangedListener {
+            searchBar.text = it
+        }
+        
+        searchView.editText.setOnEditorActionListener { _, _, _ ->
+            searchView.text?.toString()?.let { text ->
+                if (text.isNotBlank()) {
+                    searchView.addTransitionListener(
+                        object: TransitionListener {
+                            override fun onStateChanged(searchView: SearchView,
+                                                        previousState: SearchView.TransitionState,
+                                                        newState: SearchView.TransitionState) {
+                                if (newState == SearchView.TransitionState.HIDDEN) {
+                                    searchView.removeTransitionListener(this)
+                                    navController.navigate(
+                                        HomeFragmentDirections.actionHomeToSearch(text),
+                                        FragmentNavigatorExtras(searchBar to searchBar.transitionName)
+                                    )
+                                }
+                            }
+                        }
+                    )
+                    searchView.hide()
+                }
+                return@setOnEditorActionListener true
+            }
+            false
+        }
     
         applicationConfigs.token.observe(viewLifecycleOwner) {
             if (it == null) {
