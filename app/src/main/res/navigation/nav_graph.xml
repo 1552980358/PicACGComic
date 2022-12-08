@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_home_to_search"
-            app:destination="@id/search" />
+            app:destination="@id/search">
+            <argument
+                android:name="keyword"
+                app:argType="string" />
+        </action>
         <action
             android:id="@+id/action_home_to_account"
             app:destination="@id/account" />
@@ -21,11 +25,6 @@
             app:destination="@id/list">
             <argument
                 android:name="category"
-                app:argType="string"
-                app:nullable="true"
-                android:defaultValue="@null" />
-            <argument
-                android:name="keyword"
                 app:argType="string"
                 app:nullable="true"
                 android:defaultValue="@null" />
