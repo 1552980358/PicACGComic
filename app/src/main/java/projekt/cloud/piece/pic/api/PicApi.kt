@@ -17,5 +17,8 @@ object PicApi {
     
     fun comicEpisodeContentOf(id: String, order: Int, page: Int) =
         "$API_COMICS/$id/order/$order/pages?page=$page"
+    
+    fun advancedSearchMethod(page: Int) =
+        "$API_COMICS/advanced-search?page=$page"
 
 }

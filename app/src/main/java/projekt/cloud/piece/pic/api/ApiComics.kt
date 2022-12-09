@@ -7,12 +7,16 @@ import projekt.cloud.piece.pic.api.CommonBody.Image
 import projekt.cloud.piece.pic.api.PicApi.API_COMICS
 import projekt.cloud.piece.pic.api.PicApi.API_COMICS_INFO
 import projekt.cloud.piece.pic.api.PicApi.API_URL
+import projekt.cloud.piece.pic.api.PicApi.advancedSearchMethod
 import projekt.cloud.piece.pic.api.PicApi.comicEpisodeContentOf
 import projekt.cloud.piece.pic.api.PicApi.comicEpisodeOf
 import projekt.cloud.piece.pic.api.RequestHeaders.generateHeaders
 import projekt.cloud.piece.pic.util.HttpUtil.GET
+import projekt.cloud.piece.pic.util.HttpUtil.POST
 import projekt.cloud.piece.pic.util.HttpUtil.asParams
 import projekt.cloud.piece.pic.util.HttpUtil.httpGet
+import projekt.cloud.piece.pic.util.HttpUtil.httpPost
+import projekt.cloud.piece.pic.util.SerializableUtil.encodeJson
 
 object ApiComics {
 
@@ -183,6 +187,18 @@ object ApiComics {
     fun episodeContent(comicId: String, episodeOrder: Int, page: Int = EPISODE_CONTENT_FIRST_PAGE, token: String) =
         comicEpisodeContentOf(comicId, episodeOrder, page).let { method ->
             httpGet(API_URL + method, generateHeaders(method, GET, token))
+        }
+    
+    @Serializable
+    data class AdvancedSearchRequestBody(val categories: String, val keyword: String, val sort: String)
+    
+    fun advancedSearch(categories: String, keyword: String, sort: String, page: Int, token: String) =
+        advancedSearchMethod(page).let { method ->
+            httpPost(
+                API_URL + method,
+                generateHeaders(method, POST, token),
+                AdvancedSearchRequestBody(categories, keyword, sort).encodeJson
+            )
         }
 
 }
