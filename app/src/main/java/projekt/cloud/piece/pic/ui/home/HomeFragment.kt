@@ -216,8 +216,8 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
         }
     }
     
-    override fun onBackPressed() = when (searchView.currentTransitionState) {
-        SearchView.TransitionState.SHOWN, SearchView.TransitionState.SHOWING -> {
+    override fun onBackPressed() = when {
+        searchView.isShowing -> {
             searchView.hide()
             false
         }
