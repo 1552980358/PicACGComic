@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.search.SearchBar
+import com.google.android.material.search.SearchView
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.base.BaseFragment
@@ -18,6 +19,8 @@ class SearchFragment: BaseFragment<FragmentSearchBinding>() {
     
     private val searchBar: SearchBar
         get() = binding.searchBar
+    private val searchView: SearchView
+        get() = binding.searchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +45,14 @@ class SearchFragment: BaseFragment<FragmentSearchBinding>() {
     }
     
     override fun setUpViews() {
+    }
+    
+    override fun onBackPressed() = when {
+        searchView.isShowing -> {
+            searchView.hide()
+            false
+        }
+        else -> super.onBackPressed()
     }
 
 }
