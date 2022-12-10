@@ -3,6 +3,9 @@ package projekt.cloud.piece.pic.ui.search
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.setFragmentResult
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.search.SearchBar
@@ -14,6 +17,10 @@ import projekt.cloud.piece.pic.databinding.FragmentSearchBinding
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 
 class SearchFragment: BaseFragment<FragmentSearchBinding>() {
+    
+    private companion object {
+        const val ARG_KEYWORD = "keyword"
+    }
 
     private lateinit var navController: NavController
     
@@ -45,6 +52,10 @@ class SearchFragment: BaseFragment<FragmentSearchBinding>() {
     }
     
     override fun setUpViews() {
+        searchBar.text = args.getString(ARG_KEYWORD)
+        searchView.editText.addTextChangedListener {
+            searchBar.text = it
+        }
     }
     
     override fun onBackPressed() = when {
@@ -52,7 +63,13 @@ class SearchFragment: BaseFragment<FragmentSearchBinding>() {
             searchView.hide()
             false
         }
-        else -> super.onBackPressed()
+        else -> {
+            setFragmentResult(
+                getString(R.string.result_search),
+                bundleOf(getString(R.string.result_search) to searchBar.text)
+            )
+            super.onBackPressed()
+        }
     }
 
 }

@@ -57,5 +57,7 @@
     <string name="comic_content_fab_next">Next Episode</string>
     
     <string name="storage_account">storage_account</string>
+    
+    <string name="result_search">result_search</string>
 
 </resources>

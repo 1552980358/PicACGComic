@@ -13,6 +13,7 @@ import androidx.core.view.marginBottom
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -196,6 +197,13 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
                 return@setOnEditorActionListener true
             }
             false
+        }
+        
+        val resultSearch = getString(R.string.result_search)
+        setFragmentResultListener(resultSearch) { _, bundle ->
+            if (bundle.containsKey(resultSearch)) {
+                searchBar.text = bundle.getString(resultSearch)
+            }
         }
     
         applicationConfigs.token.observe(viewLifecycleOwner) {
