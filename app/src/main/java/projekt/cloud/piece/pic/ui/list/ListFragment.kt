@@ -146,6 +146,11 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
     override val containerTransitionName: String?
         get() = args.getString(getString(R.string.list_transition))
     
+    override fun setViewModels(binding: FragmentListBinding) {
+        binding.comics = comics
+        binding.lifecycleOwner = viewLifecycleOwner
+    }
+    
     override fun setUpToolbar() {
         setSupportActionBar(toolbar)
         toolbar.setupWithNavController(navController)
