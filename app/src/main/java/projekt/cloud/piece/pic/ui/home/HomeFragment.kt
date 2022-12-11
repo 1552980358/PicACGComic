@@ -3,10 +3,8 @@ package projekt.cloud.piece.pic.ui.home
 import android.graphics.Bitmap
 import android.graphics.Rect
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
-import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.marginBottom
@@ -105,9 +103,6 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
         exitTransition = Hold()
         navController = findNavController()
     }
-    
-    override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentHomeBinding.inflate(inflater, container, false)
     
     override fun setViewModels(binding: FragmentHomeBinding) {
         binding.applicationConfigs = applicationConfigs

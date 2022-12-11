@@ -1,7 +1,6 @@
 package projekt.cloud.piece.pic.ui.comicDetail
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -9,7 +8,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.OnClickListener
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.MenuProvider
 import androidx.core.view.doOnPreDraw
@@ -93,9 +91,6 @@ class ComicDetailFragment: BaseFragment<FragmentComicDetailBinding>(), OnClickLi
             comic.id = args.getString(ARG_ID)
         }
     }
-    
-    override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentComicDetailBinding.inflate(inflater, container, false)
     
     override fun setViewModels(binding: FragmentComicDetailBinding) {
         binding.applicationConfigs = applicationConfigs

@@ -3,9 +3,7 @@ package projekt.cloud.piece.pic.ui.list
 import android.graphics.Bitmap
 import android.graphics.Rect
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -139,9 +137,6 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
         sharedElementEnterTransition = MaterialContainerTransform()
         exitTransition = Hold()
     }
-    
-    override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentListBinding.inflate(inflater, container, false)
     
     override val containerTransitionName: String?
         get() = args.getString(getString(R.string.list_transition))

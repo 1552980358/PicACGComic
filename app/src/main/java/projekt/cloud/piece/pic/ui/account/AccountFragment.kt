@@ -1,8 +1,6 @@
 package projekt.cloud.piece.pic.ui.account
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.fragment.app.commit
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import projekt.cloud.piece.pic.R
@@ -17,9 +15,6 @@ class AccountFragment: BaseFragment<FragmentAccountBinding>() {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = MaterialContainerTransform()
     }
-    
-    override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentAccountBinding.inflate(inflater, container, false)
     
     override fun setUpViews() {
         childFragmentManager.commit {

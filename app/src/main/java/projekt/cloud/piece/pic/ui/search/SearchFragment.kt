@@ -1,8 +1,6 @@
 package projekt.cloud.piece.pic.ui.search
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.setFragmentResult
@@ -34,9 +32,6 @@ class SearchFragment: BaseFragment<FragmentSearchBinding>() {
         navController = findNavController()
         sharedElementEnterTransition = MaterialContainerTransform()
     }
-    
-    override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentSearchBinding.inflate(inflater, container, false)
     
     override fun setViewModels(binding: FragmentSearchBinding) {
         binding.applicationConfigs = applicationConfigs

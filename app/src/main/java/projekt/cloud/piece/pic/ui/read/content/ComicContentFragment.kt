@@ -2,11 +2,9 @@ package projekt.cloud.piece.pic.ui.read.content
 
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.OnClickListener
-import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
@@ -72,9 +70,6 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
         super.onCreate(savedInstanceState)
         navController = findNavController()
     }
-    
-    override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentComicContentBinding.inflate(inflater, container, false)
     
     override fun setUpToolbar() {
         setSupportActionBar(toolbar)

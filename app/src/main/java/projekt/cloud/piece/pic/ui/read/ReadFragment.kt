@@ -1,8 +1,6 @@
 package projekt.cloud.piece.pic.ui.read
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
@@ -30,9 +28,6 @@ class ReadFragment: BaseFragment<FragmentReadBinding>() {
     
     override val containerTransitionName: String?
         get() = getString(R.string.read_transition).let { args.getString(it, it) }
-    
-    override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentReadBinding.inflate(layoutInflater, container, false)
     
     override fun setUpViews() {
         readComic.index = args.getInt(ARG_INDEX)

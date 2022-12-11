@@ -5,8 +5,6 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.InputType.TYPE_CLASS_TEXT
 import android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -55,9 +53,6 @@ class LoginFragment: BaseAccountFragment<FragmentLoginBinding>() {
         get() = binding.materialButtonLogin
 
     private var job: Job? = null
-    
-    override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentLoginBinding.inflate(inflater, container, false)
     
     override fun setViewModels(binding: FragmentLoginBinding) {
         binding.applicationConfigs = applicationConfigs

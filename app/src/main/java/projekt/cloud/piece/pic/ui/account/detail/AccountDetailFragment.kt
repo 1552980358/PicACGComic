@@ -3,8 +3,6 @@ package projekt.cloud.piece.pic.ui.account.detail
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.viewModels
@@ -75,9 +73,6 @@ class AccountDetailFragment: BaseFragment<FragmentAccountDetailBinding>() {
         get() = binding.appBarLayout
     private val recyclerView: RecyclerView
         get() = binding.recyclerView
-    
-    override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentAccountDetailBinding.inflate(inflater, container, false)
     
     override fun setViewModels(binding: FragmentAccountDetailBinding) {
         binding.accountDetail = accountDetail

@@ -5,12 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.viewbinding.ViewBinding
+import java.lang.reflect.ParameterizedType
 import projekt.cloud.piece.pic.ApplicationConfigs
 
 abstract class BaseFragment<VB: ViewBinding>: Fragment() {
+    
+    private companion object {
+        const val VIEW_BINDING_INFLATE_METHOD_NAME = "inflate"
+    }
     
     protected val applicationConfigs: ApplicationConfigs by activityViewModels()
     
@@ -22,7 +28,22 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     
     protected val args by lazy { requireArguments() }
     
-    protected abstract fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB
+    @Suppress("UNCHECKED_CAST")
+    private val viewBindingClass =
+        ((this::class.java.genericSuperclass as ParameterizedType)
+            .actualTypeArguments.first() as Class<VB>)
+    
+    private val viewBindingInflateMethod =
+        viewBindingClass.getDeclaredMethod(
+            VIEW_BINDING_INFLATE_METHOD_NAME,
+            LayoutInflater::class.java,
+            ViewGroup::class.java,
+            Boolean::class.java
+        )
+    
+    @Suppress("UNCHECKED_CAST")
+    protected fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        viewBindingInflateMethod.invoke(null, inflater, container, false) as VB
     
     protected open fun setViewModels(binding: VB) = Unit
     
