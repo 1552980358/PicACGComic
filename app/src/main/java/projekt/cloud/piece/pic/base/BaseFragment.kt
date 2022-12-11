@@ -5,12 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.clearFragmentResultListener
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.viewbinding.ViewBinding
 import java.lang.reflect.ParameterizedType
 import projekt.cloud.piece.pic.ApplicationConfigs
+import projekt.cloud.piece.pic.R
 
 abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     
@@ -58,6 +63,18 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
                 }
             }
         })
+        
+        val requestKey = getString(R.string.fragment_message)
+        setFragmentResultListener(requestKey) { _, bundle ->
+            clearFragmentResultListener(getString(R.string.fragment_message))
+            
+            when (bundle.getString(getString(R.string.fragment_message_sender))) {
+                this::class.simpleName -> bundle.getString(getString(R.string.fragment_message_message))?.let {
+                    onMessageReceived(it)
+                }
+                else -> setFragmentResult(requestKey, bundle)
+            }
+        }
     }
     
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -96,6 +113,20 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
             parent = parent.requireParentFragment()
         }
         return parent
+    }
+    
+    open fun onMessageReceived(message: String) = Unit
+    
+    fun sendMessage(message: String) {
+        val resultKey = getString(R.string.fragment_message)
+        clearFragmentResultListener(resultKey)
+        setFragmentResult(
+            resultKey,
+            bundleOf(
+                getString(R.string.fragment_message_sender) to this::class.simpleName,
+                getString(R.string.fragment_message_message) to message
+            )
+        )
     }
     
 }

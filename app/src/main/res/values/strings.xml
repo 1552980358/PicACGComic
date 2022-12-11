@@ -59,5 +59,9 @@
     <string name="storage_account">storage_account</string>
     
     <string name="result_search">result_search</string>
-
+    
+    <string name="fragment_message">fragment_message</string>
+    <string name="fragment_message_sender">fragment_message_sender</string>
+    <string name="fragment_message_message">fragment_message_message</string>
+    
 </resources>
