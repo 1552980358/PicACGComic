@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <data>
+        <variable
+            name="doc"
+            type="projekt.cloud.piece.pic.api.ApiComics.ComicsResponseBody.Data.Comics.Doc" />
+        <variable
+            name="bitmap"
+            type="android.graphics.Bitmap" />
+    </data>
+    
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardBackgroundColor="?attr/colorSurfaceVariant"
+        app:cardCornerRadius="@dimen/md_spec_radius_12"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp">
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            
+            <projekt.cloud.piece.pic.widget.RatioImageView
+                android:id="@+id/app_compat_image_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:shapeAppearance="@style/Widget.SquareImageView.RoundCorner"
+                app:ratioX="3"
+                app:ratioY="4"
+                bitmap="@{bitmap}" />
+            
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/app_compat_image_view"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/md_spec_spacing_hor_8"
+                android:paddingVertical="@dimen/md_spec_spacing_ver_8">
+                
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/app_compat_image_view"
+                    android:text="@{doc.title}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+                
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{doc.author}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+            
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        
+        </RelativeLayout>
+    
+    </com.google.android.material.card.MaterialCardView>
+</layout>
