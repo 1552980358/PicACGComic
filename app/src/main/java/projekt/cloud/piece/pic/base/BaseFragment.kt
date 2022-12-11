@@ -12,10 +12,18 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.clearFragmentResultListener
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import java.lang.reflect.ParameterizedType
+import kotlinx.coroutines.withContext
 import projekt.cloud.piece.pic.ApplicationConfigs
 import projekt.cloud.piece.pic.R
+import projekt.cloud.piece.pic.api.ApiAuth
+import projekt.cloud.piece.pic.api.ApiAuth.signIn
+import projekt.cloud.piece.pic.util.CoroutineUtil.io
+import projekt.cloud.piece.pic.util.CoroutineUtil.ui
+import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
+import projekt.cloud.piece.pic.util.StorageUtil.Account
 
 abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     
@@ -90,6 +98,36 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setUpToolbar()
         setUpViews()
+        applicationConfigs.account.observe(viewLifecycleOwner) {
+            if (it == null) {
+                return@observe onAuthComplete(R.integer.auth_code_error_no_account, null, null)
+            }
+            requireAuth(it)
+        }
+    }
+    
+    protected fun requireAuth(account: Account) {
+        lifecycleScope.ui {
+            var token = account.token
+            if (token != null) {
+                return@ui onAuthComplete(R.integer.auth_code_success, null, token)
+            }
+            
+            val httpResponse = withContext(io) {
+                signIn(account.account, account.password)
+            }
+            val response = httpResponse.response
+            if (response == null || httpResponse.code != R.integer.auth_code_success) {
+                return@ui onAuthComplete(httpResponse.code, httpResponse.message, null)
+            }
+            
+            token = withContext(io) {
+                response.decodeJson<ApiAuth.SignInResponseBody>().token
+            }
+            
+            account.token = token
+            onAuthComplete(R.integer.auth_code_success, null, token)
+        }
     }
     
     override fun onDestroyView() {
@@ -128,5 +166,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
             )
         )
     }
+    
+    open fun onAuthComplete(code: Int, codeMessage: String?, token: String?) = Unit
     
 }

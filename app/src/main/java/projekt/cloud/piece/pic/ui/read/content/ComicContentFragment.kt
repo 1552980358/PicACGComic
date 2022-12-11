@@ -37,7 +37,6 @@ import projekt.cloud.piece.pic.ui.read.ReadFragment
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
-import projekt.cloud.piece.pic.util.HttpUtil.RESPONSE_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
 
 class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClickListener {
@@ -154,27 +153,27 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
             toolbar.title = comic.docList[readComic.index].title
             toolbar.subtitle = comic.comic.value?.title
         
-            var response: Response?
-            var data: Data?
-            while (true) {
-                response = withContext(io) {
-                    episodeContent(id, comic.docList[readComic.index].order, pages.size + 1, token = token)
-                } ?: return@ui failed(R.string.comic_content_snack_exception)
-                if (response.code != RESPONSE_CODE_SUCCESS) {
-                    return@ui failed(R.string.comic_content_snack_error_code)
-                }
-                data = response.decodeJson<ApiComics.EpisodeContentResponseBody>().data
-            
-                pages.add(data.pages)
-                docs.addAll(data.pages.docs)
-            
-                succeed()
-            
-                if (pages.size == data.pages.pages) {
-                    break
-                }
-            }
-            updateExtendedFabText()
+            // var response: Response?
+            // var data: Data?
+            // while (true) {
+            //     response = withContext(io) {
+            //         episodeContent(id, comic.docList[readComic.index].order, pages.size + 1, token = token)
+            //     } ?: return@ui failed(R.string.comic_content_snack_exception)
+            //     if (response.code != RESPONSE_CODE_SUCCESS) {
+            //         return@ui failed(R.string.comic_content_snack_error_code)
+            //     }
+            //     data = response.decodeJson<ApiComics.EpisodeContentResponseBody>().data
+            //
+            //     pages.add(data.pages)
+            //     docs.addAll(data.pages.docs)
+            //
+            //     succeed()
+            //
+            //     if (pages.size == data.pages.pages) {
+            //         break
+            //     }
+            // }
+            // updateExtendedFabText()
         }
     }
     

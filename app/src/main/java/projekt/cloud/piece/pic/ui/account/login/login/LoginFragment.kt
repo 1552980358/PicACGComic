@@ -24,8 +24,6 @@ import projekt.cloud.piece.pic.ui.account.base.BaseAccountFragment
 import projekt.cloud.piece.pic.ui.account.detail.AccountDetailFragment
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
-import projekt.cloud.piece.pic.util.HttpUtil.RESPONSE_CODE_BAD_REQUEST
-import projekt.cloud.piece.pic.util.HttpUtil.RESPONSE_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.StorageUtil.Account
 import projekt.cloud.piece.pic.util.StorageUtil.saveAccount
 
@@ -153,19 +151,19 @@ class LoginFragment: BaseAccountFragment<FragmentLoginBinding>() {
         !account.isNullOrBlank() && !password.isNullOrBlank() && password.length >= PASSWORD_MIN_LENGTH
 
     private fun getAuth(account: String, password: String) = io {
-        when (val response = signIn(account, password)) {
-            null -> authError(R.string.account_login_snack_auth_exception)
-            else -> when (response.code) {
-                RESPONSE_CODE_SUCCESS -> {
-                    authSuccess(
-                        Json.decodeFromString<ApiAuth.SignInResponseBody>(response.body.string()).token,
-                        requireContext().saveAccount(account, password)
-                    )
-                }
-                RESPONSE_CODE_BAD_REQUEST -> authError(R.string.account_login_snack_auth_invalid)
-                else -> authError(getString(R.string.account_login_snack_auth_error_code) + response.code)
-            }
-        }
+        // when (val response = signIn(account, password)) {
+        //     null -> authError(R.string.account_login_snack_auth_exception)
+        //     else -> when (response.code) {
+        //         RESPONSE_CODE_SUCCESS -> {
+        //             authSuccess(
+        //                 Json.decodeFromString<ApiAuth.SignInResponseBody>(response.body.string()).token,
+        //                 requireContext().saveAccount(account, password)
+        //             )
+        //         }
+        //         RESPONSE_CODE_BAD_REQUEST -> authError(R.string.account_login_snack_auth_invalid)
+        //         else -> authError(getString(R.string.account_login_snack_auth_error_code) + response.code)
+        //     }
+        // }
         job = null
     }
 

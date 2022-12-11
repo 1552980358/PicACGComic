@@ -35,7 +35,6 @@ import projekt.cloud.piece.pic.databinding.FragmentListBinding
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
-import projekt.cloud.piece.pic.util.HttpUtil.RESPONSE_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
 
 class ListFragment: BaseFragment<FragmentListBinding>() {
@@ -90,21 +89,21 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
         }
         
         private fun requestCategory(token: String, category: String, page: Int, sort: String, success: () -> Unit, failed: (Int) -> Unit) {
-            job = viewModelScope.ui {
-                val response = withContext(io) {
-                    comics(token, page, category, sort)
-                } ?: return@ui failed.invoke(R.string.list_snack_exception)
-        
-                if (response.code != RESPONSE_CODE_SUCCESS) {
-                    return@ui failed.invoke(R.string.list_snack_error_code)
-                }
-        
-                val comics = response.decodeJson<ComicsResponseBody>().data.comics
-                comicsList.add(comics)
-                docs.addAll(comics.docs)
-                success.invoke()
-                job = null
-            }
+            //job = viewModelScope.ui {
+            //    val response = withContext(io) {
+            //        comics(token, page, category, sort)
+            //    } ?: return@ui failed.invoke(R.string.list_snack_exception)
+            //
+            //    if (response.code != RESPONSE_CODE_SUCCESS) {
+            //        return@ui failed.invoke(R.string.list_snack_error_code)
+            //    }
+            //
+            //    val comics = response.decodeJson<ComicsResponseBody>().data.comics
+            //    comicsList.add(comics)
+            //    docs.addAll(comics.docs)
+            //    success.invoke()
+            //    job = null
+            //}
         }
 
     }

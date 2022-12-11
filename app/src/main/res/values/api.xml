@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <integer name="auth_code_success">0</integer>
+    <integer name="auth_code_error_no_account">1</integer>
+    <integer name="auth_code_error_account_invalid">2</integer>
+    <integer name="auth_code_error_connection">3</integer>
+    
+</resources>

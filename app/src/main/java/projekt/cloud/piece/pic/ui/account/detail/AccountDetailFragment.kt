@@ -36,22 +36,22 @@ class AccountDetailFragment: BaseFragment<FragmentAccountDetailBinding>() {
 
         fun receiveToken(token: String, resources: Resources) {
             viewModelScope.launch {
-                val profileResponseBody = withContext(io) {
-                    userProfile(token)?.body?.string()?.let {
-                        Json.decodeFromString<ProfileResponseBody>(it)
-                    }
-                }
-                _profile.value = profileResponseBody?.also {
-                    var avatar = withContext(io) {
-                        it.data.user.avatar?.bitmap
-                    }
-                    if (avatar == null) {
-                        avatar = withContext(io) {
-                            BitmapFactory.decodeResource(resources, R.drawable.ic_round_account_circle_24)
-                        }
-                    }
-                    _avatar.value = avatar
-                }
+            //    val profileResponseBody = withContext(io) {
+            //        userProfile(token)?.body?.string()?.let {
+            //            Json.decodeFromString<ProfileResponseBody>(it)
+            //        }
+            //    }
+            //    _profile.value = profileResponseBody?.also {
+            //        var avatar = withContext(io) {
+            //            it.data.user.avatar?.bitmap
+            //        }
+            //        if (avatar == null) {
+            //            avatar = withContext(io) {
+            //                BitmapFactory.decodeResource(resources, R.drawable.ic_round_account_circle_24)
+            //            }
+            //        }
+            //        _avatar.value = avatar
+            //    }
             }
         }
 

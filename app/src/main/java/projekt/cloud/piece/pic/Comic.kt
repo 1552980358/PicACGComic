@@ -49,43 +49,43 @@ class Comic: ViewModel() {
         val id = id ?: return failed.invoke(R.string.comic_detail_snack_arg_required)
         
         viewModelScope.ui {
-            val comicResponse = withContext(CoroutineUtil.io) {
-                ApiComics.comic(id, token)
-            } ?: return@ui failed.invoke(R.string.comic_detail_exception)
+            // val comicResponse = withContext(CoroutineUtil.io) {
+            //     ApiComics.comic(id, token)
+            // } ?: return@ui failed.invoke(R.string.comic_detail_exception)
+            //
+            // if (comicResponse.code != HttpUtil.RESPONSE_CODE_SUCCESS) {
+            //     return@ui failed.invoke(R.string.comic_detail_error_code)
+            // }
             
-            if (comicResponse.code != HttpUtil.RESPONSE_CODE_SUCCESS) {
-                return@ui failed.invoke(R.string.comic_detail_error_code)
-            }
+            //val comic = comicResponse.decodeJson<ApiComics.ComicResponseBody>().data.comic
+            //_comic.value = comic
+            //
+            //_avatar.value = withContext(CoroutineUtil.io) {
+            //    comic.creator.avatar.bitmap
+            //}
             
-            val comic = comicResponse.decodeJson<ApiComics.ComicResponseBody>().data.comic
-            _comic.value = comic
-            
-            _avatar.value = withContext(CoroutineUtil.io) {
-                comic.creator.avatar.bitmap
-            }
-            
-            var episodeResponse: Response
-            var episode: ApiComics.EpisodeResponseBody.Data.Episode
-            var complete = false
-            while (!complete) {
-                episodeResponse = withContext(CoroutineUtil.io) {
-                    ApiComics.episode(id, episodeList.size + EPISODE_PAGE_INCREMENTING_DIFF, token)
-                } ?: return@ui failed.invoke(R.string.comic_detail_exception)
-                
-                if (episodeResponse.code != HttpUtil.RESPONSE_CODE_SUCCESS) {
-                    return@ui failed.invoke(R.string.comic_detail_error_code)
-                }
-                
-                episode = episodeResponse.decodeJson<ApiComics.EpisodeResponseBody>().data.eps
-                episodeList.add(episode)
-                docList.addAll(episode.docs)
-                
-                if (episodeList.size == episode.pages) {
-                    complete = true
-                }
-            }
-            
-            success.invoke()
+            //var episodeResponse: Response
+            //var episode: ApiComics.EpisodeResponseBody.Data.Episode
+            //var complete = false
+            //while (!complete) {
+            //    episodeResponse = withContext(CoroutineUtil.io) {
+            //        ApiComics.episode(id, episodeList.size + EPISODE_PAGE_INCREMENTING_DIFF, token)
+            //    } ?: return@ui failed.invoke(R.string.comic_detail_exception)
+            //
+            //    if (episodeResponse.code != HttpUtil.RESPONSE_CODE_SUCCESS) {
+            //        return@ui failed.invoke(R.string.comic_detail_error_code)
+            //    }
+            //
+            //    episode = episodeResponse.decodeJson<ApiComics.EpisodeResponseBody>().data.eps
+            //    episodeList.add(episode)
+            //    docList.addAll(episode.docs)
+            //
+            //    if (episodeList.size == episode.pages) {
+            //        complete = true
+            //    }
+            //}
+            //
+            //success.invoke()
         }
     }
     

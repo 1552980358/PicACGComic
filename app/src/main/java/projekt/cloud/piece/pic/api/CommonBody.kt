@@ -20,7 +20,7 @@ object CommonBody {
                      val fileServer: String) {
         
         val bitmap: Bitmap?
-            get() = httpGet(fileServer.serverWithDivider + path)?.body?.byteStream()?.let {
+            get() = httpGet(fileServer.serverWithDivider + path).response?.body?.byteStream()?.let {
                 BitmapFactory.decodeStream(it)
             }
         

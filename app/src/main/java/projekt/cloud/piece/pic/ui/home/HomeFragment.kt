@@ -37,7 +37,6 @@ import projekt.cloud.piece.pic.databinding.FragmentHomeBinding
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
-import projekt.cloud.piece.pic.util.HttpUtil.RESPONSE_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
 
 class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
@@ -52,33 +51,33 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
         val thumbs = mutableMapOf<String, Bitmap?>()
         
         fun updateCategories(token: String?, success: () -> Unit, failed: (Int) -> Unit) {
-            if (token == null) {
-                if (categories.isNotEmpty()) {
-                    categories.clear()
-                    thumbs.clear()
-                }
-                return
-            }
-            if (categories.isEmpty()) {
-                viewModelScope.ui {
-                    val response = withContext(io) {
-                        categories(token)
-                    } ?: return@ui failed.invoke(R.string.home_snack_exception)
-                    
-                    if (response.code != RESPONSE_CODE_SUCCESS) {
-                        return@ui failed.invoke(R.string.home_snack_error_code)
-                    }
-        
-                    categories.addAll(
-                        response.decodeJson<CategoriesResponseBody>()
-                            .data
-                            .categories
-                            .filter { !it.isWeb }
-                    )
-        
-                    success.invoke()
-                }
-            }
+            // if (token == null) {
+            //     if (categories.isNotEmpty()) {
+            //         categories.clear()
+            //         thumbs.clear()
+            //     }
+            //     return
+            // }
+            // if (categories.isEmpty()) {
+            //     viewModelScope.ui {
+            //         val response = withContext(io) {
+            //             categories(token)
+            //         } ?: return@ui failed.invoke(R.string.home_snack_exception)
+            //
+            //         if (response.code != RESPONSE_CODE_SUCCESS) {
+            //             return@ui failed.invoke(R.string.home_snack_error_code)
+            //         }
+            //
+            //         categories.addAll(
+            //             response.decodeJson<CategoriesResponseBody>()
+            //                 .data
+            //                 .categories
+            //                 .filter { !it.isWeb }
+            //         )
+            //
+            //         success.invoke()
+            //     }
+            // }
         }
 
     }
