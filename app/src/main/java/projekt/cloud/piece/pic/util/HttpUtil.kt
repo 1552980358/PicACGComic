@@ -9,13 +9,15 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 import okio.IOException
-import projekt.cloud.piece.pic.R
+import projekt.cloud.piece.pic.util.CodeBook.HTTP_REQUEST_CODE_EXCEPTION
+import projekt.cloud.piece.pic.util.CodeBook.HTTP_REQUEST_CODE_IO_EXCEPTION
+import projekt.cloud.piece.pic.util.CodeBook.HTTP_REQUEST_CODE_SUCCESS
 
 object HttpUtil {
     
     class HttpResponse {
         
-        var code: Int = R.integer.auth_code_success
+        var code: Int = HTTP_REQUEST_CODE_SUCCESS
         
         var message: String? = null
         
@@ -53,9 +55,13 @@ object HttpUtil {
                         headers: Headers,
                         requestBody: RequestBody? = null): HttpResponse {
         val httpResponse = HttpResponse()
-        try { httpResponse.response = httpRequest(url, method, headers, requestBody) }
-        catch (e: IOException) {
-            httpResponse.code = R.integer.auth_code_error_connection
+        try {
+            httpResponse.response = httpRequest(url, method, headers, requestBody)
+        } catch (e: IOException) {
+            httpResponse.code = HTTP_REQUEST_CODE_IO_EXCEPTION
+            httpResponse.message = e.toString()
+        } catch (e: Exception) {
+            httpResponse.code = HTTP_REQUEST_CODE_EXCEPTION
             httpResponse.message = e.toString()
         }
         return httpResponse

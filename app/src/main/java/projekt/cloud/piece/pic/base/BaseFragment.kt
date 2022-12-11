@@ -1,10 +1,12 @@
 package projekt.cloud.piece.pic.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.UiThread
 import androidx.core.os.bundleOf
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -20,8 +22,13 @@ import projekt.cloud.piece.pic.ApplicationConfigs
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.ApiAuth
 import projekt.cloud.piece.pic.api.ApiAuth.signIn
+import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_ACCOUNT_INVALID
+import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_CONNECTION
+import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_NO_ACCOUNT
+import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
+import projekt.cloud.piece.pic.util.HttpUtil.HTTP_RESPONSE_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
 import projekt.cloud.piece.pic.util.StorageUtil.Account
 
@@ -100,25 +107,32 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
         setUpViews()
         applicationConfigs.account.observe(viewLifecycleOwner) {
             if (it == null) {
-                return@observe onAuthComplete(R.integer.auth_code_error_no_account, null, null)
+                return@observe onAuthComplete(AUTH_CODE_ERROR_NO_ACCOUNT, null, null)
             }
             requireAuth(it)
         }
     }
     
     protected fun requireAuth(account: Account) {
+        Log.e("BaseFragment", "requireAuth: $account")
         lifecycleScope.ui {
             var token = account.token
             if (token != null) {
-                return@ui onAuthComplete(R.integer.auth_code_success, null, token)
+                return@ui onAuthComplete(AUTH_CODE_SUCCESS, null, token)
             }
             
             val httpResponse = withContext(io) {
                 signIn(account.account, account.password)
             }
+            
+            // Http code
             val response = httpResponse.response
-            if (response == null || httpResponse.code != R.integer.auth_code_success) {
-                return@ui onAuthComplete(httpResponse.code, httpResponse.message, null)
+            if (response == null || httpResponse.code != AUTH_CODE_SUCCESS) {
+                return@ui onAuthComplete(AUTH_CODE_ERROR_CONNECTION, httpResponse.message, null)
+            }
+            // Invalid response code
+            if (response.code != HTTP_RESPONSE_CODE_SUCCESS) {
+                return@ui onAuthComplete(AUTH_CODE_ERROR_ACCOUNT_INVALID, null, null)
             }
             
             token = withContext(io) {
@@ -126,7 +140,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
             }
             
             account.token = token
-            onAuthComplete(R.integer.auth_code_success, null, token)
+            onAuthComplete(AUTH_CODE_SUCCESS, null, token)
         }
     }
     
@@ -167,6 +181,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
         )
     }
     
+    @UiThread
     open fun onAuthComplete(code: Int, codeMessage: String?, token: String?) = Unit
     
 }

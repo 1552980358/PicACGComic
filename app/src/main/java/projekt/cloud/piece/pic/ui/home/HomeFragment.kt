@@ -5,6 +5,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
+import androidx.annotation.UiThread
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.doOnPreDraw
 import androidx.core.view.marginBottom
@@ -34,9 +35,14 @@ import projekt.cloud.piece.pic.api.ApiCategories.CategoriesResponseBody.Data.Cat
 import projekt.cloud.piece.pic.api.ApiCategories.categories
 import projekt.cloud.piece.pic.base.BaseFragment
 import projekt.cloud.piece.pic.databinding.FragmentHomeBinding
+import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_SUCCESS
+import projekt.cloud.piece.pic.util.CodeBook.CATEGORIES_CODE_ERROR_CONNECTION
+import projekt.cloud.piece.pic.util.CodeBook.CATEGORIES_CODE_ERROR_REQUEST
+import projekt.cloud.piece.pic.util.CodeBook.CATEGORIES_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
+import projekt.cloud.piece.pic.util.HttpUtil.HTTP_RESPONSE_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
 
 class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
@@ -50,34 +56,32 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
         val categories = mutableListOf<Category>()
         val thumbs = mutableMapOf<String, Bitmap?>()
         
-        fun updateCategories(token: String?, success: () -> Unit, failed: (Int) -> Unit) {
-            // if (token == null) {
-            //     if (categories.isNotEmpty()) {
-            //         categories.clear()
-            //         thumbs.clear()
-            //     }
-            //     return
-            // }
-            // if (categories.isEmpty()) {
-            //     viewModelScope.ui {
-            //         val response = withContext(io) {
-            //             categories(token)
-            //         } ?: return@ui failed.invoke(R.string.home_snack_exception)
-            //
-            //         if (response.code != RESPONSE_CODE_SUCCESS) {
-            //             return@ui failed.invoke(R.string.home_snack_error_code)
-            //         }
-            //
-            //         categories.addAll(
-            //             response.decodeJson<CategoriesResponseBody>()
-            //                 .data
-            //                 .categories
-            //                 .filter { !it.isWeb }
-            //         )
-            //
-            //         success.invoke()
-            //     }
-            // }
+        fun requestCategories(token: String, complete: (Int, String?) -> Unit) {
+            viewModelScope.ui {
+                val httpResponse = withContext(io) {
+                    categories(token)
+                }
+                
+                val response = httpResponse.response
+                if (httpResponse.code != CATEGORIES_CODE_SUCCESS || response == null) {
+                    // Failed from connection
+                    return@ui complete.invoke(CATEGORIES_CODE_ERROR_CONNECTION, httpResponse.message)
+                }
+                if (response.code != HTTP_RESPONSE_CODE_SUCCESS) {
+                    // Failed from server
+                    return@ui complete.invoke(CATEGORIES_CODE_ERROR_REQUEST, null)
+                }
+                
+                categories.addAll(
+                    response.decodeJson<CategoriesResponseBody>()
+                        .data
+                        .categories
+                        .filter { !it.isWeb }
+                )
+                
+                complete.invoke(CATEGORIES_CODE_SUCCESS, null)
+            }
+            
         }
 
     }
@@ -198,23 +202,6 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
                 searchBar.text = bundle.getString(resultSearch)
             }
         }
-    
-        applicationConfigs.token.observe(viewLifecycleOwner) {
-            if (it == null) {
-                // root.snack(R.string.home_snack_not_logged_in, LENGTH_INDEFINITE)
-                //     .setAction(R.string.home_snack_button_login) { floatingActionButton.callOnClick() }
-                //     .setAnchorView(bottomAppBar)
-                //     .show()
-            }
-            categories.updateCategories(
-                it,
-                success = { updateCategories() },
-                failed = { resId ->
-                    // root.showSnack(resId)
-                    updateCategories()
-                }
-            )
-        }
     }
     
     override fun onBackPressed() = when {
@@ -230,7 +217,23 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
         (recyclerView.adapter as RecyclerViewAdapter)
             .notifyDataSetChanged()
     }
-
+    
+    @UiThread
+    override fun onAuthComplete(code: Int, codeMessage: String?, token: String?) {
+        if (code != AUTH_CODE_SUCCESS || token == null) {
+            // Failed to login
+            return
+        }
+        categories.requestCategories(token) { c, message ->
+            if (c == CATEGORIES_CODE_SUCCESS) {
+                return@requestCategories updateCategories()
+            }
+            when (c) {
+                CATEGORIES_CODE_ERROR_CONNECTION -> {}
+                CATEGORIES_CODE_ERROR_REQUEST -> {}
+            }
+        }
+    }
 
     override fun onClick(v: View?) {
         when (v) {

@@ -19,15 +19,9 @@ class ApplicationConfigs: ViewModel() {
     
     fun initializeAccount(context: Context) {
         viewModelScope.ui {
-            val account = withContext(io) {
+            _account.value = withContext(io) {
                 context.readAccount()
             }
-            if (account == null) {
-                setAccount(null)
-                updateToken(null)
-                return@ui
-            }
-            _account.value = account
         }
     }
 
