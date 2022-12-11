@@ -76,7 +76,6 @@ class AccountDetailFragment: BaseFragment<FragmentAccountDetailBinding>() {
     
     override fun setViewModels(binding: FragmentAccountDetailBinding) {
         binding.accountDetail = accountDetail
-        binding.lifecycleOwner = viewLifecycleOwner
     }
     
     override fun setUpToolbar() {

@@ -143,7 +143,6 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
     
     override fun setViewModels(binding: FragmentListBinding) {
         binding.comics = comics
-        binding.lifecycleOwner = viewLifecycleOwner
     }
     
     override fun setUpToolbar() {

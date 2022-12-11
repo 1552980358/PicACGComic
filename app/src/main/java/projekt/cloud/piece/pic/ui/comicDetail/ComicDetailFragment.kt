@@ -95,7 +95,6 @@ class ComicDetailFragment: BaseFragment<FragmentComicDetailBinding>(), OnClickLi
     override fun setViewModels(binding: FragmentComicDetailBinding) {
         binding.applicationConfigs = applicationConfigs
         binding.comic = comic
-        binding.lifecycleOwner = viewLifecycleOwner
     }
     
     override fun setUpToolbar() {

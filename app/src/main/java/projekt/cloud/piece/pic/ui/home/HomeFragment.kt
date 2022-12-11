@@ -106,7 +106,6 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
     
     override fun setViewModels(binding: FragmentHomeBinding) {
         binding.applicationConfigs = applicationConfigs
-        binding.lifecycleOwner = viewLifecycleOwner
     }
     
     override fun setUpToolbar() {

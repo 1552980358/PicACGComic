@@ -62,7 +62,11 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = inflateViewBinding(inflater, container)
-        setViewModels(binding)
+        val binding = binding
+        if (binding is ViewDataBinding) {
+            binding.lifecycleOwner = this
+            setViewModels(binding)
+        }
         return binding.root.apply { containerTransitionName?.let { transitionName = it } }
     }
     

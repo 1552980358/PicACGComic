@@ -56,7 +56,6 @@ class LoginFragment: BaseAccountFragment<FragmentLoginBinding>() {
     
     override fun setViewModels(binding: FragmentLoginBinding) {
         binding.applicationConfigs = applicationConfigs
-        binding.lifecycleOwner = viewLifecycleOwner
     }
     
     override fun setUpViews() {
