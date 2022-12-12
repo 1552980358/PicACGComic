@@ -12,6 +12,7 @@
       <option name="SPACE_AROUND_RANGE" value="true" />
       <option name="NAME_COUNT_TO_USE_STAR_IMPORT" value="2147483647" />
       <option name="NAME_COUNT_TO_USE_STAR_IMPORT_FOR_MEMBERS" value="2147483647" />
+      <option name="IMPORT_NESTED_CLASSES" value="true" />
       <option name="CONTINUATION_INDENT_IN_SUPERTYPE_LISTS" value="true" />
       <option name="BLANK_LINES_AROUND_BLOCK_WHEN_BRANCHES" value="1" />
       <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
