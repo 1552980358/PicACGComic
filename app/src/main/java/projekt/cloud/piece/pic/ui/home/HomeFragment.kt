@@ -249,7 +249,9 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
             }
             return
         }
-        requestCategories(token)
+        if (categories.categories.isEmpty()) {
+            requestCategories(token)
+        }
     }
     
     private fun requestCategories(token: String) {
