@@ -18,5 +18,8 @@
     <dimen name="home_search_radius">24dp</dimen>
     <dimen name="home_search_padding_hor">24dp</dimen>
     <dimen name="home_search_space_hor">@dimen/md_spec_spacing_hor_16</dimen>
+    
+    <dimen name="account_detail_small_avatar_spacing_hor">@dimen/md_spec_spacing_hor_8</dimen>
+    <dimen name="account_detail_small_avatar_spacing_ver">@dimen/account_detail_small_avatar_spacing_hor</dimen>
 
 </resources>

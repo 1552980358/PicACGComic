@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.widget.ImageView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import kotlin.math.abs
@@ -119,34 +119,45 @@ class AccountDetailFragment: BaseFragment<FragmentAccountDetailBinding>() {
                 )
             )
         }
+        
+        val toolbarLogoView = reflectToolbarLogoView()
+        with(toolbarLogoView) {
+            alpha = 0F
+            val paddingHor = resources.getDimensionPixelSize(R.dimen.account_detail_small_avatar_spacing_hor)
+            val paddingVer = resources.getDimensionPixelSize(R.dimen.account_detail_small_avatar_spacing_ver)
+            updatePadding(paddingHor, paddingVer, paddingHor, paddingVer)
+        }
     
-        var toolbarImageView: ImageView? = null
-        val appBarLayoutListener = OnOffsetChangedListener { _, verticalOffset ->
+        appBarLayout.addOnOffsetChangedListener { _, verticalOffset ->
             applicationConfigs.windowInsetTop.value?.let { windowInsetTop ->
                 val newAlpha = when {
                     appBarLayout.height - toolbar.height - windowInsetTop - abs(verticalOffset) > 0 -> 0F
                     else -> 1F
                 }
-                toolbarImageView?.let { imageView ->
+                toolbarLogoView.let { imageView ->
                     if (imageView.alpha != newAlpha) {
                         imageView.alpha = newAlpha
                     }
                 }
             }
         }
+        
         accountDetail.avatar.observe(viewLifecycleOwner) { bitmap ->
             toolbar.logo = bitmap?.let { CircularCroppedDrawable(it) }
-            if (toolbarImageView == null) {
-                toolbarImageView = Toolbar::class.java
-                    .declaredFields
-                    .find { field -> field.name == "mLogoView" }?.let { field ->
-                        field.isAccessible = true
-                        field.get(toolbar as Toolbar) as? ImageView
-                    }
-                toolbarImageView?.alpha = 0F
-            }
-            appBarLayout.addOnOffsetChangedListener(appBarLayoutListener)
         }
+    }
+    
+    private fun reflectToolbarLogoView(): ImageView {
+        // Call for set ImageView
+        Toolbar::class.java
+            .getDeclaredMethod("ensureLogoView")
+            .apply { isAccessible = true }
+            .invoke(toolbar)
+    
+        return Toolbar::class.java
+            .getDeclaredField("mLogoView")
+            .apply { isAccessible = true }
+            .get(toolbar) as ImageView
     }
     
     override fun onAuthComplete(code: Int, codeMessage: String?, account: Account?) {

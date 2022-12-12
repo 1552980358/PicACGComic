@@ -35,5 +35,6 @@
 
 # For reflection of Toolbar
 -keepclassmembernames class androidx.appcompat.widget.Toolbar {
+    private void ensureLogoView();
     private android.widget.ImageView mLogoView;
 }
