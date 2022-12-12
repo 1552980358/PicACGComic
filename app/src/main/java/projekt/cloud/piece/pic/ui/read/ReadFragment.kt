@@ -13,10 +13,6 @@ import projekt.cloud.piece.pic.ui.read.content.ComicContentFragment
 
 class ReadFragment: BaseFragment<FragmentReadBinding>() {
     
-    private companion object {
-        const val ARG_INDEX = "index"
-    }
-    
     private val readComic: ReadComic by viewModels()
     
     private var currentContentFragment: Fragment? = null
@@ -27,19 +23,21 @@ class ReadFragment: BaseFragment<FragmentReadBinding>() {
     }
     
     override val containerTransitionName: String?
-        get() = getString(R.string.read_transition).let { args.getString(it, it) }
+        get() {
+            val readTransition = getString(R.string.read_transition)
+            return when {
+                args.containsKey(readTransition) -> args.getString(readTransition)
+                else -> readTransition
+            }
+        }
     
     override fun setUpViews() {
-        readComic.index = args.getInt(ARG_INDEX)
-        
         updateContentFragment(requireAnimation = false)
         readComic.prev.observe(viewLifecycleOwner) {
             updateContentFragment()
-            updateRootTransitionName(it)
         }
         readComic.next.observe(viewLifecycleOwner) {
-            updateContentFragment(isForward =  false)
-            updateRootTransitionName(it)
+            updateContentFragment(isForward = false)
         }
     }
     
@@ -56,8 +54,6 @@ class ReadFragment: BaseFragment<FragmentReadBinding>() {
         currentContentFragment = fragment
     }
     
-    private fun updateRootTransitionName(index: Int) {
-        // root.transitionName = getString(R.string.read_transition_prefix) + index
-    }
+    
     
 }

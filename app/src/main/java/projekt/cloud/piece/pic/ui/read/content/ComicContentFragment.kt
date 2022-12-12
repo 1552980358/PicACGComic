@@ -3,7 +3,6 @@ package projekt.cloud.piece.pic.ui.read.content
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
-import android.view.View.GONE
 import android.view.View.OnClickListener
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.marginBottom
@@ -90,15 +89,10 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
                 updateMargins(bottom = it + extendedFabMarginBottom)
             }
         }
-    
-        page.hide()
-        if (readComic.index == 0) {
-            prev.visibility = GONE
-        }
+        
         page.setOnClickListener(this)
         prev.setOnClickListener(this)
         next.setOnClickListener(this)
-        
     }
     
     private fun updateExtendedFabText() {
