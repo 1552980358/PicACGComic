@@ -41,7 +41,7 @@
     
     <string name="list_transition">list_transition</string>
     <string name="list_transition_prefix">list_transition_</string>
-    <string name="list_snack_category_not_specified">No Account Logged in</string>
+    <string name="list_snack_category_not_specified">Category not specified</string>
     <string name="list_snack_login_no_account">No Account Logged in</string>
     <string name="list_snack_login_invalid_account">Invalid Account / Password</string>
     <string name="list_snack_login_connection_failed">Connection Failed: %s</string>
@@ -54,10 +54,14 @@
     <string name="comic_detail_transition_prefix">comic_detail_transition_</string>
     <string name="comic_detail_menu_add_to_favorites">Add to Favorites</string>
     <string name="comic_detail_menu_likes">Likes</string>
-    <string name="comic_detail_snack_not_logged">@string/request_not_logged</string>
-    <string name="comic_detail_snack_arg_required">Argument Not Enough</string>
-    <string name="comic_detail_exception">@string/response_exception</string>
-    <string name="comic_detail_error_code">@string/response_error_code</string>
+    <string name="comic_detail_snack_login_no_account">No Account Logged in</string>
+    <string name="comic_detail_snack_login_invalid_account">Invalid Account / Password</string>
+    <string name="comic_detail_snack_login_connection_failed">Connection Failed: %s</string>
+    <string name="comic_detail_snack_id_not_specified">Comic id not specified</string>
+    <string name="comic_detail_snack_request_connection_failed">Connection Failed: %s</string>
+    <string name="comic_detail_request_action_retry">Retry</string>
+    <string name="comic_detail_snack_request_server_rejected">Request rejected by server: %s</string>
+    <string name="comic_detail_snack_request_unknown_code">Unknown Error: Unknown code [%d] - %s</string>
     
     <string name="read_transition">read_transition</string>
     <string name="read_transition_prefix">read_transition_</string>

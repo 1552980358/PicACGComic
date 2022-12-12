@@ -19,7 +19,6 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle.State
 import androidx.navigation.NavController
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -32,17 +31,30 @@ import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.Callback
 import com.google.android.material.transition.platform.Hold
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import kotlin.math.abs
-import projekt.cloud.piece.pic.Comic
+import projekt.cloud.piece.pic.ComicDetail
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.ApiComics.EpisodeResponseBody.Data.Episode
 import projekt.cloud.piece.pic.base.BaseFragment
 import projekt.cloud.piece.pic.databinding.FragmentComicDetailBinding
+import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_ACCOUNT_INVALID
+import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_CONNECTION
+import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_NO_ACCOUNT
+import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_SUCCESS
+import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_ERROR_CONNECTION
+import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_ERROR_REJECTED
+import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_PART_SUCCESS
+import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.DisplayUtil.deviceBounds
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.NestedScrollViewUtil.isScrollable
+import projekt.cloud.piece.pic.util.RecyclerViewUtil.adapterAs
+import projekt.cloud.piece.pic.util.StorageUtil.Account
 
 class ComicDetailFragment: BaseFragment<FragmentComicDetailBinding>(), OnClickListener {
 
@@ -73,10 +85,11 @@ class ComicDetailFragment: BaseFragment<FragmentComicDetailBinding>(), OnClickLi
     private val recyclerView: RecyclerView
         get() = binding.recyclerView
 
-    private val comic: Comic by activityViewModels()
-    
+    private val comicDetail: ComicDetail by activityViewModels()
     private val docList: ArrayList<Episode.Doc>
-        get() = comic.docList
+        get() = comicDetail.docList
+    private val comicId: String?
+        get() = comicDetail.id
     
     private lateinit var navController: NavController
     
@@ -88,13 +101,13 @@ class ComicDetailFragment: BaseFragment<FragmentComicDetailBinding>(), OnClickLi
         sharedElementEnterTransition = MaterialContainerTransform()
         exitTransition = Hold()
         if (args.containsKey(ARG_ID)) {
-            comic.id = args.getString(ARG_ID)
+            comicDetail.id = args.getString(ARG_ID)
         }
     }
     
     override fun setViewModels(binding: FragmentComicDetailBinding) {
         binding.applicationConfigs = applicationConfigs
-        binding.comic = comic
+        binding.comicDetail = comicDetail
     }
     
     override fun setUpToolbar() {
@@ -131,8 +144,16 @@ class ComicDetailFragment: BaseFragment<FragmentComicDetailBinding>(), OnClickLi
                 }
             }
         }
-        comic.comic.observe(viewLifecycleOwner) {
-            it?.tags?.let { tags -> addTags(tags) }
+        comicDetail.comic.observe(viewLifecycleOwner) {
+            it?.tags?.forEach { tag ->
+                tagGroup.addView(
+                    Chip(requireContext()).apply {
+                        text = tag
+                        isCloseIconVisible = false
+                        setOnClickListener {}
+                    }
+                )
+            }
         }
         creator.setOnClickListener(this)
         requireActivity().addMenuProvider(object: MenuProvider {
@@ -148,20 +169,8 @@ class ComicDetailFragment: BaseFragment<FragmentComicDetailBinding>(), OnClickLi
             }
         }, viewLifecycleOwner, State.CREATED)
     
-        recyclerView.adapter = RecyclerViewAdapter(docList) { index, v ->
-            launchToComicDetail(index, v)
-        }
+        recyclerView.adapter = RecyclerViewAdapter(docList) { index, view -> }
         recyclerView.doOnPreDraw { startPostponedEnterTransition() }
-    
-        applicationConfigs.token.observe(viewLifecycleOwner) {
-            if (docList.isEmpty()) {
-                comic.requestComicInfo(
-                    it,
-                    success = { (recyclerView.adapter as RecyclerViewAdapter).notifyDataUpdated() },
-                    failed = { resId -> /*root.showSnack(resId)*/ }
-                )
-            }
-        }
     
         appBarLayout.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             when {
@@ -182,21 +191,70 @@ class ComicDetailFragment: BaseFragment<FragmentComicDetailBinding>(), OnClickLi
     override val containerTransitionName: String?
         get() = args.getString(getString(R.string.comic_detail_transition))
 
-    private fun addTags(tags: List<String>) {
-        tags.forEach { tag ->
-            tagGroup.addView(
-                Chip(requireContext()).apply {
-                    text = tag
-                    isCloseIconVisible = false
-                    setOnClickListener {}
+    override fun onAuthComplete(code: Int, codeMessage: String?, account: Account?) {
+        val token = account?.token
+        if (code != AUTH_CODE_SUCCESS || token == null) {
+            when (code) {
+                AUTH_CODE_ERROR_NO_ACCOUNT -> {
+                    sendSnack(getString(R.string.list_snack_login_no_account))
                 }
-            )
+                AUTH_CODE_ERROR_ACCOUNT_INVALID -> {
+                    sendSnack(getString(R.string.list_snack_login_invalid_account), resId = R.string.home_snack_action_retry) {
+                        applicationConfigs.account.value?.let { requireAuth(it) }
+                    }
+                }
+                AUTH_CODE_ERROR_CONNECTION -> {
+                    sendSnack(getString(R.string.comic_detail_snack_login_connection_failed, codeMessage), resId = R.string.home_snack_action_retry) {
+                        applicationConfigs.account.value?.let { requireAuth(it) }
+                    }
+                }
+                
+            }
+            return
+        }
+        requestComicInfo(token)
+    }
+    
+    private fun requestComicInfo(token: String) {
+        val id = comicId
+        if (id.isNullOrBlank()) {
+            makeSnack(getString(R.string.comic_detail_snack_id_not_specified), LENGTH_SHORT, null, null)
+                .addCallback(object: Callback() {
+                    override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                        navController.navigateUp()
+                    }
+                })
+                .show()
+            return
+        }
+        comicDetail.requestComicInfo(token, id, resources) { code, message ->
+            when (code) {
+                COMIC_DETAIL_CODE_PART_SUCCESS -> {
+                    recyclerView.adapterAs<RecyclerViewAdapter>().notifyDataUpdated()
+                }
+                COMIC_DETAIL_CODE_SUCCESS -> { /** Comic detail obtain success **/ }
+                COMIC_DETAIL_CODE_ERROR_CONNECTION -> {
+                    sendSnack(getString(R.string.comic_detail_snack_request_connection_failed, message), resId = R.string.comic_detail_request_action_retry) {
+                        requestComicInfo(token)
+                    }
+                }
+                COMIC_DETAIL_CODE_ERROR_REJECTED -> {
+                    sendSnack(getString(R.string.comic_detail_snack_request_server_rejected, message), resId = R.string.comic_detail_request_action_retry) {
+                        requestComicInfo(token)
+                    }
+                }
+                else -> {
+                    sendSnack(getString(R.string.comic_detail_snack_request_unknown_code, code, message), resId = R.string.comic_detail_request_action_retry) {
+                        requestComicInfo(token)
+                    }
+                }
+            }
         }
     }
     
     override fun onDestroyView() {
         if (clearComicData) {
-            comic.clearAll()
+            comicDetail.clearAll(viewLifecycleOwner)
         }
         super.onDestroyView()
     }
@@ -210,16 +268,8 @@ class ComicDetailFragment: BaseFragment<FragmentComicDetailBinding>(), OnClickLi
                 }
                 creatorDetailIndicator.isChecked = creatorDetail.visibility == VISIBLE
             }
-            floatingActionButton -> launchToComicDetail(view = floatingActionButton)
+            floatingActionButton -> {}
         }
-    }
-    
-    private fun launchToComicDetail(index: Int = 0, view: View) {
-        clearComicData = false
-        navController.navigate(
-            ComicDetailFragmentDirections.actionComicDetailToReadFragment(view.transitionName, index),
-            FragmentNavigatorExtras(view to view.transitionName)
-        )
     }
     
 }

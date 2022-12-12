@@ -24,4 +24,9 @@ object CodeBook {
     const val LIST_CODE_ERROR_CONNECTION = 1
     const val LIST_CODE_ERROR_REJECTED = 2
     
+    const val COMIC_DETAIL_CODE_PART_SUCCESS = -1
+    const val COMIC_DETAIL_CODE_SUCCESS = 0
+    const val COMIC_DETAIL_CODE_ERROR_CONNECTION = 1
+    const val COMIC_DETAIL_CODE_ERROR_REJECTED = 2
+    
 }

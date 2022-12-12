@@ -9,8 +9,8 @@
             name="applicationConfigs"
             type="projekt.cloud.piece.pic.ApplicationConfigs" />
         <variable
-            name="comic"
-            type="projekt.cloud.piece.pic.Comic" />
+            name="comicDetail"
+            type="projekt.cloud.piece.pic.ComicDetail" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -40,7 +40,7 @@
                     android:scaleType="fitXY"
                     android:fitsSystemWindows="true"
                     app:layout_collapseMode="parallax"
-                    bitmap="@{comic.cover}" />
+                    bitmap="@{comicDetail.cover}" />
 
                 <com.google.android.material.appbar.MaterialToolbar
                     android:id="@+id/material_toolbar"
@@ -74,7 +74,7 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{comic.comic.title}"
+                        android:text="@{comicDetail.comic.title}"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                         android:layout_marginEnd="@dimen/md_spec_spacing_hor_16" />
                     
@@ -106,7 +106,7 @@
                                     android:layout_width="@dimen/md_spec_avatar_size"
                                     android:layout_height="@dimen/md_spec_avatar_size"
                                     android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
-                                    circleBitmap="@{comic.avatar}" />
+                                    circleBitmap="@{comicDetail.avatar}" />
                                 
                                 <com.google.android.material.checkbox.MaterialCheckBox
                                     android:id="@+id/material_check_box"
@@ -124,7 +124,7 @@
                                     android:layout_toEndOf="@id/app_compat_image_view"
                                     android:layout_toStartOf="@id/material_check_box"
                                     android:maxLines="1"
-                                    android:text="@{comic.comic.creator.name}"
+                                    android:text="@{comicDetail.comic.creator.name}"
                                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                                     android:textColor="?attr/colorOnSurfaceVariant" />
         
@@ -136,7 +136,7 @@
                                     android:layout_toEndOf="@id/app_compat_image_view"
                                     android:layout_toStartOf="@id/material_check_box"
                                     android:maxLines="1"
-                                    android:text="@{`Lv. ` + comic.comic.creator.level}"
+                                    android:text="@{`Lv. ` + comicDetail.comic.creator.level}"
                                     android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
     
                             </RelativeLayout>
@@ -153,14 +153,14 @@
                                 <com.google.android.material.textview.MaterialTextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="@{` - ` + comic.comic.creator.title + ` - `}"
+                                    android:text="@{` - ` + comicDetail.comic.creator.title + ` - `}"
                                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                                     android:gravity="center" />
                                 
                                 <com.google.android.material.textview.MaterialTextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="@{comic.comic.creator.slogan}"
+                                    android:text="@{comicDetail.comic.creator.slogan}"
                                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
                                 
                             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -172,13 +172,13 @@
                     <com.google.android.material.textview.MaterialTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{comic.comic.author}"
+                        android:text="@{comicDetail.comic.author}"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
             
                     <com.google.android.material.textview.MaterialTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{comic.comic.chineseTeam}"
+                        android:text="@{comicDetail.comic.chineseTeam}"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
     
                     <com.google.android.material.chip.ChipGroup
@@ -191,7 +191,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textIsSelectable="true"
-                        android:text="@{comic.comic.description}"
+                        android:text="@{comicDetail.comic.description}"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
     
                 </androidx.appcompat.widget.LinearLayoutCompat>
