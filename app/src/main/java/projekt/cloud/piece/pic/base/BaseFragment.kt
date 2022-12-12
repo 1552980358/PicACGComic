@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.StringRes
 import androidx.annotation.UiThread
 import androidx.core.os.bundleOf
 import androidx.databinding.ViewDataBinding
@@ -16,6 +18,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
 import java.lang.reflect.ParameterizedType
 import kotlinx.coroutines.withContext
 import projekt.cloud.piece.pic.ApplicationConfigs
@@ -30,6 +33,7 @@ import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.HttpUtil.HTTP_RESPONSE_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
+import projekt.cloud.piece.pic.util.SnackUtil.snack
 import projekt.cloud.piece.pic.util.StorageUtil.Account
 
 abstract class BaseFragment<VB: ViewBinding>: Fragment() {
@@ -183,5 +187,17 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     
     @UiThread
     open fun onAuthComplete(code: Int, codeMessage: String?, token: String?) = Unit
+    
+    protected open val snackAnchor: View?
+        get() = null
+    
+    protected open fun sendSnack(message: String, length: Int = LENGTH_INDEFINITE, @StringRes resId: Int?, action: OnClickListener?) {
+        makeSnack(message, length, resId, action).show()
+    }
+    
+    protected open fun makeSnack(message: String, length: Int = LENGTH_INDEFINITE, @StringRes resId: Int?, action: OnClickListener?) =
+        binding.root.snack(message, length)
+            .apply { resId?.let { setAction(resId, action) } }
+            .setAnchorView(snackAnchor)
     
 }
