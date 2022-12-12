@@ -3,13 +3,19 @@ package projekt.cloud.piece.pic.ui.account.detail
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.ImageView
+import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.MenuProvider
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -18,6 +24,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import kotlin.math.abs
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.ApiUser.ProfileResponseBody
@@ -32,10 +39,12 @@ import projekt.cloud.piece.pic.util.CodeBook.HTTP_REQUEST_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.CompleteCallback
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
+import projekt.cloud.piece.pic.util.FragmentUtil.addMenuProvider
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.HttpUtil.HTTP_RESPONSE_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
 import projekt.cloud.piece.pic.util.StorageUtil.Account
+import projekt.cloud.piece.pic.util.StorageUtil.saveAccount
 
 class AccountDetailFragment: BaseFragment<FragmentAccountDetailBinding>() {
 
@@ -107,6 +116,34 @@ class AccountDetailFragment: BaseFragment<FragmentAccountDetailBinding>() {
     }
     
     override fun setUpViews() {
+        addMenuProvider(object: MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_account_detail, menu)
+                if (menu is MenuBuilder) {
+                    @Suppress("RestrictedApi")
+                    menu.setOptionalIconsVisible(true)
+                }
+            }
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.menu_exit -> {
+                        lifecycleScope.ui {
+                            runBlocking(io) {
+                                requireContext().saveAccount(null)
+                            }
+                            /**
+                             * Should Remove observer before updating
+                             * Otherwise, java.lang.OutOfMemoryError thrown
+                             **/
+                            applicationConfigs.account.removeObservers(viewLifecycleOwner)
+                            applicationConfigs.setAccount(null)
+                        }
+                    }
+                }
+                return true
+            }
+        })
+        
         val recyclerViewAdapter = RecyclerViewAdapter()
         recyclerView.adapter = recyclerViewAdapter
         accountDetail.profile.observe(viewLifecycleOwner) {

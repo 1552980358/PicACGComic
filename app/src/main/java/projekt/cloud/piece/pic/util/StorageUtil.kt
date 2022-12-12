@@ -18,13 +18,17 @@ object StorageUtil {
     }
     
     fun Context.saveAccount(account: Account?) {
-        account?.let {
-            openFileOutput(getString(R.string.storage_account), MODE_PRIVATE).bufferedWriter()
-                .use { bufferedWriter ->
-                    bufferedWriter.write(Json.encodeToString(it))
-                    bufferedWriter.flush()
-                }
+        val storageAccount = getString(R.string.storage_account)
+        if (account == null) {
+            deleteFile(getString(R.string.storage_account))
+            return
         }
+        
+        openFileOutput(storageAccount, MODE_PRIVATE).bufferedWriter()
+            .use { bufferedWriter ->
+                bufferedWriter.write(Json.encodeToString(account))
+                bufferedWriter.flush()
+            }
     }
 
     fun Context.readAccount() = try {
