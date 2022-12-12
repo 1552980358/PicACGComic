@@ -9,9 +9,11 @@ import android.view.inputmethod.InputMethodManager
 import androidx.annotation.DrawableRes
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.runBlocking
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.databinding.FragmentLoginBinding
 import projekt.cloud.piece.pic.ui.account.base.BaseAccountFragment
@@ -19,7 +21,10 @@ import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_ACCOUNT_INVALID
 import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_CONNECTION
 import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_NO_ACCOUNT
 import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_SUCCESS
+import projekt.cloud.piece.pic.util.CoroutineUtil.io
+import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.StorageUtil.Account
+import projekt.cloud.piece.pic.util.StorageUtil.saveAccount
 
 class LoginFragment: BaseAccountFragment<FragmentLoginBinding>() {
 
@@ -142,7 +147,10 @@ class LoginFragment: BaseAccountFragment<FragmentLoginBinding>() {
     override fun onAuthComplete(code: Int, codeMessage: String?, account: Account?) {
         when (code) {
             AUTH_CODE_SUCCESS -> {
-                applicationConfigs.setAccount(account)
+                lifecycleScope.ui {
+                    runBlocking(io) { requireContext().saveAccount(account) }
+                    applicationConfigs.setAccount(account)
+                }
             }
             AUTH_CODE_ERROR_NO_ACCOUNT -> { /** Account not filled **/ }
             AUTH_CODE_ERROR_ACCOUNT_INVALID -> {
