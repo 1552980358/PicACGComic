@@ -31,6 +31,7 @@ import projekt.cloud.piece.pic.api.ApiUser.ProfileResponseBody
 import projekt.cloud.piece.pic.api.ApiUser.userProfile
 import projekt.cloud.piece.pic.base.BaseFragment
 import projekt.cloud.piece.pic.databinding.FragmentAccountDetailBinding
+import projekt.cloud.piece.pic.util.AnimationUtil.animateAlphaTo
 import projekt.cloud.piece.pic.util.CircularCroppedDrawable
 import projekt.cloud.piece.pic.util.CodeBook.ACCOUNT_DETAIL_CODE_ERROR_CONNECTION
 import projekt.cloud.piece.pic.util.CodeBook.ACCOUNT_DETAIL_CODE_REJECTED
@@ -171,11 +172,7 @@ class AccountDetailFragment: BaseFragment<FragmentAccountDetailBinding>() {
                     appBarLayout.height - toolbar.height - windowInsetTop - abs(verticalOffset) > 0 -> 0F
                     else -> 1F
                 }
-                toolbarLogoView.let { imageView ->
-                    if (imageView.alpha != newAlpha) {
-                        imageView.alpha = newAlpha
-                    }
-                }
+                toolbarLogoView.animateAlphaTo(newAlpha)
             }
         }
         
