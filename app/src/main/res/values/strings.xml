@@ -25,9 +25,9 @@
     <string name="account_login_account">Account ID / Email</string>
     <string name="account_login_password">Password</string>
     <string name="account_login_button_text">Login</string>
-    <string name="account_login_snack_auth_exception">Exception Occurs</string>
     <string name="account_login_snack_auth_invalid">Invalid Account ID / Email or Password</string>
-    <string name="account_login_snack_auth_error_code">Error Occurs with response code </string>
+    <string name="account_login_snack_auth_connection_failure">Connection Failure: %s</string>
+    <string name="account_login_snack_auth_unknown_error">Unknown Error: Unknown code [%d] - %s</string>
     <string name="account_detail_id">Account ID</string>
     <string name="account_detail_title">Account Title</string>
     <string name="account_detail_birthday">Birthday</string>
