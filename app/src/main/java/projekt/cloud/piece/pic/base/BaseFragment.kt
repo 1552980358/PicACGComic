@@ -29,6 +29,7 @@ import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_ACCOUNT_INVALID
 import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_CONNECTION
 import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_NO_ACCOUNT
 import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_SUCCESS
+import projekt.cloud.piece.pic.util.CodeBook.HTTP_REQUEST_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.HttpUtil.HTTP_RESPONSE_CODE_SUCCESS
@@ -122,7 +123,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
         lifecycleScope.ui {
             var token = account.token
             if (token != null) {
-                return@ui onAuthComplete(AUTH_CODE_SUCCESS, null, token)
+                return@ui onAuthComplete(AUTH_CODE_SUCCESS, null, account)
             }
             
             val httpResponse = withContext(io) {
@@ -131,12 +132,12 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
             
             // Http code
             val response = httpResponse.response
-            if (response == null || httpResponse.code != AUTH_CODE_SUCCESS) {
-                return@ui onAuthComplete(AUTH_CODE_ERROR_CONNECTION, httpResponse.message, null)
+            if (response == null || httpResponse.code != HTTP_REQUEST_CODE_SUCCESS) {
+                return@ui onAuthComplete(AUTH_CODE_ERROR_CONNECTION, httpResponse.message, account)
             }
             // Invalid response code
             if (response.code != HTTP_RESPONSE_CODE_SUCCESS) {
-                return@ui onAuthComplete(AUTH_CODE_ERROR_ACCOUNT_INVALID, null, null)
+                return@ui onAuthComplete(AUTH_CODE_ERROR_ACCOUNT_INVALID, null, account)
             }
             
             token = withContext(io) {
@@ -144,7 +145,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
             }
             
             account.token = token
-            onAuthComplete(AUTH_CODE_SUCCESS, null, token)
+            onAuthComplete(AUTH_CODE_SUCCESS, null, account)
         }
     }
     
@@ -186,7 +187,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     }
     
     @UiThread
-    open fun onAuthComplete(code: Int, codeMessage: String?, token: String?) = Unit
+    open fun onAuthComplete(code: Int, codeMessage: String?, account: Account?) = Unit
     
     protected open val snackAnchor: View?
         get() = null
