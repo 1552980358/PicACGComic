@@ -12,7 +12,7 @@ import projekt.cloud.piece.pic.base.BaseRecyclerViewHolder
 import projekt.cloud.piece.pic.databinding.LayoutRecyclerComicDetailBinding
 
 class RecyclerViewAdapter(private val docs: List<Doc>,
-                          private val onClick: (Int, View) -> Unit):
+                          private val onClick: (Doc, View) -> Unit):
     RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>() {
     
     inner class RecyclerViewHolder(private val binding: LayoutRecyclerComicDetailBinding):
@@ -26,17 +26,14 @@ class RecyclerViewAdapter(private val docs: List<Doc>,
             binding.root.setOnClickListener(this)
         }
         
-        private var index = 0
-        
-        fun setData(index: Int, descendingIndex: String, doc: Doc) {
-            this.index = index
-            binding.root.transitionName = context.getString(R.string.read_transition_prefix) + index
+        fun setData(descendingIndex: String, doc: Doc) {
+            binding.root.transitionName = context.getString(R.string.read_transition_prefix) + doc._id
             binding.index = descendingIndex
             binding.doc = doc
         }
     
         override fun onClick(v: View) {
-            onClick.invoke(index, v)
+            binding.doc?.let { onClick.invoke(it, v) }
         }
         
     }
@@ -47,7 +44,7 @@ class RecyclerViewAdapter(private val docs: List<Doc>,
         RecyclerViewHolder(parent)
     
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
-        holder.setData(position, (itemCount - position).toString(), docs[position])
+        holder.setData((itemCount - position).toString(), docs[position])
     }
     
     override fun getItemCount() = docs.size
