@@ -64,12 +64,20 @@
     <string name="comic_detail_snack_request_unknown_code">Unknown Error: Unknown code [%d] - %s</string>
     
     <string name="read_transition">read_transition</string>
+    <string name="read_transition_id">id</string>
     <string name="read_transition_prefix">read_transition_</string>
-    <string name="comic_content_snack_arg_required">Argument Not Enough</string>
-    <string name="comic_content_snack_exception">@string/response_exception</string>
-    <string name="comic_content_snack_error_code">@string/response_error_code</string>
     <string name="comic_content_fab_prev">Previous Episode</string>
     <string name="comic_content_fab_next">Next Episode</string>
+    <string name="comic_content_snack_unknown_comic">Unknown comic / Null comic id</string>
+    <string name="comic_content_snack_unknown_episode">Unknown Episode</string>
+    <string name="comic_content_snack_auth_no_account">No Account Logged in</string>
+    <string name="comic_content_snack_auth_invalid_account">Invalid Account / Password</string>
+    <string name="comic_content_snack_auth_connection_failed">Connection Failed: %s</string>
+    <string name="comic_content_snack_auth_unknown_code">Unknown Error: Unknown code [%d] - %s</string>
+    
+    <string name="comic_content_snack_request_connection_failed">Connection Failed: %s</string>
+    <string name="comic_content_snack_request_server_rejected">Request rejected by server: %s</string>
+    <string name="comic_content_snack_action_retry">Retry</string>
     
     <string name="storage_account">storage_account</string>
     
