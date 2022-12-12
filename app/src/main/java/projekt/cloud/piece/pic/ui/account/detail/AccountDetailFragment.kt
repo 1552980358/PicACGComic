@@ -16,43 +16,66 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import kotlin.math.abs
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.ApiUser.ProfileResponseBody
 import projekt.cloud.piece.pic.api.ApiUser.userProfile
 import projekt.cloud.piece.pic.base.BaseFragment
 import projekt.cloud.piece.pic.databinding.FragmentAccountDetailBinding
 import projekt.cloud.piece.pic.util.CircularCroppedDrawable
+import projekt.cloud.piece.pic.util.CodeBook.ACCOUNT_DETAIL_CODE_ERROR_CONNECTION
+import projekt.cloud.piece.pic.util.CodeBook.ACCOUNT_DETAIL_CODE_REJECTED
+import projekt.cloud.piece.pic.util.CodeBook.ACCOUNT_DETAIL_CODE_SUCCESS
+import projekt.cloud.piece.pic.util.CodeBook.HTTP_REQUEST_CODE_SUCCESS
+import projekt.cloud.piece.pic.util.CompleteCallback
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
+import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
+import projekt.cloud.piece.pic.util.HttpUtil.HTTP_RESPONSE_CODE_SUCCESS
+import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
+import projekt.cloud.piece.pic.util.StorageUtil.Account
 
 class AccountDetailFragment: BaseFragment<FragmentAccountDetailBinding>() {
 
     class AccountDetail: ViewModel() {
-
-        fun receiveToken(token: String, resources: Resources) {
-            viewModelScope.launch {
-            //    val profileResponseBody = withContext(io) {
-            //        userProfile(token)?.body?.string()?.let {
-            //            Json.decodeFromString<ProfileResponseBody>(it)
-            //        }
-            //    }
-            //    _profile.value = profileResponseBody?.also {
-            //        var avatar = withContext(io) {
-            //            it.data.user.avatar?.bitmap
-            //        }
-            //        if (avatar == null) {
-            //            avatar = withContext(io) {
-            //                BitmapFactory.decodeResource(resources, R.drawable.ic_round_account_circle_24)
-            //            }
-            //        }
-            //        _avatar.value = avatar
-            //    }
+        
+        fun requestDetail(token: String, resources: Resources, completeCallback: CompleteCallback) {
+            
+            viewModelScope.ui {
+                
+                val httpResponse = withContext(io) {
+                    userProfile(token)
+                }
+                
+                val response = httpResponse.response
+                if (httpResponse.code != HTTP_REQUEST_CODE_SUCCESS || response == null) {
+                    return@ui completeCallback.invoke(ACCOUNT_DETAIL_CODE_ERROR_CONNECTION, httpResponse.message)
+                }
+                
+                if (response.code != HTTP_RESPONSE_CODE_SUCCESS) {
+                    return@ui completeCallback.invoke(ACCOUNT_DETAIL_CODE_REJECTED, null)
+                }
+                
+                val profile = withContext(io) {
+                    response.decodeJson<ProfileResponseBody>()
+                }
+                
+                _profile.value = profile
+                
+                var bitmap = withContext(io) {
+                    profile.data.user.avatar?.bitmap
+                }
+                if (bitmap == null) {
+                    bitmap = withContext(io) {
+                        BitmapFactory.decodeResource(resources, R.drawable.ic_round_account_circle_24)
+                    }
+                }
+                _avatar.value = bitmap
             }
+    
+            completeCallback.invoke(ACCOUNT_DETAIL_CODE_SUCCESS, null)
         }
 
         private val _profile = MutableLiveData<ProfileResponseBody>()
@@ -84,9 +107,6 @@ class AccountDetailFragment: BaseFragment<FragmentAccountDetailBinding>() {
     }
     
     override fun setUpViews() {
-        applicationConfigs.token.observe(viewLifecycleOwner) {
-            it?.let { accountDetail.receiveToken(it, resources) }
-        }
         val recyclerViewAdapter = RecyclerViewAdapter()
         recyclerView.adapter = recyclerViewAdapter
         accountDetail.profile.observe(viewLifecycleOwner) {
@@ -126,6 +146,43 @@ class AccountDetailFragment: BaseFragment<FragmentAccountDetailBinding>() {
                 toolbarImageView?.alpha = 0F
             }
             appBarLayout.addOnOffsetChangedListener(appBarLayoutListener)
+        }
+    }
+    
+    override fun onAuthComplete(code: Int, codeMessage: String?, account: Account?) {
+        val token = account?.token ?: return applicationConfigs.setAccount(account)
+        requestAccountDetail(token)
+    }
+    
+    private fun requestAccountDetail(token: String) {
+        accountDetail.requestDetail(token, resources) { c, message ->
+            when (c) {
+                ACCOUNT_DETAIL_CODE_SUCCESS -> { /** Account Detail Request completed **/ }
+                ACCOUNT_DETAIL_CODE_ERROR_CONNECTION -> {
+                    sendSnack(
+                        getString(R.string.account_detail_snack_connection_failure, message),
+                        LENGTH_SHORT,
+                        R.string.account_detail_snack_action_retry) {
+                        requestAccountDetail(token)
+                    }
+                }
+                ACCOUNT_DETAIL_CODE_REJECTED -> {
+                    sendSnack(
+                        getString(R.string.account_detail_snack_server_rejected),
+                        LENGTH_SHORT,
+                        R.string.account_detail_snack_action_retry) {
+                        requestAccountDetail(token)
+                    }
+                }
+                else -> {
+                    sendSnack(
+                        getString(R.string.account_detail_snack_unknown_code, c, message),
+                        LENGTH_SHORT,
+                        R.string.account_detail_snack_action_retry) {
+                        requestAccountDetail(token)
+                    }
+                }
+            }
         }
     }
 

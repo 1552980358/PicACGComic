@@ -33,7 +33,11 @@
     <string name="account_detail_birthday">Birthday</string>
     <string name="account_detail_level">Level</string>
     <string name="account_detail_slogan">Slogan</string>
-
+    <string name="account_detail_snack_connection_failure">Connection Failure: %s</string>
+    <string name="account_detail_snack_server_rejected">Request rejected by server</string>
+    <string name="account_detail_snack_unknown_code">Unknown Error: Unknown code [%d] - %s</string>
+    <string name="account_detail_snack_action_retry">Retry</string>
+    
     <string name="list_transition">list_transition</string>
     <string name="list_transition_prefix">list_transition_</string>
     <string name="list_snack_arg_required">Argument Not Enough</string>

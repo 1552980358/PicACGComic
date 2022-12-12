@@ -15,4 +15,9 @@ object CodeBook {
     const val CATEGORIES_CODE_ERROR_CONNECTION = 1
     const val CATEGORIES_CODE_ERROR_REQUEST = 2
     
+    const val ACCOUNT_DETAIL_CODE_SUCCESS = 0
+    const val ACCOUNT_DETAIL_CODE_ERROR_CONNECTION = 1
+    const val ACCOUNT_DETAIL_CODE_REJECTED = 2
+    
+    
 }
