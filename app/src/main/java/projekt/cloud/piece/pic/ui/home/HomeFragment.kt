@@ -35,6 +35,9 @@ import projekt.cloud.piece.pic.api.ApiCategories.CategoriesResponseBody.Data.Cat
 import projekt.cloud.piece.pic.api.ApiCategories.categories
 import projekt.cloud.piece.pic.base.BaseFragment
 import projekt.cloud.piece.pic.databinding.FragmentHomeBinding
+import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_ACCOUNT_INVALID
+import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_CONNECTION
+import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_NO_ACCOUNT
 import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.CodeBook.CATEGORIES_CODE_ERROR_CONNECTION
 import projekt.cloud.piece.pic.util.CodeBook.CATEGORIES_CODE_ERROR_REQUEST
@@ -100,6 +103,9 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
     private lateinit var navController: NavController
 
     private val categories: Categories by viewModels()
+    
+    override val snackAnchor: View
+        get() = bottomAppBar
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -222,15 +228,42 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
     override fun onAuthComplete(code: Int, codeMessage: String?, token: String?) {
         if (code != AUTH_CODE_SUCCESS || token == null) {
             // Failed to login
+            when (code) {
+                AUTH_CODE_ERROR_NO_ACCOUNT -> {
+                    sendSnack(getString(R.string.home_snack_login_no_account), resId = R.string.home_snack_action_login) {
+                        floatingActionButton.performClick()
+                    }
+                }
+                AUTH_CODE_ERROR_ACCOUNT_INVALID -> {
+                    sendSnack(getString(R.string.home_snack_login_invalid_account), resId = R.string.home_snack_action_retry) {
+                        applicationConfigs.account.value?.let { requireAuth(it) }
+                    }
+                }
+                AUTH_CODE_ERROR_CONNECTION -> {
+                    sendSnack(getString(R.string.home_snack_login_connection_failed, codeMessage), resId = R.string.home_snack_action_retry) {
+                        applicationConfigs.account.value?.let { requireAuth(it) }
+                    }
+                }
+            }
             return
         }
+        requestCategories(token)
+    }
+    
+    private fun requestCategories(token: String) {
         categories.requestCategories(token) { c, message ->
-            if (c == CATEGORIES_CODE_SUCCESS) {
-                return@requestCategories updateCategories()
-            }
             when (c) {
-                CATEGORIES_CODE_ERROR_CONNECTION -> {}
-                CATEGORIES_CODE_ERROR_REQUEST -> {}
+                CATEGORIES_CODE_SUCCESS -> updateCategories()
+                CATEGORIES_CODE_ERROR_CONNECTION -> {
+                    sendSnack(getString(R.string.home_snack_category_connection_failed, message), resId = R.string.home_snack_action_retry) {
+                        requestCategories(token)
+                    }
+                }
+                CATEGORIES_CODE_ERROR_REQUEST -> {
+                    sendSnack(getString(R.string.home_snack_category_unknown_exception, message), resId = R.string.home_snack_action_retry) {
+                        requestCategories(token)
+                    }
+                }
             }
         }
     }

@@ -6,10 +6,13 @@
     <string name="response_error_code">Error Code Responded</string>
 
     <string name="home_search">Search</string>
-    <string name="home_snack_not_logged_in">@string/request_not_logged</string>
-    <string name="home_snack_button_login">Login</string>
-    <string name="home_snack_exception">@string/response_exception</string>
-    <string name="home_snack_error_code">@string/response_error_code</string>
+    <string name="home_snack_login_no_account">No Account Logged in</string>
+    <string name="home_snack_login_invalid_account">Invalid Account / Password</string>
+    <string name="home_snack_login_connection_failed">Connection Failed: %s</string>
+    <string name="home_snack_category_connection_failed">Connection Failed: %s</string>
+    <string name="home_snack_category_unknown_exception">Exception Thrown: %s</string>
+    <string name="home_snack_action_login">Login</string>
+    <string name="home_snack_action_retry">Retry</string>
     
     <string name="search_title">Search</string>
     <string name="search_transition">search_transition</string>
