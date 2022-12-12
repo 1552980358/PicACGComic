@@ -21,30 +21,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-import kotlinx.coroutines.withContext
-import okhttp3.Response
-import projekt.cloud.piece.pic.Comic
+import projekt.cloud.piece.pic.ComicDetail
 import projekt.cloud.piece.pic.R
-import projekt.cloud.piece.pic.api.ApiComics
-import projekt.cloud.piece.pic.api.ApiComics.EpisodeContentResponseBody.Data
 import projekt.cloud.piece.pic.api.ApiComics.EpisodeContentResponseBody.Data.Pages
 import projekt.cloud.piece.pic.api.ApiComics.EpisodeContentResponseBody.Data.Pages.Doc
-import projekt.cloud.piece.pic.api.ApiComics.episodeContent
 import projekt.cloud.piece.pic.base.BaseFragment
 import projekt.cloud.piece.pic.databinding.FragmentComicContentBinding
 import projekt.cloud.piece.pic.ui.read.ReadComic
 import projekt.cloud.piece.pic.ui.read.ReadFragment
-import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
-import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
 
 class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClickListener {
 
     private val readFragment: ReadFragment
         get() = findParentAs()
     
-    private val comic: Comic by activityViewModels()
+    private val comic: ComicDetail by activityViewModels()
     
     private val readComic: ReadComic by viewModels(
         ownerProducer = { readFragment }
