@@ -26,7 +26,7 @@ import com.google.android.material.transition.platform.Hold
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import kotlinx.coroutines.withContext
 import okhttp3.Response
-import projekt.cloud.piece.pic.Comic
+import projekt.cloud.piece.pic.ComicDetail
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.ApiComics.ComicsResponseBody
 import projekt.cloud.piece.pic.api.ApiComics.ComicsResponseBody.Data.Comics.Doc
