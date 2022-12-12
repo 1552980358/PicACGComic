@@ -88,7 +88,7 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
                     if (httpResponse.code != HTTP_REQUEST_CODE_SUCCESS || response == null) {
                         return@ui completeCallback.invoke(LIST_CODE_ERROR_CONNECTION, httpResponse.message)
                     }
-    
+                    
                     if (response.code != HTTP_RESPONSE_CODE_SUCCESS) {
                         val errorResponse = withContext(io) {
                             response.decodeJson<ErrorResponseBody>()
@@ -125,7 +125,7 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
     private var sort = SORT_NEW_TO_OLD
 
     private val comics: Comics by viewModels()
-    private val comic: Comic by activityViewModels()
+    private val comic: ComicDetail by activityViewModels()
 
     private val docs: ArrayList<Doc>
         get() = comics.docs
@@ -228,12 +228,13 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
     private fun requestComics(token: String) {
         val category = category
         if (category == null) {
-            makeSnack(getString(R.string.list_snack_category_not_specified), LENGTH_SHORT, null, null).
-                addCallback(object: Callback() {
+            makeSnack(getString(R.string.list_snack_category_not_specified), LENGTH_SHORT, null, null)
+                .addCallback(object: Callback() {
                     override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                         navController.navigateUp()
                     }
                 })
+                .show()
             return
         }
         comics.requestCategory(token, category, sort) { code, message ->
