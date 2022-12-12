@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import androidx.recyclerview.widget.RecyclerView.State
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -24,8 +25,8 @@ import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.platform.Hold
 import com.google.android.material.transition.platform.MaterialContainerTransform
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.withContext
-import okhttp3.Response
 import projekt.cloud.piece.pic.ComicDetail
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.ApiComics.ComicsResponseBody
@@ -49,7 +50,6 @@ import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.HttpUtil.HTTP_RESPONSE_CODE_SUCCESS
-import projekt.cloud.piece.pic.util.HttpUtil.HttpResponse
 import projekt.cloud.piece.pic.util.RecyclerViewUtil.adapterAs
 import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
 import projekt.cloud.piece.pic.util.StorageUtil.Account
@@ -63,58 +63,62 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
     }
 
     class Comics: ViewModel() {
+        
+        private companion object {
+            const val DEFAULT_PAGE = 0
+        }
 
         var category: String? = null
 
         val docs = arrayListOf<Doc>()
         val covers = mutableMapOf<String, Bitmap?>()
         
+        private var page = DEFAULT_PAGE
+        private var hasMorePage = true
+        
         fun requestCategory(token: String, category: String, sort: String, completeCallback: CompleteCallback) {
-            if (docs.isNotEmpty() || covers.isNotEmpty()) {
-                docs.clear()
-                covers.clear()
-            }
-            viewModelScope.ui {
-                var httpResponse: HttpResponse
-                var response: Response?
-                var comicsResponseBody: ComicsResponseBody
-                var page = 0
-                while (true) {
-                    httpResponse = withContext(io) {
+            if (hasMorePage) {
+                viewModelScope.ui {
+                    val httpResponse = withContext(io) {
                         comics(token, ++page, category, sort)
                     }
-                    
-                    response = httpResponse.response
+                    val response = httpResponse.response
                     if (httpResponse.code != HTTP_REQUEST_CODE_SUCCESS || response == null) {
                         return@ui completeCallback.invoke(LIST_CODE_ERROR_CONNECTION, httpResponse.message)
                     }
-                    
+        
                     if (response.code != HTTP_RESPONSE_CODE_SUCCESS) {
                         val errorResponse = withContext(io) {
                             response.decodeJson<ErrorResponseBody>()
                         }
                         return@ui completeCallback.invoke(LIST_CODE_ERROR_REJECTED, errorResponse.message)
                     }
-    
-                    comicsResponseBody = withContext(io) {
-                        response.decodeJson()
+                    val comicsResponseBody = withContext(io) {
+                        response.decodeJson<ComicsResponseBody>()
                     }
-                    
                     val comics = comicsResponseBody.data.comics
                     docs.addAll(comics.docs)
-                    
+        
                     completeCallback.invoke(LIST_CODE_PART_SUCCESS, null)
-                    
+        
                     if (comics.page == comics.pages) {
-                        break
+                        hasMorePage = false
+                        completeCallback.invoke(LIST_CODE_SUCCESS, null)
                     }
-    
-                    completeCallback.invoke(LIST_CODE_SUCCESS, null)
                 }
-                
             }
         }
-
+        
+        fun clear() {
+            viewModelScope.cancel()
+            category = null
+            page = DEFAULT_PAGE
+            hasMorePage = true
+            
+            docs.clear()
+            covers.clear()
+        }
+        
     }
     
     private val toolbar: MaterialToolbar
@@ -200,6 +204,16 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
                 }
             }
         )
+        
+        recyclerView.addOnScrollListener(object: OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (!recyclerView.canScrollVertically(1)) {
+                    applicationConfigs.account.value?.token?.let {
+                        requestComics(it)
+                    }
+                }
+            }
+        })
     }
     
     override fun onAuthComplete(code: Int, codeMessage: String?, account: Account?) {
@@ -264,9 +278,9 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
 
     override fun onDestroyView() {
         if (!requireCaching) {
-            docs.clear()
-            covers.clear()
+            comics.clear()
         }
+        
         super.onDestroyView()
     }
     
