@@ -25,5 +25,11 @@ object CommonBody {
             }
         
     }
+    
+    /**
+     * {"code":"","error":"","message":"","detail":""}
+     */
+    @Serializable
+    data class ErrorResponseBody(val code: Int, val error: Int, val message: String, val detail: String)
 
 }
