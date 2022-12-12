@@ -16,6 +16,6 @@ object FragmentUtil {
         activityAs<AppCompatActivity>().setSupportActionBar(toolbar)
     
     fun Fragment.addMenuProvider(menuProvider: MenuProvider) =
-        requireActivity().addMenuProvider(menuProvider, viewLifecycleOwner, STARTED)
+        requireActivity().addMenuProvider(menuProvider, this, STARTED)
 
 }
