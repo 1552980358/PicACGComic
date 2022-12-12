@@ -15,95 +15,104 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
-import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import androidx.recyclerview.widget.RecyclerView.State
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.snackbar.Snackbar.Callback
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.platform.Hold
 import com.google.android.material.transition.platform.MaterialContainerTransform
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
+import okhttp3.Response
 import projekt.cloud.piece.pic.Comic
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.ApiComics.ComicsResponseBody
 import projekt.cloud.piece.pic.api.ApiComics.ComicsResponseBody.Data.Comics.Doc
 import projekt.cloud.piece.pic.api.ApiComics.comics
+import projekt.cloud.piece.pic.api.CommonBody.ErrorResponseBody
 import projekt.cloud.piece.pic.api.CommonParam.SORT_NEW_TO_OLD
 import projekt.cloud.piece.pic.base.BaseFragment
 import projekt.cloud.piece.pic.databinding.FragmentListBinding
+import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_ACCOUNT_INVALID
+import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_CONNECTION
+import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_NO_ACCOUNT
+import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_SUCCESS
+import projekt.cloud.piece.pic.util.CodeBook.HTTP_REQUEST_CODE_SUCCESS
+import projekt.cloud.piece.pic.util.CodeBook.LIST_CODE_ERROR_CONNECTION
+import projekt.cloud.piece.pic.util.CodeBook.LIST_CODE_ERROR_REJECTED
+import projekt.cloud.piece.pic.util.CodeBook.LIST_CODE_PART_SUCCESS
+import projekt.cloud.piece.pic.util.CodeBook.LIST_CODE_SUCCESS
+import projekt.cloud.piece.pic.util.CompleteCallback
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
+import projekt.cloud.piece.pic.util.HttpUtil.HTTP_RESPONSE_CODE_SUCCESS
+import projekt.cloud.piece.pic.util.HttpUtil.HttpResponse
+import projekt.cloud.piece.pic.util.RecyclerViewUtil.adapterAs
 import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
+import projekt.cloud.piece.pic.util.StorageUtil.Account
 
 class ListFragment: BaseFragment<FragmentListBinding>() {
 
     companion object {
-
         private const val ARG_CATEGORY = "category"
 
         private const val GRID_SPAN = 2
-        
-        private const val REQUEST_FIRST_PAGE = 1
     }
 
     class Comics: ViewModel() {
 
         var category: String? = null
 
-        private val comicsList = arrayListOf<ComicsResponseBody.Data.Comics>()
-
         val docs = arrayListOf<Doc>()
         val covers = mutableMapOf<String, Bitmap?>()
         
-        private var job: Job? = null
-        
-        fun initialWithCategory(token: String?, sort: String, success: () -> Unit, failed: (Int) -> Unit) {
-            if (token.isNullOrBlank()) {
-                return failed.invoke(R.string.list_snack_not_logged_in)
+        fun requestCategory(token: String, category: String, sort: String, completeCallback: CompleteCallback) {
+            if (docs.isNotEmpty() || covers.isNotEmpty()) {
+                docs.clear()
+                covers.clear()
             }
-            val category = category
-            if (category.isNullOrBlank()) {
-                return failed.invoke(R.string.list_snack_keyword_no_blank)
+            viewModelScope.ui {
+                var httpResponse: HttpResponse
+                var response: Response?
+                var comicsResponseBody: ComicsResponseBody
+                var page = 0
+                while (true) {
+                    httpResponse = withContext(io) {
+                        comics(token, ++page, category, sort)
+                    }
+                    
+                    response = httpResponse.response
+                    if (httpResponse.code != HTTP_REQUEST_CODE_SUCCESS || response == null) {
+                        return@ui completeCallback.invoke(LIST_CODE_ERROR_CONNECTION, httpResponse.message)
+                    }
+    
+                    if (response.code != HTTP_RESPONSE_CODE_SUCCESS) {
+                        val errorResponse = withContext(io) {
+                            response.decodeJson<ErrorResponseBody>()
+                        }
+                        return@ui completeCallback.invoke(LIST_CODE_ERROR_REJECTED, errorResponse.message)
+                    }
+    
+                    comicsResponseBody = withContext(io) {
+                        response.decodeJson()
+                    }
+                    
+                    val comics = comicsResponseBody.data.comics
+                    docs.addAll(comics.docs)
+                    
+                    completeCallback.invoke(LIST_CODE_PART_SUCCESS, null)
+                    
+                    if (comics.page == comics.pages) {
+                        break
+                    }
+    
+                    completeCallback.invoke(LIST_CODE_SUCCESS, null)
+                }
+                
             }
-            if (comicsList.isEmpty()) {
-                requestCategory(token, category, REQUEST_FIRST_PAGE, sort, success, failed)
-            }
-        }
-        
-        fun updateCategoryList(token: String?, sort: String, success: () -> Unit, failed: (Int) -> Unit) {
-            if (job?.isActive == true) {
-                return
-            }
-            if (token.isNullOrBlank()) {
-                return failed.invoke(R.string.list_snack_not_logged_in)
-            }
-            val category = category
-            if (category.isNullOrBlank()) {
-                return failed.invoke(R.string.list_snack_keyword_no_blank)
-            }
-            if (comicsList.size < comicsList.last().pages) {
-                requestCategory(token, category, comicsList.size + 1, sort, success, failed)
-            }
-        }
-        
-        private fun requestCategory(token: String, category: String, page: Int, sort: String, success: () -> Unit, failed: (Int) -> Unit) {
-            //job = viewModelScope.ui {
-            //    val response = withContext(io) {
-            //        comics(token, page, category, sort)
-            //    } ?: return@ui failed.invoke(R.string.list_snack_exception)
-            //
-            //    if (response.code != RESPONSE_CODE_SUCCESS) {
-            //        return@ui failed.invoke(R.string.list_snack_error_code)
-            //    }
-            //
-            //    val comics = response.decodeJson<ComicsResponseBody>().data.comics
-            //    comicsList.add(comics)
-            //    docs.addAll(comics.docs)
-            //    success.invoke()
-            //    job = null
-            //}
         }
 
     }
@@ -135,6 +144,7 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
         navController = findNavController()
         sharedElementEnterTransition = MaterialContainerTransform()
         exitTransition = Hold()
+        comics.category = args.getString(ARG_CATEGORY)
     }
     
     override val containerTransitionName: String?
@@ -190,31 +200,66 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
                 }
             }
         )
-    
-        val success = {
-            recyclerViewAdapter.notifyListUpdate()
-            recyclerView.invalidateItemDecorations()
-        }
-        val failed: (Int) -> Unit = { resId ->
-            navController.navigateUp()
-        }
-        when {
-            args.containsKey(ARG_CATEGORY) -> {
-                comics.category = args.getString(ARG_CATEGORY)
-                comics.initialWithCategory(applicationConfigs.token.value, sort, success, failed)
-            }
-            else -> failed.invoke(R.string.list_snack_arg_required)
-        }
-    
-        recyclerView.addOnScrollListener(object: OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (!recyclerView.canScrollVertically(1)) {
-                    comics.updateCategoryList(applicationConfigs.token.value, sort, success, failed)
-                }
-            }
-        })
     }
     
+    override fun onAuthComplete(code: Int, codeMessage: String?, account: Account?) {
+        val token = account?.token
+        if (code != AUTH_CODE_SUCCESS || token == null) {
+            when (code) {
+                AUTH_CODE_ERROR_NO_ACCOUNT -> {
+                    sendSnack(getString(R.string.list_snack_login_no_account))
+                }
+                AUTH_CODE_ERROR_ACCOUNT_INVALID -> {
+                    sendSnack(getString(R.string.list_snack_login_invalid_account), resId = R.string.home_snack_action_retry) {
+                        applicationConfigs.account.value?.let { requireAuth(it) }
+                    }
+                }
+                AUTH_CODE_ERROR_CONNECTION -> {
+                    sendSnack(getString(R.string.list_snack_login_connection_failed, codeMessage), resId = R.string.home_snack_action_retry) {
+                        applicationConfigs.account.value?.let { requireAuth(it) }
+                    }
+                }
+            }
+            return
+        }
+        requestComics(token)
+    }
+    
+    private fun requestComics(token: String) {
+        val category = category
+        if (category == null) {
+            makeSnack(getString(R.string.list_snack_category_not_specified), LENGTH_SHORT, null, null).
+                addCallback(object: Callback() {
+                    override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                        navController.navigateUp()
+                    }
+                })
+            return
+        }
+        comics.requestCategory(token, category, sort) { code, message ->
+            when (code) {
+                LIST_CODE_SUCCESS -> { /** List content load success **/ }
+                LIST_CODE_PART_SUCCESS -> {
+                    recyclerView.adapterAs<RecyclerViewAdapter>().notifyListUpdate()
+                }
+                LIST_CODE_ERROR_CONNECTION -> {
+                    sendSnack(getString(R.string.list_snack_login_connection_failed, message), resId = R.string.list_snack_request_action_retry) {
+                        requestComics(token)
+                    }
+                }
+                LIST_CODE_ERROR_REJECTED -> {
+                    sendSnack(getString(R.string.list_snack_request_server_rejected, message), resId = R.string.list_snack_request_action_retry) {
+                        requestComics(token)
+                    }
+                }
+                else -> {
+                    sendSnack(getString(R.string.list_snack_request_unknown_code, code, message), resId = R.string.list_snack_request_action_retry) {
+                        requestComics(token)
+                    }
+                }
+            }
+        }
+    }
 
     override fun onDestroyView() {
         if (!requireCaching) {

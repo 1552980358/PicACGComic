@@ -19,5 +19,9 @@ object CodeBook {
     const val ACCOUNT_DETAIL_CODE_ERROR_CONNECTION = 1
     const val ACCOUNT_DETAIL_CODE_REJECTED = 2
     
+    const val LIST_CODE_PART_SUCCESS = -1
+    const val LIST_CODE_SUCCESS = 0
+    const val LIST_CODE_ERROR_CONNECTION = 1
+    const val LIST_CODE_ERROR_REJECTED = 2
     
 }

@@ -41,11 +41,14 @@
     
     <string name="list_transition">list_transition</string>
     <string name="list_transition_prefix">list_transition_</string>
-    <string name="list_snack_arg_required">Argument Not Enough</string>
-    <string name="list_snack_not_logged_in">@string/request_not_logged</string>
-    <string name="list_snack_keyword_no_blank">Search keyword should not be blank</string>
-    <string name="list_snack_exception">@string/response_exception</string>
-    <string name="list_snack_error_code">@string/response_error_code</string>
+    <string name="list_snack_category_not_specified">No Account Logged in</string>
+    <string name="list_snack_login_no_account">No Account Logged in</string>
+    <string name="list_snack_login_invalid_account">Invalid Account / Password</string>
+    <string name="list_snack_login_connection_failed">Connection Failed: %s</string>
+    <string name="list_snack_request_connection_failed">Connection Failed: %s</string>
+    <string name="list_snack_request_action_retry">Retry</string>
+    <string name="list_snack_request_server_rejected">Request rejected by server: %s</string>
+    <string name="list_snack_request_unknown_code">Unknown Error: Unknown code [%d] - %s</string>
 
     <string name="comic_detail_transition">comic_detail_transition</string>
     <string name="comic_detail_transition_prefix">comic_detail_transition_</string>
