@@ -192,7 +192,10 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     protected open val snackAnchor: View?
         get() = null
     
-    protected open fun sendSnack(message: String, length: Int = LENGTH_INDEFINITE, @StringRes resId: Int?, action: OnClickListener?) {
+    protected open fun sendSnack(message: String,
+                                 length: Int = LENGTH_INDEFINITE,
+                                 @StringRes resId: Int? = null,
+                                 action: OnClickListener? = null) {
         makeSnack(message, length, resId, action).show()
     }
     
