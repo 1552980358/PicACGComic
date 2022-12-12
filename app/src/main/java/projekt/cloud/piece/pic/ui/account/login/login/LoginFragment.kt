@@ -7,25 +7,19 @@ import android.text.InputType.TYPE_CLASS_TEXT
 import android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputLayout
-import com.google.android.material.transition.platform.MaterialFadeThrough
-import kotlinx.coroutines.Job
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.decodeFromString
 import projekt.cloud.piece.pic.R
-import projekt.cloud.piece.pic.api.ApiAuth
-import projekt.cloud.piece.pic.api.ApiAuth.signIn
 import projekt.cloud.piece.pic.databinding.FragmentLoginBinding
 import projekt.cloud.piece.pic.ui.account.base.BaseAccountFragment
-import projekt.cloud.piece.pic.ui.account.detail.AccountDetailFragment
-import projekt.cloud.piece.pic.util.CoroutineUtil.io
-import projekt.cloud.piece.pic.util.CoroutineUtil.ui
+import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_ACCOUNT_INVALID
+import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_CONNECTION
+import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_NO_ACCOUNT
+import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.StorageUtil.Account
-import projekt.cloud.piece.pic.util.StorageUtil.saveAccount
 
 class LoginFragment: BaseAccountFragment<FragmentLoginBinding>() {
 
@@ -49,8 +43,6 @@ class LoginFragment: BaseAccountFragment<FragmentLoginBinding>() {
         get() = binding.textInputLayoutPassword
     private val login: MaterialButton
         get() = binding.materialButtonLogin
-
-    private var job: Job? = null
     
     override fun setViewModels(binding: FragmentLoginBinding) {
         binding.applicationConfigs = applicationConfigs
@@ -128,15 +120,12 @@ class LoginFragment: BaseAccountFragment<FragmentLoginBinding>() {
         login.setOnClickListener {
             (requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
                 .hideSoftInputFromWindow(view?.windowToken, 0)
-            if (job != null) {
-                return@setOnClickListener
+            val account = account.editText?.text?.toString()
+            val password = password.editText?.text?.toString()
+            if (!account.isNullOrBlank() && !password.isNullOrBlank()) {
+                requireAuth(Account(account, password))
+                linearProgressIndicator.show()
             }
-            job = account.editText?.text?.toString()?.let { account ->
-                password.editText?.text?.toString()?.let { password ->
-                    getAuth(account, password)
-                }
-            }
-            linearProgressIndicator.show()
         }
     }
 
@@ -149,42 +138,26 @@ class LoginFragment: BaseAccountFragment<FragmentLoginBinding>() {
 
     private fun checkIfFilled(account: String?, password: String?) =
         !account.isNullOrBlank() && !password.isNullOrBlank() && password.length >= PASSWORD_MIN_LENGTH
-
-    private fun getAuth(account: String, password: String) = io {
-        // when (val response = signIn(account, password)) {
-        //     null -> authError(R.string.account_login_snack_auth_exception)
-        //     else -> when (response.code) {
-        //         RESPONSE_CODE_SUCCESS -> {
-        //             authSuccess(
-        //                 Json.decodeFromString<ApiAuth.SignInResponseBody>(response.body.string()).token,
-        //                 requireContext().saveAccount(account, password)
-        //             )
-        //         }
-        //         RESPONSE_CODE_BAD_REQUEST -> authError(R.string.account_login_snack_auth_invalid)
-        //         else -> authError(getString(R.string.account_login_snack_auth_error_code) + response.code)
-        //     }
-        // }
-        job = null
-    }
-
-    private fun authError(@StringRes resId: Int) = authCompleteTask(getString(resId))
-
-    private fun authError(message: String) = authCompleteTask(message)
-
-    private fun authSuccess(token: String, account: Account) = authCompleteTask(null) {
-        with(applicationConfigs) {
-            updateToken(token)
-            setAccount(account)
+    
+    override fun onAuthComplete(code: Int, codeMessage: String?, account: Account?) {
+        when (code) {
+            AUTH_CODE_SUCCESS -> {
+                applicationConfigs.setAccount(account)
+            }
+            AUTH_CODE_ERROR_NO_ACCOUNT -> { /** Account not filled **/ }
+            AUTH_CODE_ERROR_ACCOUNT_INVALID -> {
+                sendSnack(getString(R.string.account_login_snack_auth_invalid))
+            }
+            AUTH_CODE_ERROR_CONNECTION -> {
+                sendSnack(getString(R.string.account_login_snack_auth_connection_failure, codeMessage))
+            }
+            else -> {
+                sendSnack(getString(R.string.account_login_snack_auth_unknown_error, code, codeMessage))
+            }
         }
-
-        requireParentFragment().exitTransition = MaterialFadeThrough()
-        transactionTo(AccountDetailFragment(), MaterialFadeThrough())
-    }
-
-    private fun authCompleteTask(message: String?, block: (() -> Unit)? = null) = ui {
-        message?.let { /*root.showSnack(it)*/ }
-        linearProgressIndicator.hide()
-        block?.invoke()
+        if (linearProgressIndicator.isVisible) {
+            linearProgressIndicator.hide()
+        }
     }
     
 }
