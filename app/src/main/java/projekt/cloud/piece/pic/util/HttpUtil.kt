@@ -1,5 +1,6 @@
 package projekt.cloud.piece.pic.util
 
+import androidx.annotation.IntRange
 import okhttp3.Headers
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.MediaType.Companion.toMediaType
@@ -17,6 +18,7 @@ object HttpUtil {
     
     class HttpResponse {
         
+        @IntRange(from = HTTP_REQUEST_CODE_SUCCESS.toLong(), to = HTTP_REQUEST_CODE_EXCEPTION.toLong())
         var code: Int = HTTP_REQUEST_CODE_SUCCESS
         
         var message: String? = null
