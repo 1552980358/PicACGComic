@@ -74,8 +74,8 @@
                 app:argType="string"
                 app:nullable="true" />
             <argument
-                android:name="index"
-                android:defaultValue="0"
+                android:name="order"
+                android:defaultValue="1"
                 app:argType="integer" />
         </action>
     </fragment>
