@@ -47,6 +47,7 @@ import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.HttpUtil.HTTP_RESPONSE_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
+import projekt.cloud.piece.pic.util.StorageUtil.Account
 
 class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
 
@@ -225,7 +226,8 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
     }
     
     @UiThread
-    override fun onAuthComplete(code: Int, codeMessage: String?, token: String?) {
+    override fun onAuthComplete(code: Int, codeMessage: String?, account: Account?) {
+        val token = account?.token
         if (code != AUTH_CODE_SUCCESS || token == null) {
             // Failed to login
             when (code) {
