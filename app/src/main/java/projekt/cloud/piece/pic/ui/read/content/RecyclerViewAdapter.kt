@@ -15,7 +15,7 @@ import projekt.cloud.piece.pic.databinding.LayoutRecyclerComicContentBinding
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 
-class RecyclerViewAdapter(private val lifecycleCoroutineScope: LifecycleCoroutineScope,
+class RecyclerViewAdapter(private val lifecycleScope: LifecycleCoroutineScope,
                           private val docs: List<Doc>,
                           private val images: MutableMap<String, Bitmap?>):
     RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>() {
@@ -27,13 +27,13 @@ class RecyclerViewAdapter(private val lifecycleCoroutineScope: LifecycleCoroutin
         
         private var job: Job? = null
         
-        fun setDoc(lifecycleCoroutineScope: LifecycleCoroutineScope, doc: Doc, images: MutableMap<String, Bitmap?>) {
+        fun setDoc(lifecycleScope: LifecycleCoroutineScope, doc: Doc, images: MutableMap<String, Bitmap?>) {
             val id = doc._id
             when {
                 images.containsKey(id) -> binding.bitmap = images[id]
                 else -> {
                     job?.cancel()
-                    job = lifecycleCoroutineScope.ui {
+                    job = lifecycleScope.ui {
                         val image = withContext(io) {
                             doc.media.bitmap
                         }
@@ -51,7 +51,7 @@ class RecyclerViewAdapter(private val lifecycleCoroutineScope: LifecycleCoroutin
         RecyclerViewHolder(parent)
     
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
-        holder.setDoc(lifecycleCoroutineScope, docs[position], images)
+        holder.setDoc(lifecycleScope, docs[position], images)
     }
     
     override fun getItemCount() = docs.size
