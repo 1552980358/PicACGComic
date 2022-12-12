@@ -16,13 +16,15 @@ object StorageUtil {
         @Transient
         var token: String? = null
     }
-
-    fun Context.saveAccount(account: String, password: String) = Account(account, password).also {
-        openFileOutput(getString(R.string.storage_account), MODE_PRIVATE).bufferedWriter()
-            .use { bufferedWriter ->
-                bufferedWriter.write(Json.encodeToString(it))
-                bufferedWriter.flush()
-            }
+    
+    fun Context.saveAccount(account: Account?) {
+        account?.let {
+            openFileOutput(getString(R.string.storage_account), MODE_PRIVATE).bufferedWriter()
+                .use { bufferedWriter ->
+                    bufferedWriter.write(Json.encodeToString(it))
+                    bufferedWriter.flush()
+                }
+        }
     }
 
     fun Context.readAccount() = try {
