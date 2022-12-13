@@ -6,7 +6,6 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.ApiComics.EpisodeResponseBody.Data.Episode.Doc
 import projekt.cloud.piece.pic.base.BaseRecyclerViewHolder
 import projekt.cloud.piece.pic.databinding.LayoutRecyclerComicDetailBinding
@@ -27,7 +26,6 @@ class RecyclerViewAdapter(private val docs: List<Doc>,
         }
         
         fun setData(descendingIndex: String, doc: Doc) {
-            binding.root.transitionName = context.getString(R.string.read_transition_prefix) + doc._id
             binding.index = descendingIndex
             binding.doc = doc
         }
