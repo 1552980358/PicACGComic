@@ -66,16 +66,13 @@
         android:name="projekt.cloud.piece.pic.ui.comicDetail.ComicDetailFragment"
         tools:layout="@layout/fragment_comic_detail" >
         <action
-            android:id="@+id/action_comic_detail_to_readFragment"
+            android:id="@+id/to_read_fragment"
             app:destination="@id/readFragment">
             <argument
                 android:name="read_transition"
-                android:defaultValue="@null"
-                app:argType="string"
-                app:nullable="true" />
+                app:argType="string" />
             <argument
                 android:name="order"
-                android:defaultValue="1"
                 app:argType="integer" />
         </action>
     </fragment>
