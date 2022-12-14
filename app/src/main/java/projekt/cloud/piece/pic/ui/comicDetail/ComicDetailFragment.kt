@@ -320,7 +320,9 @@ class ComicDetailFragment: BaseFragment<FragmentComicDetailBinding>(), OnClickLi
                 creatorDetailIndicator.isChecked = creatorDetail.visibility == VISIBLE
             }
             floatingActionButton -> {
-                launchReadComic(floatingActionButton, floatingActionButton.transitionName, 1)
+                if (docList.isNotEmpty()) {
+                    launchReadComic(floatingActionButton, floatingActionButton.transitionName, 1)
+                }
             }
         }
     }
