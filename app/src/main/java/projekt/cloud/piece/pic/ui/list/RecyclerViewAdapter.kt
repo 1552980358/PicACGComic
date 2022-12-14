@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Job
@@ -18,11 +17,11 @@ import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 
 class RecyclerViewAdapter(private val docs: List<Doc>,
                           private val covers: MutableMap<String, Bitmap?>,
-                          private val onClick: (Doc, View) -> Unit):
+                          private val onClick: (View, Doc) -> Unit):
     RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>() {
 
-    inner class RecyclerViewHolder(private val binding: LayoutRecyclerListBinding):
-        RecyclerView.ViewHolder(binding.root), OnClickListener {
+    class RecyclerViewHolder(private val binding: LayoutRecyclerListBinding):
+        RecyclerView.ViewHolder(binding.root) {
         
         constructor(view: View): this(view.context)
         constructor(context: Context): this(LayoutInflater.from(context))
@@ -30,11 +29,8 @@ class RecyclerViewAdapter(private val docs: List<Doc>,
         
         private var job: Job? = null
         
-        init {
-            binding.root.setOnClickListener(this)
-        }
-        
-        fun setDoc(doc: Doc) {
+        fun bind(doc: Doc, covers: MutableMap<String, Bitmap?>, onClick: (View, Doc) -> Unit) {
+            binding.onClick = onClick
             binding.doc = doc
             binding.root.transitionName = binding.root.resources.getString(R.string.comic_detail_transition_prefix) + doc._id
             when {
@@ -56,12 +52,6 @@ class RecyclerViewAdapter(private val docs: List<Doc>,
             }
 
         }
-    
-        override fun onClick(v: View) {
-            binding.doc?.let {
-                onClick.invoke(it, v)
-            }
-        }
         
     }
     
@@ -76,7 +66,7 @@ class RecyclerViewAdapter(private val docs: List<Doc>,
         RecyclerViewHolder(parent)
     
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
-        holder.setDoc(docs[position])
+        holder.bind(docs[position], covers, onClick)
     }
     
     override fun getItemCount() = docSize

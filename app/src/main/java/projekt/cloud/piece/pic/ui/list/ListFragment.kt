@@ -170,14 +170,14 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
         when {
             !category.isNullOrBlank() -> toolbar.title = category
         }
-        val recyclerViewAdapter = RecyclerViewAdapter(docs, covers) { doc, v ->
+        val recyclerViewAdapter = RecyclerViewAdapter(docs, covers) { view, doc ->
             if (isAuthSuccess) {
                 requireCaching = true
                 comicDetail.setCover(covers[doc._id])
                 comicDetail.requestComic(token, doc.id)
                 navController.navigate(
-                    ListFragmentDirections.actionListToComicDetail(doc._id, v.transitionName),
-                    FragmentNavigatorExtras(v to v.transitionName)
+                    ListFragmentDirections.actionListToComicDetail(doc._id, view.transitionName),
+                    FragmentNavigatorExtras(view to view.transitionName)
                 )
             }
         }
