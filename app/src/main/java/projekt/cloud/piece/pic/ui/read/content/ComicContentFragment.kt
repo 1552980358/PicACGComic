@@ -42,6 +42,7 @@ import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.CodeBook.HTTP_REQUEST_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
+import projekt.cloud.piece.pic.util.FragmentUtil.activityAs
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.HttpUtil.HTTP_RESPONSE_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.HttpUtil.HttpResponse
@@ -86,7 +87,7 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
     
     override fun setUpToolbar() {
         setSupportActionBar(toolbar)
-        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        activityAs<AppCompatActivity>().supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener {
             navController.navigateUp()
         }
