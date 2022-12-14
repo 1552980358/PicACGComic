@@ -81,12 +81,17 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        navController = findNavController()
+        navController = readFragment.findNavController()
     }
     
     override fun setUpToolbar() {
         setSupportActionBar(toolbar)
-        toolbar.setupWithNavController(navController)
+        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener {
+            navController.navigateUp()
+        }
+        toolbar.title = comicDetail.docList.find { it.order == readComic.order }?.title
+        toolbar.subtitle = comicDetail.comic.value?.title
     }
     
     override fun setUpViews() {
