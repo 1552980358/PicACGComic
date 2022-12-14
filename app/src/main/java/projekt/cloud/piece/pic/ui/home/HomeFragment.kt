@@ -139,11 +139,13 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
         floatingActionButton.setOnClickListener(this)
     
         val recyclerViewAdapter = RecyclerViewAdapter(categories.categories, categories.thumbs) { category, v ->
-            bottomAppBar.performHide()
-            navController.navigate(
-                HomeFragmentDirections.actionHomeToList(category = category.title, listTransition = v.transitionName),
-                FragmentNavigatorExtras(v to v.transitionName)
-            )
+            if (isAuthSuccess) {
+                bottomAppBar.performHide()
+                navController.navigate(
+                    HomeFragmentDirections.actionHomeToList(category = category.title, listTransition = v.transitionName),
+                    FragmentNavigatorExtras(v to v.transitionName)
+                )
+            }
         }
         recyclerView.adapter = recyclerViewAdapter
         recyclerView.layoutManager = GridLayoutManager(requireContext(), RECYCLER_VIEW_MAX_SPAN)
@@ -238,6 +240,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
     
     @UiThread
     override fun onAuthComplete(code: Int, codeMessage: String?, account: Account?) {
+        super.onAuthComplete(code, codeMessage, account)
         val token = account?.token
         if (code != AUTH_CODE_SUCCESS || token == null) {
             // Failed to login
