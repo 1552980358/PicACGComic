@@ -138,12 +138,12 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
         
         floatingActionButton.setOnClickListener(this)
     
-        val recyclerViewAdapter = RecyclerViewAdapter(categories.categories, categories.thumbs) { category, v ->
+        val recyclerViewAdapter = RecyclerViewAdapter(categories.categories, categories.thumbs) { view, category ->
             if (isAuthSuccess) {
                 bottomAppBar.performHide()
                 navController.navigate(
-                    HomeFragmentDirections.actionHomeToList(category = category.title, listTransition = v.transitionName),
-                    FragmentNavigatorExtras(v to v.transitionName)
+                    HomeFragmentDirections.actionHomeToList(category.title, view.transitionName),
+                    FragmentNavigatorExtras(view to view.transitionName)
                 )
             }
         }

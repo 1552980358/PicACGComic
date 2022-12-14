@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Job
@@ -18,20 +17,19 @@ import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 
 class RecyclerViewAdapter(private val categories: List<Category>,
                           private val thumbs: MutableMap<String, Bitmap?>,
-                          private val onClick: (Category, View) -> Unit): RecyclerView.Adapter<RecyclerViewHolder>() {
+                          private val onClick: (View, Category) -> Unit): RecyclerView.Adapter<RecyclerViewHolder>() {
 
-    inner class RecyclerViewHolder(private val binding: LayoutRecyclerHomeBinding):
-        RecyclerView.ViewHolder(binding.root), OnClickListener {
+    class RecyclerViewHolder(private val binding: LayoutRecyclerHomeBinding): RecyclerView.ViewHolder(binding.root) {
         constructor(parent: ViewGroup): this(parent.context)
         constructor(context: Context): this(LayoutInflater.from(context))
         constructor(layoutInflater: LayoutInflater): this(LayoutRecyclerHomeBinding.inflate(layoutInflater))
 
         private var job: Job? = null
 
-        fun setCategory(category: Category, thumbs: MutableMap<String, Bitmap?>) {
+        fun bind(category: Category, thumbs: MutableMap<String, Bitmap?>, onClick: (View, Category) -> Unit) {
             binding.category = category
             binding.root.transitionName = binding.root.resources.getString(R.string.list_transition_prefix) + category.title
-            binding.root.setOnClickListener(this)
+            binding.onClick = onClick
             // job?.cancel()
             job = ui {
                 if (!thumbs.containsKey(category.title)) {
@@ -45,17 +43,13 @@ class RecyclerViewAdapter(private val categories: List<Category>,
             }
         }
 
-        override fun onClick(v: View) {
-            binding.category?.let { onClick.invoke(it, v) }
-        }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         RecyclerViewHolder(parent)
 
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
-        holder.setCategory(categories[position], thumbs)
+        holder.bind(categories[position], thumbs, onClick)
     }
 
     override fun getItemCount() = categories.size

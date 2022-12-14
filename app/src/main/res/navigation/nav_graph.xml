@@ -25,9 +25,7 @@
             app:destination="@id/list">
             <argument
                 android:name="category"
-                app:argType="string"
-                app:nullable="true"
-                android:defaultValue="@null" />
+                app:argType="string" />
             <argument
                 android:name="list_transition"
                 app:argType="string" />
