@@ -54,6 +54,7 @@ import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_NO_ACCOUNT
 import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_ERROR_CONNECTION
 import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_ERROR_REJECTED
+import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_ERROR_UNKNOWN_ID
 import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_PART_SUCCESS
 import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
@@ -64,10 +65,6 @@ import projekt.cloud.piece.pic.util.RecyclerViewUtil.adapterAs
 import projekt.cloud.piece.pic.util.StorageUtil.Account
 
 class ComicDetailFragment: BaseFragment<FragmentComicDetailBinding>(), OnClickListener {
-
-    companion object {
-        private const val ARG_ID = "id"
-    }
     
     private val appBarLayout: AppBarLayout
         get() = binding.appBarLayout
@@ -95,8 +92,6 @@ class ComicDetailFragment: BaseFragment<FragmentComicDetailBinding>(), OnClickLi
     private val comicDetail: ComicDetail by activityViewModels()
     private val docList: ArrayList<Episode.Doc>
         get() = comicDetail.docList
-    private val comicId: String?
-        get() = comicDetail.id
     
     private lateinit var navController: NavController
     
@@ -105,9 +100,6 @@ class ComicDetailFragment: BaseFragment<FragmentComicDetailBinding>(), OnClickLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         navController = findNavController()
-        if (args.containsKey(ARG_ID)) {
-            comicDetail.id = args.getString(ARG_ID)
-        }
         
         sharedElementEnterTransition = MaterialContainerTransform()
         exitTransition = Hold()
@@ -235,8 +227,8 @@ class ComicDetailFragment: BaseFragment<FragmentComicDetailBinding>(), OnClickLi
         get() = args.getString(getString(R.string.comic_detail_transition))
 
     override fun onAuthComplete(code: Int, codeMessage: String?, account: Account?) {
-        val token = account?.token
-        if (code != AUTH_CODE_SUCCESS || token == null) {
+        super.onAuthComplete(code, codeMessage, account)
+        if (code != AUTH_CODE_SUCCESS) {
             when (code) {
                 AUTH_CODE_ERROR_NO_ACCOUNT -> {
                     sendSnack(getString(R.string.list_snack_login_no_account))
@@ -251,46 +243,49 @@ class ComicDetailFragment: BaseFragment<FragmentComicDetailBinding>(), OnClickLi
                         applicationConfigs.account.value?.let { requireAuth(it) }
                     }
                 }
-                
             }
-            return
         }
-        if (docList.isEmpty()) {
-            requestComicInfo(token)
+        comicDetail.taskReceipt.observe(viewLifecycleOwner) {
+            it?.let { receiveReceipt(it.code, it.message) }
         }
     }
     
-    private fun requestComicInfo(token: String) {
-        val id = comicId
-        if (id.isNullOrBlank()) {
-            makeSnack(getString(R.string.comic_detail_snack_id_not_specified), LENGTH_SHORT, null, null)
-                .addCallback(object: Callback() {
-                    override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                        navController.navigateUp()
-                    }
-                })
-                .show()
-            return
-        }
-        comicDetail.requestComicInfo(token, id, resources) { code, message ->
+    private fun receiveReceipt(code: Int, message: String?) {
+        if (isAuthSuccess) {
             when (code) {
                 COMIC_DETAIL_CODE_PART_SUCCESS -> {
                     recyclerView.adapterAs<RecyclerViewAdapter>().notifyDataUpdated()
                 }
-                COMIC_DETAIL_CODE_SUCCESS -> { /** Comic detail obtain success **/ }
+        
+                COMIC_DETAIL_CODE_SUCCESS -> {
+                    /** Comic detail obtain success **/
+                }
+        
                 COMIC_DETAIL_CODE_ERROR_CONNECTION -> {
                     sendSnack(getString(R.string.comic_detail_snack_request_connection_failed, message), resId = R.string.comic_detail_request_action_retry) {
-                        requestComicInfo(token)
+                        comicDetail.retryRequestComic(token)
                     }
                 }
+        
                 COMIC_DETAIL_CODE_ERROR_REJECTED -> {
                     sendSnack(getString(R.string.comic_detail_snack_request_server_rejected, message), resId = R.string.comic_detail_request_action_retry) {
-                        requestComicInfo(token)
+                        comicDetail.retryRequestComic(token)
                     }
                 }
+                
+                COMIC_DETAIL_CODE_ERROR_UNKNOWN_ID -> {
+                    makeSnack(getString(R.string.comic_detail_snack_request_unknown_id), LENGTH_SHORT, null, null)
+                        .addCallback(object: Callback() {
+                            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                                navController.navigateUp()
+                            }
+                        })
+                        .show()
+                }
+        
                 else -> {
                     sendSnack(getString(R.string.comic_detail_snack_request_unknown_code, code, message), resId = R.string.comic_detail_request_action_retry) {
-                        requestComicInfo(token)
+                        comicDetail.retryRequestComic(token)
                     }
                 }
             }

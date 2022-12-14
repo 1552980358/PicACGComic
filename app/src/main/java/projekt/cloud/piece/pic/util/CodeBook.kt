@@ -28,5 +28,6 @@ object CodeBook {
     const val COMIC_DETAIL_CODE_SUCCESS = 0
     const val COMIC_DETAIL_CODE_ERROR_CONNECTION = 1
     const val COMIC_DETAIL_CODE_ERROR_REJECTED = 2
+    const val COMIC_DETAIL_CODE_ERROR_UNKNOWN_ID = 3
     
 }

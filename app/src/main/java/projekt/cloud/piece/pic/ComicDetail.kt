@@ -1,8 +1,6 @@
 package projekt.cloud.piece.pic
 
-import android.content.res.Resources
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,17 +17,23 @@ import projekt.cloud.piece.pic.api.ApiComics.episode
 import projekt.cloud.piece.pic.api.CommonBody.ErrorResponseBody
 import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_ERROR_CONNECTION
 import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_ERROR_REJECTED
+import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_ERROR_UNKNOWN_ID
 import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_PART_SUCCESS
 import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.CodeBook.HTTP_REQUEST_CODE_SUCCESS
-import projekt.cloud.piece.pic.util.CompleteCallback
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.HttpUtil.HTTP_RESPONSE_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.HttpUtil.HttpResponse
 import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
+import projekt.cloud.piece.pic.util.TaskReceipt
 
 class ComicDetail: ViewModel() {
+    
+    companion object {
+        const val NAME = "ComicDetail"
+        const val COMIC_ID_DEFAULT_VALUE = ""
+    }
     
     private val _comic = MutableLiveData<Comic?>()
     val comic: LiveData<Comic?>
@@ -46,59 +50,26 @@ class ComicDetail: ViewModel() {
     val avatar: LiveData<Bitmap?>
         get() = _avatar
     
-    var id: String? = null
+    var comicId = COMIC_ID_DEFAULT_VALUE
+        private set
     
     val docList = arrayListOf<Doc>()
     
-    fun requestComicInfo(token: String, id: String, resources: Resources, completeCallback: CompleteCallback) {
-        viewModelScope.ui {
-            if (requestComic(token, id, resources, completeCallback)) {
-                var httpResponse: HttpResponse
-                var response: Response?
-                var page = 0
-                while (true) {
-                    httpResponse = withContext(io) {
-                        episode(id, ++page, token)
-                    }
-        
-                    response = httpResponse.response
-                    if (httpResponse.code != HTTP_REQUEST_CODE_SUCCESS || response == null) {
-                        return@ui completeCallback.invoke(COMIC_DETAIL_CODE_ERROR_CONNECTION, httpResponse.message)
-                    }
-        
-                    if (response.code != HTTP_RESPONSE_CODE_SUCCESS) {
-                        val errorResponseBody = withContext(io) {
-                            response.decodeJson<ErrorResponseBody>()
-                        }
-                        return@ui completeCallback.invoke(COMIC_DETAIL_CODE_ERROR_REJECTED, errorResponseBody.message)
-                    }
-                    
-                    val episode = withContext(io) {
-                        response.decodeJson<EpisodeResponseBody>()
-                    }
-                    
-                    docList.addAll(episode.data.eps.docs)
-                    
-                    completeCallback.invoke(COMIC_DETAIL_CODE_PART_SUCCESS, null)
-                    
-                    if (episode.data.eps.page == episode.data.eps.pages) {
-                        break
-                    }
-                }
-                
-                completeCallback.invoke(COMIC_DETAIL_CODE_SUCCESS, null)
-            }
-        }
+    private val _taskReceipt = MutableLiveData<TaskReceipt?>()
+    val taskReceipt: LiveData<TaskReceipt?>
+        get() = _taskReceipt
+    private fun setTaskReceipt(code: Int, message: String?) {
+        _taskReceipt.value = TaskReceipt(NAME, code, message)
     }
     
-    private suspend fun requestComic(token: String, id: String, resources: Resources, completeCallback: CompleteCallback): Boolean {
+    private suspend fun requestComicMetadata(token: String, id: String): Boolean {
         val httpResponse = withContext(io) {
             comic(id, token)
         }
     
         val response: Response? = httpResponse.response
         if (httpResponse.code != HTTP_REQUEST_CODE_SUCCESS || response == null) {
-            completeCallback.invoke(COMIC_DETAIL_CODE_ERROR_CONNECTION, httpResponse.message)
+            setTaskReceipt(COMIC_DETAIL_CODE_ERROR_CONNECTION, httpResponse.message)
             return false
         }
     
@@ -106,7 +77,7 @@ class ComicDetail: ViewModel() {
             val errorResponseBody = withContext(io) {
                 response.decodeJson<ErrorResponseBody>()
             }
-            completeCallback.invoke(COMIC_DETAIL_CODE_ERROR_REJECTED, errorResponseBody.message)
+            setTaskReceipt(COMIC_DETAIL_CODE_ERROR_REJECTED, errorResponseBody.message)
             return false
         }
     
@@ -117,14 +88,67 @@ class ComicDetail: ViewModel() {
         val comic = comicResponse.data.comic
         _comic.value = comic
         _avatar.value = withContext(io) {
-            comic.creator.avatar.bitmap ?: BitmapFactory.decodeResource(resources, R.drawable.ic_round_account_circle_24)
+            comic.creator.avatar.bitmap
         }
         
         return true
     }
     
+    fun retryRequestComic(token: String) {
+        docList.clear()
+        requestComic(token, comicId)
+    }
+    
+    fun requestComic(token: String, id: String) {
+        if (id.isBlank()) {
+            return setTaskReceipt(COMIC_DETAIL_CODE_ERROR_UNKNOWN_ID, null)
+        }
+        if (comicId != id) {
+            comicId = id
+        }
+        viewModelScope.ui {
+            if (requestComicMetadata(token, id)) {
+                var httpResponse: HttpResponse
+                var response: Response?
+                var page = 0
+                while (true) {
+                    httpResponse = withContext(io) {
+                        episode(id, ++page, token)
+                    }
+        
+                    response = httpResponse.response
+                    if (httpResponse.code != HTTP_REQUEST_CODE_SUCCESS || response == null) {
+                        return@ui setTaskReceipt(COMIC_DETAIL_CODE_ERROR_CONNECTION, httpResponse.message)
+                    }
+        
+                    if (response.code != HTTP_RESPONSE_CODE_SUCCESS) {
+                        val errorResponseBody = withContext(io) {
+                            response.decodeJson<ErrorResponseBody>()
+                        }
+                        return@ui setTaskReceipt(COMIC_DETAIL_CODE_ERROR_REJECTED, errorResponseBody.message)
+                    }
+        
+                    val episode = withContext(io) {
+                        response.decodeJson<EpisodeResponseBody>()
+                    }
+        
+                    docList.addAll(episode.data.eps.docs)
+        
+                    setTaskReceipt(COMIC_DETAIL_CODE_PART_SUCCESS, null)
+        
+                    if (episode.data.eps.page == episode.data.eps.pages) {
+                        break
+                    }
+                }
+    
+                setTaskReceipt(COMIC_DETAIL_CODE_SUCCESS, null)
+            }
+        }
+    }
+    
     fun clearAll(lifecycleOwner: LifecycleOwner) {
-        id = null
+        comicId = COMIC_ID_DEFAULT_VALUE
+        
         _comic.removeObservers(lifecycleOwner)
         _comic.removeObservers(lifecycleOwner)
         _avatar.removeObservers(lifecycleOwner)

@@ -129,7 +129,7 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
     private var sort = SORT_NEW_TO_OLD
 
     private val comics: Comics by viewModels()
-    private val comic: ComicDetail by activityViewModels()
+    private val comicDetail: ComicDetail by activityViewModels()
 
     private val docs: ArrayList<Doc>
         get() = comics.docs
@@ -171,12 +171,15 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
             !category.isNullOrBlank() -> toolbar.title = category
         }
         val recyclerViewAdapter = RecyclerViewAdapter(docs, covers) { doc, v ->
-            requireCaching = true
-            comic.setCover(covers[doc._id])
-            navController.navigate(
-                ListFragmentDirections.actionListToComicDetail(doc._id, v.transitionName),
-                FragmentNavigatorExtras(v to v.transitionName)
-            )
+            if (isAuthSuccess) {
+                requireCaching = true
+                comicDetail.setCover(covers[doc._id])
+                comicDetail.requestComic(token, doc.id)
+                navController.navigate(
+                    ListFragmentDirections.actionListToComicDetail(doc._id, v.transitionName),
+                    FragmentNavigatorExtras(v to v.transitionName)
+                )
+            }
         }
         recyclerView.adapter = recyclerViewAdapter
         recyclerView.layoutManager = StaggeredGridLayoutManager(GRID_SPAN, VERTICAL)
@@ -217,6 +220,7 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
     }
     
     override fun onAuthComplete(code: Int, codeMessage: String?, account: Account?) {
+        super.onAuthComplete(code, codeMessage, account)
         val token = account?.token
         if (code != AUTH_CODE_SUCCESS || token == null) {
             when (code) {

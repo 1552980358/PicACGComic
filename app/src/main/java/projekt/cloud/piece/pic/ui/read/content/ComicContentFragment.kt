@@ -151,8 +151,8 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
     }
     
     private fun requestComicImage(token: String) {
-        val comicId = comic.id
-        if (comicId.isNullOrBlank()) {
+        val comicId = comic.comicId
+        if (comicId.isBlank()) {
             makeSnack(getString(R.string.comic_content_snack_unknown_comic), LENGTH_SHORT, null, null)
                 .addCallback(object: Callback() {
                     override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
