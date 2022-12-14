@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.withContext
 import okhttp3.Response
@@ -15,6 +14,7 @@ import projekt.cloud.piece.pic.api.ApiComics.EpisodeResponseBody
 import projekt.cloud.piece.pic.api.ApiComics.EpisodeResponseBody.Data.Episode.Doc
 import projekt.cloud.piece.pic.api.ApiComics.episode
 import projekt.cloud.piece.pic.api.CommonBody.ErrorResponseBody
+import projekt.cloud.piece.pic.base.BaseTaskViewModel
 import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_ERROR_CONNECTION
 import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_ERROR_REJECTED
 import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_ERROR_UNKNOWN_ID
@@ -26,9 +26,8 @@ import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.HttpUtil.HTTP_RESPONSE_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.HttpUtil.HttpResponse
 import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
-import projekt.cloud.piece.pic.util.TaskReceipt
 
-class ComicDetail: ViewModel() {
+class ComicDetail(override val taskReceiptIssuer: String = NAME) : BaseTaskViewModel() {
     
     companion object {
         const val NAME = "ComicDetail"
@@ -54,13 +53,6 @@ class ComicDetail: ViewModel() {
         private set
     
     val docList = arrayListOf<Doc>()
-    
-    private val _taskReceipt = MutableLiveData<TaskReceipt?>()
-    val taskReceipt: LiveData<TaskReceipt?>
-        get() = _taskReceipt
-    private fun setTaskReceipt(code: Int, message: String?) {
-        _taskReceipt.value = TaskReceipt(NAME, code, message)
-    }
     
     private suspend fun requestComicMetadata(token: String, id: String): Boolean {
         val httpResponse = withContext(io) {
