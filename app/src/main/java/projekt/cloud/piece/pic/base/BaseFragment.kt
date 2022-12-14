@@ -1,7 +1,6 @@
 package projekt.cloud.piece.pic.base
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -52,6 +51,13 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
         get() = _binding!!
     
     protected val args by lazy { requireArguments() }
+    
+    private var _token: String? = null
+    protected val token: String
+        get() = _token!!
+    protected var isAuthComplete = false
+    protected val isAuthSuccess: Boolean
+        get() = isAuthComplete && _token != null
     
     @Suppress("UNCHECKED_CAST")
     private val viewBindingClass =
@@ -119,10 +125,10 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     }
     
     protected fun requireAuth(account: Account) {
-        Log.e("BaseFragment", "requireAuth: $account")
         lifecycleScope.ui {
             var token = account.token
             if (token != null) {
+                _token = token
                 return@ui onAuthComplete(AUTH_CODE_SUCCESS, null, account)
             }
             
@@ -143,7 +149,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
             token = withContext(io) {
                 response.decodeJson<ApiAuth.SignInResponseBody>().token
             }
-            
+            _token = token
             account.token = token
             onAuthComplete(AUTH_CODE_SUCCESS, null, account)
         }
@@ -187,7 +193,9 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     }
     
     @UiThread
-    open fun onAuthComplete(code: Int, codeMessage: String?, account: Account?) = Unit
+    open fun onAuthComplete(code: Int, codeMessage: String?, account: Account?) {
+        isAuthComplete = true
+    }
     
     protected open val snackAnchor: View?
         get() = null
