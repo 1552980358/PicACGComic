@@ -36,26 +36,28 @@
             android:layout_marginBottom="@dimen/md_spec_fab_spacing_bottom"
             android:layout_marginEnd="@dimen/md_spec_fab_spacing_end"
             android:layout_gravity="bottom|end"
-            android:visibility="gone"
             app:icon="@drawable/ic_round_format_list_numbered_24"
             tools:ignore="SpeakableTextPresentCheck" />
         
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floating_action_button_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:text="@string/comic_content_fab_next"
-            android:visibility="gone"
-            app:icon="@drawable/ic_round_navigate_next_24" />
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="@dimen/md_spec_fab_spacing_bottom"
+            android:layout_marginEnd="@dimen/md_spec_fab_spacing_end"
+            android:src="@drawable/ic_round_navigate_next_24"
+            tools:ignore="ContentDescription" />
     
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floating_action_button_prev"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:text="@string/comic_content_fab_prev"
-            app:icon="@drawable/ic_round_navigate_before_24" />
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="@dimen/md_spec_fab_spacing_bottom"
+            android:layout_marginEnd="@dimen/md_spec_fab_spacing_end"
+            android:src="@drawable/ic_round_navigate_before_24"
+            tools:ignore="ContentDescription" />
         
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
     

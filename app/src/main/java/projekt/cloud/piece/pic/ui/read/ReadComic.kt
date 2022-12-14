@@ -3,29 +3,31 @@ package projekt.cloud.piece.pic.ui.read
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import projekt.cloud.piece.pic.api.ApiComics.EpisodeResponseBody.Data.Episode.Doc
 
 class ReadComic: ViewModel() {
-
-    var doc: Doc? = null
+    
+    companion object {
+        const val DEFAULT_ORDER = 0
+    }
+    
+    var order = 0
         set(value) {
             val oldField = field
             field = value
-            if (oldField != null && value != null) {
-                @Suppress("USELESS_CAST")
+            if (oldField != DEFAULT_ORDER && value != DEFAULT_ORDER) {
                 when {
-                    oldField.order > value.order -> _next.value = value as Doc
-                    oldField.order < value.order -> _prev.value = value as Doc
+                    oldField > value -> _prev.value = value
+                    oldField < value -> _next.value = value
                 }
             }
         }
     
-    private val _prev = MutableLiveData<Doc>()
-    val prev: LiveData<Doc>
+    private val _prev = MutableLiveData<Int>()
+    val prev: LiveData<Int>
         get() = _prev
     
-    private val _next = MutableLiveData<Doc>()
-    val next: LiveData<Doc>
+    private val _next = MutableLiveData<Int>()
+    val next: LiveData<Int>
         get() = _next
     
 }

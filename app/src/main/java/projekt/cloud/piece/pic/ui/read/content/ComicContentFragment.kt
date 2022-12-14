@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
+import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.marginBottom
 import androidx.core.view.updateLayoutParams
@@ -13,11 +14,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.Callback
@@ -52,7 +54,7 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
     private val readFragment: ReadFragment
         get() = findParentAs()
     
-    private val comic: ComicDetail by activityViewModels()
+    private val comicDetail: ComicDetail by activityViewModels()
     
     private val readComic: ReadComic by viewModels(
         ownerProducer = { readFragment }
@@ -64,10 +66,13 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
         get() = binding.recyclerView
     private val page: ExtendedFloatingActionButton
         get() = binding.extendedFloatingActionButtonPage
-    private val prev: ExtendedFloatingActionButton
+    private val prev: FloatingActionButton
         get() = binding.floatingActionButtonPrev
-    private val next: ExtendedFloatingActionButton
+    private val next: FloatingActionButton
         get() = binding.floatingActionButtonNext
+    
+    private var canMoveToNext = false
+    private var canMoveToPrev = false
     
     private lateinit var navController: NavController
     
@@ -86,12 +91,38 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
     
     override fun setUpViews() {
         recyclerView.adapter = RecyclerViewAdapter(lifecycleScope, docs, images)
-    
-        recyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(object: OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                when {
+                    !recyclerView.canScrollVertically(-1) -> {
+                        when {
+                            canMoveToPrev -> prev.show()
+                            else -> prev.hide()
+                        }
+                        page.hide()
+                        next.hide()
+                    }
+                    !recyclerView.canScrollVertically(1) -> {
+                        prev.hide()
+                        page.hide()
+                        when {
+                            canMoveToNext -> next.show()
+                            else -> next.hide()
+                        }
+                    }
+                    else -> {
+                        prev.hide()
+                        next.hide()
+                        if (!page.isExtended) {
+                            page.extend()
+                        }
+                        when {
+                            dy < 0 -> page.show()
+                            dy > 0 -> page.hide()
+                        }
+                    }
+                }
                 updateExtendedFabText()
-            }
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             }
         })
     
@@ -107,13 +138,19 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
                 updateMargins(bottom = it + extendedFabMarginBottom)
             }
         }
-        
-        page.setOnClickListener(this)
-        prev.setOnClickListener(this)
-        next.setOnClickListener(this)
+    
+        if (readComic.order > 1) {
+            canMoveToPrev = true
+            prev.setOnClickListener(this)
+        }
+        if (readComic.order < comicDetail.docList.first().order) {
+            canMoveToNext = true
+            next.setOnClickListener(this)
+        }
     }
     
     override fun onAuthComplete(code: Int, codeMessage: String?, account: Account?) {
+        super.onAuthComplete(code, codeMessage, account)
         val token = account?.token
         if (code != AUTH_CODE_SUCCESS || token == null) {
             when (code) {
@@ -151,7 +188,7 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
     }
     
     private fun requestComicImage(token: String) {
-        val comicId = comic.comicId
+        val comicId = comicDetail.comicId
         if (comicId.isBlank()) {
             makeSnack(getString(R.string.comic_content_snack_unknown_comic), LENGTH_SHORT, null, null)
                 .addCallback(object: Callback() {
@@ -163,17 +200,7 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
             return
         }
         
-        val doc = readComic.doc
-        if (doc == null) {
-            makeSnack(getString(R.string.comic_content_snack_unknown_episode), LENGTH_SHORT, null, null)
-                .addCallback(object: Callback() {
-                    override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                        readFragment.findNavController().navigateUp()
-                    }
-                })
-                .show()
-            return
-        }
+        val order = readComic.order
         
         lifecycleScope.ui {
             var httpResponse: HttpResponse
@@ -183,7 +210,7 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
             
             while (true) {
                 httpResponse = withContext(io) {
-                    episodeContent(comicId, doc.order, ++page, token)
+                    episodeContent(comicId, order, ++page, token)
                 }
                 
                 response = httpResponse.response
@@ -236,9 +263,16 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
     
     override fun onClick(v: View) {
         when (v) {
-            page -> {}
-            prev -> {}
-            next -> {}
+            prev -> {
+                if (canMoveToPrev) {
+                    readComic.order--
+                }
+            }
+            next -> {
+                if (canMoveToNext) {
+                    readComic.order++
+                }
+            }
         }
     }
     
