@@ -138,17 +138,15 @@ class ComicDetail(override val taskReceiptIssuer: String = NAME) : BaseTaskViewM
         }
     }
     
-    fun clearAll(lifecycleOwner: LifecycleOwner) {
+    override fun clear(lifecycleOwner: LifecycleOwner) {
+        super.clear(lifecycleOwner)
         comicId = COMIC_ID_DEFAULT_VALUE
-        
         _comic.removeObservers(lifecycleOwner)
-        _comic.removeObservers(lifecycleOwner)
+        _cover.removeObservers(lifecycleOwner)
         _avatar.removeObservers(lifecycleOwner)
-        
         _comic.value = null
         _cover.value = null
         _avatar.value = null
-        
         docList.clear()
     }
     

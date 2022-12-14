@@ -305,7 +305,7 @@ class ComicDetailFragment: BaseFragment<FragmentComicDetailBinding>(), OnClickLi
     
     override fun onDestroyView() {
         if (clearComicData) {
-            comicDetail.clearAll(viewLifecycleOwner)
+            comicDetail.clear(viewLifecycleOwner)
         }
         super.onDestroyView()
     }
