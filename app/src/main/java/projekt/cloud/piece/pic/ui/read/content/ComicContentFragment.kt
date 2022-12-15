@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
-import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.marginBottom
 import androidx.core.view.updateLayoutParams
@@ -44,7 +43,7 @@ import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.CodeBook.HTTP_REQUEST_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
-import projekt.cloud.piece.pic.util.FragmentUtil.activityAs
+import projekt.cloud.piece.pic.util.FragmentUtil.setDisplayHomeAsUpEnabled
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.HttpUtil.HTTP_RESPONSE_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.HttpUtil.HttpResponse
@@ -89,10 +88,8 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
     
     override fun setUpToolbar() {
         setSupportActionBar(toolbar)
-        activityAs<AppCompatActivity>().supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        toolbar.setNavigationOnClickListener {
-            navController.navigateUp()
-        }
+        setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener { navController.navigateUp() }
     }
     
     override fun setUpViews() {
