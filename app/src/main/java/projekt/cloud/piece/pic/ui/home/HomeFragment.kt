@@ -5,7 +5,6 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
-import android.view.View.VISIBLE
 import androidx.annotation.UiThread
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.doOnPreDraw
@@ -16,7 +15,6 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -29,7 +27,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 import com.google.android.material.search.SearchView.TransitionListener
-import com.google.android.material.transition.platform.MaterialElevationScale
+import com.google.android.material.transition.platform.Hold
 import kotlinx.coroutines.withContext
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.ApiCategories.CategoriesResponseBody
@@ -112,9 +110,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        exitTransition = MaterialElevationScale(false).apply {
-            excludeTarget(R.id.bottom_app_bar, true)
-        }
+        exitTransition = Hold()
         navController = findNavController()
     }
     
@@ -140,7 +136,6 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
     
         val recyclerViewAdapter = RecyclerViewAdapter(categories.categories, categories.thumbs) { view, category ->
             if (isAuthSuccess) {
-                bottomAppBar.performHide()
                 navController.navigate(
                     HomeFragmentDirections.actionHomeToList(category.title, view.transitionName),
                     FragmentNavigatorExtras(view to view.transitionName)
@@ -216,12 +211,6 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
                 searchBar.text = bundle.getString(resultSearch)
             }
         }
-        
-        lifecycleScope.launchWhenResumed {
-            bottomAppBar.performHide(false)
-            bottomAppBar.visibility = VISIBLE
-            bottomAppBar.performShow()
-        }
     }
     
     override fun onBackPressed() = when {
@@ -289,7 +278,6 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
     override fun onClick(v: View?) {
         when (v) {
             floatingActionButton -> {
-                bottomAppBar.performHide()
                 navController.navigate(
                     HomeFragmentDirections.actionHomeToAccount(),
                     FragmentNavigatorExtras(floatingActionButton to floatingActionButton.transitionName)
