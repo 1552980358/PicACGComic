@@ -111,7 +111,7 @@ class AccountDetailFragment: BaseFragment<FragmentAccountDetailBinding>() {
         binding.accountDetail = accountDetail
     }
     
-    override fun setUpToolbar() {
+    override fun setUpActionBar() {
         setSupportActionBar(toolbar)
         toolbar.setupWithNavController(findNavController())
     }

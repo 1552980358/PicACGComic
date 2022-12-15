@@ -86,7 +86,7 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
         navController = readFragment.findNavController()
     }
     
-    override fun setUpToolbar() {
+    override fun setUpActionBar() {
         setSupportActionBar(toolbar)
         setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener { navController.navigateUp() }

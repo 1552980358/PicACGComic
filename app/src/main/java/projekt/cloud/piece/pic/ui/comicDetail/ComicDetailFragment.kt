@@ -143,7 +143,7 @@ class ComicDetailFragment: BaseFragment<FragmentComicDetailBinding>(), OnClickLi
         binding.comicDetail = comicDetail
     }
     
-    override fun setUpToolbar() {
+    override fun setUpActionBar() {
         setSupportActionBar(bottomAppBar)
         toolbar.setupWithNavController(navController)
     }

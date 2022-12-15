@@ -122,7 +122,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
         binding.applicationConfigs = applicationConfigs
     }
     
-    override fun setUpToolbar() {
+    override fun setUpActionBar() {
         setSupportActionBar(bottomAppBar)
     }
     

@@ -38,7 +38,7 @@ class SearchFragment: BaseFragment<FragmentSearchBinding>() {
         binding.lifecycleOwner = viewLifecycleOwner
     }
     
-    override fun setUpToolbar() {
+    override fun setUpActionBar() {
         setSupportActionBar(searchBar)
         searchBar.setNavigationIcon(R.drawable.ic_round_arrow_back_24)
         searchBar.setNavigationOnClickListener {

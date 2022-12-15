@@ -118,7 +118,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.i(this::class.java.simpleName, "onViewCreated")
-        setUpToolbar()
+        setUpActionBar()
         setUpViews()
         applicationConfigs.account.observe(viewLifecycleOwner) {
             if (it == null) {
@@ -194,7 +194,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
         return true
     }
     
-    protected open fun setUpToolbar() = Unit
+    protected open fun setUpActionBar() = Unit
     
     protected abstract fun setUpViews()
     protected open val containerTransitionName: String?

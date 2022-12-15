@@ -32,7 +32,7 @@ class AccountLoginFragment: BaseFragment<FragmentAccountLoginBinding>() {
         navController = requireParentFragment().findNavController()
     }
     
-    override fun setUpToolbar() {
+    override fun setUpActionBar() {
         setSupportActionBar(toolbar)
         toolbar.setupWithNavController(navController)
     }

@@ -158,7 +158,7 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
         binding.comics = comics
     }
     
-    override fun setUpToolbar() {
+    override fun setUpActionBar() {
         setSupportActionBar(toolbar)
         setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener { navController.navigateUp() }
