@@ -8,6 +8,7 @@
         <import type="android.view.View" />
         <import type="projekt.cloud.piece.pic.api.ApiCategories.CategoriesResponseBody.Data.Category" />
         <import type="android.graphics.Bitmap" />
+        <import type="androidx.databinding.ObservableArrayMap" />
         
         <variable
             name="onClick"
@@ -16,8 +17,8 @@
             name="category"
             type="Category" />
         <variable
-            name="bitmap"
-            type="Bitmap" />
+            name="covers"
+            type="ObservableArrayMap&lt;String, Bitmap>" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -41,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
                 app:shapeAppearance="@style/Widget.SquareImageView.RoundCorner"
-                bitmap="@{bitmap}" />
+                bitmap="@{covers[category.title]}" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/material_text_view"

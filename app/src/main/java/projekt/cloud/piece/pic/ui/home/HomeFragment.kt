@@ -12,6 +12,7 @@ import androidx.core.view.marginBottom
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.widget.addTextChangedListener
+import androidx.databinding.ObservableArrayMap
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -58,7 +59,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
     class Categories: ViewModel() {
         
         val categories = mutableListOf<Category>()
-        val thumbs = mutableMapOf<String, Bitmap?>()
+        val covers = ObservableArrayMap<String, Bitmap?>()
         
         fun requestCategories(token: String, complete: (Int, String?) -> Unit) {
             viewModelScope.ui {
@@ -76,13 +77,18 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
                     return@ui complete.invoke(CATEGORIES_CODE_ERROR_REQUEST, null)
                 }
                 
-                categories.addAll(
-                    response.decodeJson<CategoriesResponseBody>()
-                        .data
-                        .categories
-                        .filter { !it.isWeb }
-                )
+                val categoryList = response.decodeJson<CategoriesResponseBody>()
+                    .data
+                    .categories
+                    .filter { !it.isWeb }
+                categories.addAll(categoryList)
                 
+                io {
+                    categoryList.forEach { category ->
+                        covers[category.title] = category.thumb.bitmap
+                    }
+                }
+    
                 complete.invoke(CATEGORIES_CODE_SUCCESS, null)
             }
             
@@ -134,7 +140,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
         
         floatingActionButton.setOnClickListener(this)
     
-        val recyclerViewAdapter = RecyclerViewAdapter(categories.categories, categories.thumbs) { view, category ->
+        val recyclerViewAdapter = RecyclerViewAdapter(categories.categories, categories.covers) { view, category ->
             if (isAuthSuccess) {
                 navController.navigate(
                     HomeFragmentDirections.actionHomeToList(category.title, view.transitionName),
