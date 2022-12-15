@@ -9,6 +9,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.marginBottom
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
+import androidx.databinding.ObservableArrayMap
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +24,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.Callback
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
 import okhttp3.Response
 import projekt.cloud.piece.pic.ComicDetail
@@ -78,7 +80,7 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
     private lateinit var navController: NavController
     
     private val docs = arrayListOf<Doc>()
-    private val images = mutableMapOf<String, Bitmap?>()
+    private val images = ObservableArrayMap<String, Bitmap?>()
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,12 +93,13 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
         toolbar.setNavigationOnClickListener {
             navController.navigateUp()
         }
-        toolbar.title = comicDetail.docList.find { it.order == readComic.order }?.title
-        toolbar.subtitle = comicDetail.comic.value?.title
     }
     
     override fun setUpViews() {
-        recyclerView.adapter = RecyclerViewAdapter(lifecycleScope, docs, images)
+        binding.title = comicDetail.docList.find { it.order == readComic.order }?.title
+        binding.subtitle = comicDetail.comic.value?.title
+        
+        recyclerView.adapter = RecyclerViewAdapter(docs, images)
         recyclerView.addOnScrollListener(object: OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 when {
@@ -207,12 +210,14 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
         }
         
         val order = readComic.order
+        var newPageImage: List<Doc>
         
         lifecycleScope.ui {
             var httpResponse: HttpResponse
             var response: Response?
             
             var page = 0
+            val jobs = arrayListOf<Job>()
             
             while (true) {
                 httpResponse = withContext(io) {
@@ -237,21 +242,38 @@ class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClick
                     return@ui
                 }
                 
-                
                 val episode = withContext(io) {
                     response.decodeJson<EpisodeContentResponseBody>()
                 }
-                
-                docs.addAll(episode.data.pages.docs)
-                
+    
+                newPageImage = episode.data.pages.docs
+                docs.addAll(newPageImage)
+                jobs.add(
+                    io {
+                        newPageImage.forEach { doc ->
+                            doc.media.bitmap?.let { bitmap -> addImage(doc._id, bitmap) }
+                        }
+                    }
+                )
                 recyclerView.adapterAs<RecyclerViewAdapter>().notifyListUpdate()
                 
                 if (episode.data.pages.page == episode.data.pages.pages) {
+                    jobs.forEach {
+                        if (it.isActive) {
+                            it.join()
+                        }
+                    }
+                    
                     break
                 }
             }
             
         }
+    }
+    
+    @Synchronized
+    private fun addImage(id: String, bitmap: Bitmap) {
+        images[id] = bitmap
     }
     
     private fun updateExtendedFabText() {

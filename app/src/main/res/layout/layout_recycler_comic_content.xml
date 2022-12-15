@@ -2,9 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     
     <data>
+        <import type="androidx.databinding.ObservableArrayMap" />
+        <import type="android.graphics.Bitmap" />
+        
         <variable
-            name="bitmap"
-            type="android.graphics.Bitmap" />
+            name="id"
+            type="String" />
+        
+        <variable
+            name="images"
+            type="ObservableArrayMap&lt;String, Bitmap>" />
+        
     </data>
     
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -16,7 +24,7 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
-            bitmap="@{bitmap}" />
+            bitmap="@{images[id]}" />
     
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
