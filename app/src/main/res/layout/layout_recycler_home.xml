@@ -31,32 +31,34 @@
         app:cardCornerRadius="@dimen/md_spec_radius_12"
         app:cardElevation="0dp"
         app:strokeWidth="0dp">
-
-        <RelativeLayout
+    
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
+        
             <projekt.cloud.piece.pic.widget.RatioImageView
                 android:id="@+id/app_compat_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
                 app:shapeAppearance="@style/Widget.SquareImageView.RoundCorner"
+                app:layout_constraintTop_toTopOf="parent"
                 bitmap="@{covers[category.title]}" />
-
+        
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/material_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/app_compat_image_view"
                 android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
                 android:layout_marginVertical="@dimen/md_spec_spacing_ver_8"
                 android:maxLines="2"
                 android:text="@{category.title}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:textColor="?attr/colorOnSurfaceVariant" />
-
-        </RelativeLayout>
+                android:textColor="?attr/colorOnSurfaceVariant"
+                app:layout_constraintTop_toBottomOf="@id/app_compat_image_view"
+                app:layout_constraintBottom_toBottomOf="parent" />
+    
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 </layout>
