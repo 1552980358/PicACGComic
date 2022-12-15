@@ -1,5 +1,6 @@
 package projekt.cloud.piece.pic.util
 
+import android.util.Log
 import androidx.annotation.IntRange
 import okhttp3.Headers
 import okhttp3.Headers.Companion.toHeaders
@@ -57,16 +58,31 @@ object HttpUtil {
                         headers: Headers,
                         requestBody: RequestBody? = null): HttpResponse {
         val httpResponse = HttpResponse()
+        Log.i("HttpUtil.request", "method=$method url=$url")
         try {
             httpResponse.response = httpRequest(url, method, headers, requestBody)
         } catch (e: IOException) {
-            httpResponse.code = HTTP_REQUEST_CODE_IO_EXCEPTION
-            httpResponse.message = e.toString()
+            handleException(
+                httpResponse,
+                method,
+                HTTP_REQUEST_CODE_IO_EXCEPTION,
+                Log.getStackTraceString(e)
+            )
         } catch (e: Exception) {
-            httpResponse.code = HTTP_REQUEST_CODE_EXCEPTION
-            httpResponse.message = e.toString()
+            handleException(
+                httpResponse,
+                method,
+                HTTP_REQUEST_CODE_EXCEPTION,
+                Log.getStackTraceString(e)
+            )
         }
         return httpResponse
+    }
+    
+    private fun handleException(httpResponse: HttpResponse, method: String, code: Int, stackTrace: String) {
+        httpResponse.code = code
+        httpResponse.message = stackTrace
+        Log.e("HttpUtil.request.$method", stackTrace)
     }
     
     private fun httpRequest(url: String,
