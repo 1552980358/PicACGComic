@@ -34,7 +34,11 @@
 }
 
 # For reflection of Toolbar
--keepclassmembernames class androidx.appcompat.widget.Toolbar {
+-keepclassmembernames class androidx.appcompat.widget.Toolbar extends android.view.ViewGroup {
     private void ensureLogoView();
     private android.widget.ImageView mLogoView;
+}
+
+-keep class projekt.cloud.piece.pic.databinding.** extends androidx.databinding.ViewDataBinding {
+    public static inflate(android.view.LayoutInflater, android.view.ViewGroup, boolean);
 }
