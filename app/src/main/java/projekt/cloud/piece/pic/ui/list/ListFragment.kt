@@ -12,7 +12,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
@@ -48,6 +47,7 @@ import projekt.cloud.piece.pic.util.CodeBook.LIST_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.CompleteCallback
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
+import projekt.cloud.piece.pic.util.FragmentUtil.setDisplayHomeAsUpEnabled
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.HttpUtil.HTTP_RESPONSE_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.RecyclerViewUtil.adapterAs
@@ -160,16 +160,13 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
     
     override fun setUpToolbar() {
         setSupportActionBar(toolbar)
-        toolbar.setupWithNavController(navController)
+        setDisplayHomeAsUpEnabled(true)
+        toolbar.setNavigationOnClickListener { navController.navigateUp() }
+        toolbar.title = category
     }
     
     override fun setUpViews() {
         postponeEnterTransition()
-        
-        val category = category
-        when {
-            !category.isNullOrBlank() -> toolbar.title = category
-        }
         val recyclerViewAdapter = RecyclerViewAdapter(docs, covers) { view, doc ->
             if (isAuthSuccess) {
                 requireCaching = true
