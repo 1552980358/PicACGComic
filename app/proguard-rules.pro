@@ -42,3 +42,7 @@
 -keep class projekt.cloud.piece.pic.databinding.** extends androidx.databinding.ViewDataBinding {
     public static inflate(android.view.LayoutInflater, android.view.ViewGroup, boolean);
 }
+
+-keep class projekt.cloud.piece.pic.databinding.** extends androidx.viewbinding.ViewBinding {
+    public static inflate(android.view.LayoutInflater, android.view.ViewGroup, boolean);
+}
