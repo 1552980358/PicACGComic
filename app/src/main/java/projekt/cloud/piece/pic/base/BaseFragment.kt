@@ -1,6 +1,7 @@
 package projekt.cloud.piece.pic.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -79,6 +80,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     protected open fun setViewModels(binding: VB) = Unit
     
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.i(this::class.java.simpleName, "onCreate")
         super.onCreate(savedInstanceState)
         
         requireActivity().onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
@@ -104,6 +106,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     }
     
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        Log.i(this::class.java.simpleName, "onCreateView")
         _binding = inflateViewBinding(inflater, container)
         val binding = binding
         if (binding is ViewDataBinding) {
@@ -114,6 +117,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     }
     
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.i(this::class.java.simpleName, "onViewCreated")
         setUpToolbar()
         setUpViews()
         applicationConfigs.account.observe(viewLifecycleOwner) {
@@ -155,7 +159,33 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
         }
     }
     
+    override fun onStart() {
+        Log.i(this::class.java.simpleName, "onStart")
+        super.onStart()
+    }
+    
+    override fun onResume() {
+        Log.i(this::class.java.simpleName, "onResume")
+        super.onResume()
+    }
+    
+    override fun onPause() {
+        Log.i(this::class.simpleName, "onPause")
+        super.onPause()
+    }
+    
+    override fun onStop() {
+        Log.i(this::class.simpleName, "onStop")
+        super.onStop()
+    }
+    
+    override fun onDestroy() {
+        Log.i(this::class.simpleName, "onDestroyView")
+        super.onDestroy()
+    }
+    
     override fun onDestroyView() {
+        Log.i(this::class.simpleName, "onDestroyView")
         _binding = null
         super.onDestroyView()
     }
@@ -194,6 +224,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     
     @UiThread
     open fun onAuthComplete(code: Int, codeMessage: String?, account: Account?) {
+        Log.i(this::class.java.simpleName, "onAuthComplete")
         isAuthComplete = true
     }
     
