@@ -119,6 +119,7 @@ class AccountDetailFragment: BaseFragment<FragmentAccountDetailBinding>() {
     override fun setUpViews() {
         addMenuProvider(object: MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menu.clear()
                 menuInflater.inflate(R.menu.menu_account_detail, menu)
                 if (menu is MenuBuilder) {
                     @Suppress("RestrictedApi")

@@ -49,6 +49,11 @@
     <string name="list_snack_request_action_retry">Retry</string>
     <string name="list_snack_request_server_rejected">Request rejected by server: %s</string>
     <string name="list_snack_request_unknown_code">Unknown Error: Unknown code [%d] - %s</string>
+    <string name="list_menu_sort">Sorting</string>
+    <string name="list_menu_sort_new">New to Old</string>
+    <string name="list_menu_sort_old">Old to New</string>
+    <string name="list_menu_sort_heart">Heart</string>
+    <string name="list_menu_sort_fav">Favourite</string>
 
     <string name="comic_detail_transition">comic_detail_transition</string>
     <string name="comic_detail_transition_prefix">comic_detail_transition_</string>

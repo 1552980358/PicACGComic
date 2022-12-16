@@ -145,7 +145,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
     
         val recyclerViewAdapter = RecyclerViewAdapter(categories.categories, categories.covers) { view, category ->
             if (isAuthSuccess) {
-                comics.requestCategory(token, category.title, comics.sort)
+                comics.requestCategory(token, category.title)
                 navController.navigate(
                     HomeFragmentDirections.toListFragment(view.transitionName),
                     FragmentNavigatorExtras(view to view.transitionName)

@@ -10,7 +10,8 @@ import projekt.cloud.piece.pic.api.ApiComics.comics
 import projekt.cloud.piece.pic.api.ApiComics.ComicsResponseBody
 import projekt.cloud.piece.pic.api.ApiComics.ComicsResponseBody.Data.Comics.Doc
 import projekt.cloud.piece.pic.api.CommonBody.ErrorResponseBody
-import projekt.cloud.piece.pic.api.CommonParam.SORT_NEW_TO_OLD
+import projekt.cloud.piece.pic.api.CommonParam.ComicsSort
+import projekt.cloud.piece.pic.api.CommonParam.ComicsSort.NEW_TO_OLD
 import projekt.cloud.piece.pic.base.BaseTaskViewModel
 import projekt.cloud.piece.pic.util.CodeBook
 import projekt.cloud.piece.pic.util.CodeBook.LIST_CODE_ERROR_CONNECTION
@@ -28,7 +29,7 @@ class Comics: BaseTaskViewModel() {
         private const val PAGE_DEFAULT_VALUE = 0
         private const val HAS_MORE_PAGE_DEFAULT_VALUE = true
         private const val KEY_DEFAULT_VALUE = ""
-        private const val SORT_DEFAULT_VALUE = SORT_NEW_TO_OLD
+        private val SORT_DEFAULT_VALUE = NEW_TO_OLD
     }
     
     private var page = PAGE_DEFAULT_VALUE
@@ -42,21 +43,22 @@ class Comics: BaseTaskViewModel() {
     var sort = SORT_DEFAULT_VALUE
         private set
     
-    fun changeSort(token: String, sort: String) =
-        requestCategory(token, key, sort)
-    
-    fun requestCategory(token: String, category: String, sort: String) {
-        Log.i("Comics", "requestCategory category=$category sort=$sort")
-        if (key != category) {
-            key = category
-        }
+    fun changeCategorySort(token: String, sort: ComicsSort) {
+        Log.i("Comics", "changeSort category=$key sort=${sort.sortName}")
         if (this.sort != sort) {
             comicList.clear()
             coverImages.clear()
             page = PAGE_DEFAULT_VALUE
             hasMorePage = HAS_MORE_PAGE_DEFAULT_VALUE
-            
             this.sort = sort
+        }
+        requestCategory(token, key)
+    }
+    
+    fun requestCategory(token: String, category: String) {
+        Log.i("Comics", "requestCategory category=$category sort=${sort.sortName}")
+        if (key != category) {
+            key = category
         }
         requestCategoryPage(token)
     }
@@ -66,7 +68,7 @@ class Comics: BaseTaskViewModel() {
             Log.i("Comics", "requestCategory category=$key sort=$sort page=${page.plus(1)}")
             viewModelScope.ui {
                 val httpResponse = withContext(io) {
-                    comics(token, ++page, key, sort)
+                    comics(token, ++page, key, sort.sortName)
                 }
                 val response = httpResponse.response
                 if (httpResponse.code != CodeBook.HTTP_REQUEST_CODE_SUCCESS || response == null) {

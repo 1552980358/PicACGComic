@@ -37,6 +37,11 @@ class RecyclerViewAdapter(private val comicList: List<Doc>,
         docSize = comicList.size
     }
     
+    fun notifyListReset() {
+        notifyItemRangeRemoved(0, docSize)
+        docSize = 0
+    }
+    
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         RecyclerViewHolder(parent)
     
