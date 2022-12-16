@@ -5,7 +5,7 @@
     <data>
         <variable
             name="comics"
-            type="projekt.cloud.piece.pic.ui.list.ListFragment.Comics" />
+            type="projekt.cloud.piece.pic.Comics" />
     </data>
     
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -23,7 +23,7 @@
                 android:id="@+id/material_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:title="@{comics.category}"/>
+                app:title="@{comics.key}" />
         
         </com.google.android.material.appbar.AppBarLayout>
         

@@ -13,6 +13,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.ObservableArrayMap
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -30,6 +31,7 @@ import com.google.android.material.search.SearchView
 import com.google.android.material.search.SearchView.TransitionListener
 import com.google.android.material.transition.platform.Hold
 import kotlinx.coroutines.withContext
+import projekt.cloud.piece.pic.Comics
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.ApiCategories.CategoriesResponseBody
 import projekt.cloud.piece.pic.api.ApiCategories.CategoriesResponseBody.Data.Category
@@ -110,6 +112,7 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
     private lateinit var navController: NavController
 
     private val categories: Categories by viewModels()
+    private val comics: Comics by activityViewModels()
     
     override val snackAnchor: View
         get() = bottomAppBar
@@ -142,8 +145,9 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
     
         val recyclerViewAdapter = RecyclerViewAdapter(categories.categories, categories.covers) { view, category ->
             if (isAuthSuccess) {
+                comics.requestCategory(token, category.title, comics.sort)
                 navController.navigate(
-                    HomeFragmentDirections.actionHomeToList(category.title, view.transitionName),
+                    HomeFragmentDirections.toListFragment(view.transitionName),
                     FragmentNavigatorExtras(view to view.transitionName)
                 )
             }
