@@ -234,9 +234,8 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     protected open fun sendSnack(message: String,
                                  length: Int = LENGTH_INDEFINITE,
                                  @StringRes resId: Int? = null,
-                                 action: OnClickListener? = null) {
-        makeSnack(message, length, resId, action).show()
-    }
+                                 action: OnClickListener? = null) =
+        makeSnack(message, length, resId, action).apply { show() }
     
     protected open fun makeSnack(message: String, length: Int = LENGTH_INDEFINITE, @StringRes resId: Int?, action: OnClickListener?) =
         binding.root.snack(message, length)

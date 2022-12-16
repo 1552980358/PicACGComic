@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView.State
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.platform.Hold
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import projekt.cloud.piece.pic.ComicDetail
@@ -71,6 +72,8 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
     private var requireCaching = true
 
     private lateinit var navController: NavController
+    
+    private var snackbar: Snackbar? = null
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -197,6 +200,8 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
         })
         
         comics.taskReceipt.observe(viewLifecycleOwner) {
+            snackbar?.dismiss()
+            snackbar = null
             it?.let {
                 when (it.code) {
                     LIST_CODE_SUCCESS -> { /** List content load success **/ }
@@ -205,21 +210,21 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
                         recyclerView.invalidateItemDecorations()
                     }
                     LIST_CODE_ERROR_CONNECTION -> {
-                        sendSnack(getString(R.string.list_snack_login_connection_failed, it.message), resId = R.string.list_snack_request_action_retry) {
+                        snackbar = sendSnack(getString(R.string.list_snack_login_connection_failed, it.message), resId = R.string.list_snack_request_action_retry) {
                             val category = comics.key
                             comics.clear()
                             comics.requestCategory(token, category)
                         }
                     }
                     LIST_CODE_ERROR_REJECTED -> {
-                        sendSnack(getString(R.string.list_snack_request_server_rejected, it.message), resId = R.string.list_snack_request_action_retry) {
+                        snackbar = sendSnack(getString(R.string.list_snack_request_server_rejected, it.message), resId = R.string.list_snack_request_action_retry) {
                             val category = comics.key
                             comics.clear()
                             comics.requestCategory(token, category)
                         }
                     }
                     else -> {
-                        sendSnack(getString(R.string.list_snack_request_unknown_code, it.code, it.message), resId = R.string.list_snack_request_action_retry) {
+                        snackbar = sendSnack(getString(R.string.list_snack_request_unknown_code, it.code, it.message), resId = R.string.list_snack_request_action_retry) {
                             val category = comics.key
                             comics.clear()
                             comics.requestCategory(token, category)
