@@ -27,10 +27,9 @@ import projekt.cloud.piece.pic.util.HttpUtil.HTTP_RESPONSE_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.HttpUtil.HttpResponse
 import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
 
-class ComicDetail(override val taskReceiptIssuer: String = NAME) : BaseTaskViewModel() {
+class ComicDetail : BaseTaskViewModel() {
     
     companion object {
-        const val NAME = "ComicDetail"
         const val COMIC_ID_DEFAULT_VALUE = ""
     }
     

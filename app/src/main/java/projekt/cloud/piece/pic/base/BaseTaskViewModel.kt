@@ -14,7 +14,7 @@ abstract class BaseTaskViewModel: ViewModel() {
     fun setTaskReceipt(code: Int, message: String?) {
         _taskReceipt.value = TaskReceipt(taskReceiptIssuer, code, message)
     }
-    protected abstract val taskReceiptIssuer: String
+    private val taskReceiptIssuer = this::class.java.simpleName
     open fun clear(lifecycleOwner: LifecycleOwner) {
         _taskReceipt.value = null
     }
