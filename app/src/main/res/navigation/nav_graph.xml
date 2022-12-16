@@ -21,11 +21,8 @@
             android:id="@+id/action_home_to_account"
             app:destination="@id/account" />
         <action
-            android:id="@+id/action_home_to_list"
+            android:id="@+id/to_list_fragment"
             app:destination="@id/list">
-            <argument
-                android:name="category"
-                app:argType="string" />
             <argument
                 android:name="list_transition"
                 app:argType="string" />
