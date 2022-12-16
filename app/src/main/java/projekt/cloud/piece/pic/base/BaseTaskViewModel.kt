@@ -16,6 +16,7 @@ abstract class BaseTaskViewModel: ViewModel() {
     }
     private val taskReceiptIssuer = this::class.java.simpleName
     open fun clear(lifecycleOwner: LifecycleOwner) {
+        _taskReceipt.removeObservers(lifecycleOwner)
         _taskReceipt.value = null
     }
     
