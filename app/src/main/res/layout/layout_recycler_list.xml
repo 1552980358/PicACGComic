@@ -30,7 +30,6 @@
         android:layout_height="wrap_content"
         android:foreground="?attr/selectableItemBackground"
         android:onClick="@{(view) -> onClick.invoke(view, comic)}"
-        android:transitionName="@{@string/comic_detail_transition_prefix + comic._id}"
         app:cardBackgroundColor="?attr/colorSurfaceVariant"
         app:cardCornerRadius="@dimen/md_spec_radius_12"
         app:cardElevation="0dp"
