@@ -155,7 +155,7 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
             if (isAuthSuccess) {
                 requireCaching = false
                 comicDetail.setCover(coverImages[doc._id])
-                comicDetail.requestComic(token, doc.id)
+                comicDetail.requestComic(token, doc._id)
                 navController.navigate(
                     ListFragmentDirections.actionListToComicDetail(doc._id, view.transitionName),
                     FragmentNavigatorExtras(view to view.transitionName)
