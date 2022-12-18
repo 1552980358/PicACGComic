@@ -7,10 +7,5 @@
     </style>
 
     <style name="Theme.PicACGComic" parent="Base.Theme.PicACGComic" />
-
-    <style name="Widget.SquareImageView.RoundCorner" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">@dimen/md_spec_radius_12</item>
-    </style>
-
+    
 </resources>

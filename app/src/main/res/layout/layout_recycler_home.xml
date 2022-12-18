@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
-                app:shapeAppearance="@style/Widget.SquareImageView.RoundCorner"
+                app:shapeAppearance="@style/Widget.ShapeableImageView.RoundCorners.TopBottom"
                 app:layout_constraintTop_toTopOf="parent"
                 bitmap="@{covers[category.title]}" />
         

@@ -30,7 +30,7 @@
                 android:id="@+id/app_compat_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:shapeAppearance="@style/Widget.SquareImageView.RoundCorner"
+                app:shapeAppearance="@style/Widget.ShapeableImageView.RoundCorners.TopBottom"
                 app:ratioX="3"
                 app:ratioY="4"
                 bitmap="@{bitmap}" />
