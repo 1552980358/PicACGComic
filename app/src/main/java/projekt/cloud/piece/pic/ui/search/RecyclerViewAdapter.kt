@@ -43,8 +43,8 @@ class RecyclerViewAdapter(
     }
     
     fun notifyListReset() {
-        notifyItemRangeRemoved(docSize, docSize)
-        docSize = comicList.size
+        notifyItemRangeRemoved(0, docSize)
+        docSize = 0
     }
     
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
