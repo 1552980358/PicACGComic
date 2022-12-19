@@ -27,7 +27,6 @@ import projekt.cloud.piece.pic.util.CodeBook.SEARCH_CODE_PART_SUCCESS
 import projekt.cloud.piece.pic.util.CodeBook.SEARCH_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
-import projekt.cloud.piece.pic.util.HttpUtil
 import projekt.cloud.piece.pic.util.HttpUtil.HTTP_RESPONSE_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
 
@@ -121,6 +120,20 @@ class Comics: BaseTaskViewModel() {
         }
     }
     
+    fun requestSearch(token: String, searchKey: String) {
+        Log.i(TAG, "requestSearch searchKey=$searchKey sort=${sort.sortName}")
+        if (key != searchKey) {
+            key = searchKey
+        }
+        val oldJob = job
+        job = viewModelScope.ui {
+            oldJob?.cancelAndJoin()
+            clear()
+            requestSearchPageInternal(token)
+            job = null
+        }
+    }
+    
     fun changeSearchSort(token: String, sort: ComicsSort) {
         Log.i(TAG, "changeSearchSort searchKey=$key sort=${sort.sortName}")
         this.sort = sort
@@ -132,20 +145,6 @@ class Comics: BaseTaskViewModel() {
         val oldJob = job
         job = viewModelScope.ui {
             oldJob?.join()
-            requestSearchPageInternal(token)
-            job = null
-        }
-    }
-    
-    fun requestSearch(token: String, searchKey: String) {
-        Log.i(TAG, "requestSearch searchKey=$searchKey sort=${sort.sortName}")
-        val oldJob = job
-        if (key != searchKey) {
-            key = searchKey
-        }
-        job = viewModelScope.ui {
-            oldJob?.cancelAndJoin()
-            clear()
             requestSearchPageInternal(token)
             job = null
         }

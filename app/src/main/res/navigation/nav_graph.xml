@@ -30,15 +30,23 @@
     </fragment>
 
     <fragment
-        android:id="@+id/search"
-        android:name="projekt.cloud.piece.pic.ui.search.SearchFragment"
-        tools:layout="@layout/fragment_search" />
-
-    <fragment
         android:id="@+id/account"
         android:name="projekt.cloud.piece.pic.ui.account.AccountFragment"
         android:label="@string/account_title"
         tools:layout="@layout/fragment_account" />
+    
+    <fragment
+        android:id="@+id/search"
+        android:name="projekt.cloud.piece.pic.ui.search.SearchFragment"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/to_comic_detail_fragment"
+            app:destination="@id/comic_detail">
+            <argument
+                android:name="comic_detail_transition"
+                app:argType="string" />
+        </action>
+    </fragment>
 
     <fragment
         android:id="@+id/list"

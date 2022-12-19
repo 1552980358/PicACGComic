@@ -13,10 +13,6 @@
     <string name="home_snack_category_unknown_exception">Exception Thrown: %s</string>
     <string name="home_snack_action_login">Login</string>
     <string name="home_snack_action_retry">Retry</string>
-    
-    <string name="search_title">Search</string>
-    <string name="search_transition">search_transition</string>
-    <string name="search_keyword">search_keyword</string>
 
     <string name="account_transition">account_transition</string>
     <string name="account_title">Account</string>
@@ -39,8 +35,27 @@
     <string name="account_detail_snack_action_retry">Retry</string>
     <string name="account_detail_menu_exit">Logout</string>
     
+    <string name="search_title">Search</string>
+    <string name="search_transition">search_transition</string>
+    <string name="search_keyword">search_keyword</string>
+    <string name="search_snack_category_not_specified">Category not specified</string>
+    <string name="search_snack_login_no_account">No Account Logged in</string>
+    <string name="search_snack_login_invalid_account">Invalid Account / Password</string>
+    <string name="search_snack_login_connection_failed">Connection Failed: %s</string>
+    <string name="search_snack_request_connection_failed">Connection Failed: %s</string>
+    <string name="search_snack_request_action_retry">Retry</string>
+    <string name="search_snack_request_server_rejected">Request rejected by server: %s</string>
+    <string name="search_snack_request_unknown_code">Unknown Error: Unknown code [%d] - %s</string>
+    <string name="search_snack_action_login">Login</string>
+    <string name="search_snack_action_retry">Retry</string>
+    <string name="search_menu_sort">Sorting</string>
+    <string name="search_menu_sort_new">New to Old</string>
+    <string name="search_menu_sort_old">Old to New</string>
+    <string name="search_menu_sort_heart">Heart</string>
+    <string name="search_menu_sort_fav">Favourite</string>
+    
     <string name="list_transition">list_transition</string>
-    <string name="list_transition_prefix">list_transition_</string>
+    <string name="list_transition_item">list_transition_%s</string>
     <string name="list_snack_category_not_specified">Category not specified</string>
     <string name="list_snack_login_no_account">No Account Logged in</string>
     <string name="list_snack_login_invalid_account">Invalid Account / Password</string>
