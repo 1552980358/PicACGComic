@@ -4,12 +4,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     
     <data>
+        <import type="kotlin.jvm.functions.Function2" />
+        <import type="kotlin.Unit" />
+        <import type="android.view.View" />
+        <import type="androidx.databinding.ObservableArrayMap" />
+        <import type="projekt.cloud.piece.pic.api.ApiComics.AdvancedSearchResponseBody.Data.Comics.Doc" />
+        <import type="android.graphics.Bitmap" />
+        
         <variable
-            name="doc"
-            type="projekt.cloud.piece.pic.api.ApiComics.ComicsResponseBody.Data.Comics.Doc" />
+            name="onClick"
+            type="Function2&lt;View, Doc, Unit>" />
+        
         <variable
-            name="bitmap"
-            type="android.graphics.Bitmap" />
+            name="comic"
+            type="Doc" />
+        
+        <variable
+            name="coverImages"
+            type="ObservableArrayMap&lt;String, Bitmap>" />
     </data>
     
     <com.google.android.material.card.MaterialCardView
@@ -17,6 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:foreground="?attr/selectableItemBackground"
+        android:onClick="@{(view) -> onClick.invoke(view, comic)}"
         app:cardBackgroundColor="?attr/colorSurfaceVariant"
         app:cardCornerRadius="@dimen/md_spec_radius_12"
         app:cardElevation="0dp"
@@ -33,7 +46,7 @@
                 app:shapeAppearance="@style/Widget.ShapeableImageView.RoundCorners.TopBottom"
                 app:ratioX="3"
                 app:ratioY="4"
-                bitmap="@{bitmap}" />
+                bitmap="@{coverImages[comic.id]}" />
             
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -47,14 +60,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/app_compat_image_view"
-                    android:text="@{doc.title}"
+                    android:text="@{comic.title}"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                     android:textColor="?attr/colorOnSurfaceVariant" />
                 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{doc.author}"
+                    android:text="@{comic.author}"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
             
             </androidx.appcompat.widget.LinearLayoutCompat>
