@@ -28,7 +28,7 @@ import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
-import com.google.android.material.search.SearchView.TransitionListener
+import com.google.android.material.search.SearchView.TransitionState.HIDDEN
 import com.google.android.material.transition.platform.Hold
 import kotlinx.coroutines.withContext
 import projekt.cloud.piece.pic.Comics
@@ -193,21 +193,17 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
         searchView.editText.setOnEditorActionListener { _, _, _ ->
             searchView.text?.toString()?.let { text ->
                 if (text.isNotBlank()) {
-                    searchView.addTransitionListener(
-                        object: TransitionListener {
-                            override fun onStateChanged(searchView: SearchView,
-                                                        previousState: SearchView.TransitionState,
-                                                        newState: SearchView.TransitionState) {
-                                if (newState == SearchView.TransitionState.HIDDEN) {
-                                    searchView.removeTransitionListener(this)
-                                    navController.navigate(
-                                        HomeFragmentDirections.actionHomeToSearch(text),
-                                        FragmentNavigatorExtras(searchBar to searchBar.transitionName)
-                                    )
-                                }
+                    searchView.addTransitionListener { _, _, newState ->
+                        if (newState == HIDDEN) {
+                            if (isAuthSuccess) {
+                                comics.requestSearch(token, text)
+                                navController.navigate(
+                                    HomeFragmentDirections.actionHomeToSearch(text),
+                                    FragmentNavigatorExtras(searchBar to searchBar.transitionName)
+                                )
                             }
                         }
-                    )
+                    }
                     searchView.hide()
                 }
                 return@setOnEditorActionListener true
