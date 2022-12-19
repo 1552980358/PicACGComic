@@ -157,7 +157,7 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
                 comicDetail.setCover(coverImages[doc._id])
                 comicDetail.requestComic(token, doc._id)
                 navController.navigate(
-                    ListFragmentDirections.actionListToComicDetail(doc._id, view.transitionName),
+                    ListFragmentDirections.toComicDetailFragment(view.transitionName),
                     FragmentNavigatorExtras(view to view.transitionName)
                 )
             }

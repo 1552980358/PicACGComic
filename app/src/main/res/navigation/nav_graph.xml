@@ -45,11 +45,8 @@
         android:name="projekt.cloud.piece.pic.ui.list.ListFragment"
         tools:layout="@layout/fragment_list" >
         <action
-            android:id="@+id/action_list_to_comic_detail"
+            android:id="@+id/to_comic_detail_fragment"
             app:destination="@id/comic_detail">
-            <argument
-                android:name="id"
-                app:argType="string" />
             <argument
                 android:name="comic_detail_transition"
                 app:argType="string" />
