@@ -32,6 +32,8 @@ class Comics: BaseTaskViewModel() {
         private const val HAS_MORE_PAGE_DEFAULT_VALUE = true
         private const val KEY_DEFAULT_VALUE = ""
         private val SORT_DEFAULT_VALUE = NEW_TO_OLD
+        
+        private const val TAG = "Comics"
     }
     
     private var page = PAGE_DEFAULT_VALUE
@@ -48,13 +50,13 @@ class Comics: BaseTaskViewModel() {
     private var job: Job? = null
     
     fun changeCategorySort(token: String, sort: ComicsSort) {
-        Log.i("Comics", "changeSort category=$key sort=${sort.sortName}")
+        Log.i(TAG, "changeSort category=$key sort=${sort.sortName}")
         this.sort = sort
         requestCategory(token, key)
     }
     
     fun requestCategory(token: String, category: String) {
-        Log.i("Comics", "requestCategory category=$category sort=${sort.sortName}")
+        Log.i(TAG, "requestCategory category=$category sort=${sort.sortName}")
         val oldJob = job
         job = viewModelScope.ui {
             oldJob?.cancelAndJoin()
@@ -68,7 +70,7 @@ class Comics: BaseTaskViewModel() {
     }
     
     fun requestCategoryPage(token: String) {
-        Log.i("Comics", "requestCategoryPage category=$key sort=${sort.sortName} page=${page.plus(1)}")
+        Log.i(TAG, "requestCategoryPage category=$key sort=${sort.sortName} page=${page.plus(1)}")
         val oldJob = job
         job = viewModelScope.ui {
             oldJob?.join()
@@ -78,7 +80,7 @@ class Comics: BaseTaskViewModel() {
     }
     
     private suspend fun requestCategoryPageInternal(token: String) {
-        Log.i("Comics", "requestCategoryPageInternal category=$key sort=${sort.sortName} page=${page.plus(1)}")
+        Log.i(TAG, "requestCategoryPageInternal category=$key sort=${sort.sortName} page=${page.plus(1)}")
         val httpResponse = withContext(io) {
             comics(token, ++page, key, sort.sortName)
         }
