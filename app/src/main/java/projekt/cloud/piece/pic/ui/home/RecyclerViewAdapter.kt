@@ -11,6 +11,8 @@ import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.ApiCategories.CategoriesResponseBody.Data.Category
 import projekt.cloud.piece.pic.databinding.LayoutRecyclerHomeBinding
 import projekt.cloud.piece.pic.ui.home.RecyclerViewAdapter.RecyclerViewHolder
+import projekt.cloud.piece.pic.util.ViewHolderUtil.getString
+import projekt.cloud.piece.pic.util.ViewHolderUtil.setContainerTransitionName
 
 class RecyclerViewAdapter(private val categories: List<Category>,
                           private val covers: ObservableArrayMap<String, Bitmap?>,
@@ -23,8 +25,8 @@ class RecyclerViewAdapter(private val categories: List<Category>,
         constructor(layoutInflater: LayoutInflater): this(LayoutRecyclerHomeBinding.inflate(layoutInflater))
 
         fun bind(category: Category, covers: ObservableArrayMap<String, Bitmap?>, onClick: (View, Category) -> Unit) {
+            setContainerTransitionName(getString(R.string.list_transition_item, category.title))
             binding.category = category
-            binding.root.transitionName = binding.root.resources.getString(R.string.list_transition_prefix) + category.title
             binding.onClick = onClick
             binding.covers = covers
         }
