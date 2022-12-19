@@ -4,25 +4,25 @@
     <item
         android:id="@+id/menu_sort"
         android:icon="@drawable/ic_round_sort_24"
-        android:title="@string/list_menu_sort">
+        android:title="@string/menu_sort">
         <menu>
             <group android:checkableBehavior="single">
                 
                 <item
                     android:id="@+id/menu_sort_new"
-                    android:title="@string/list_menu_sort_new" />
+                    android:title="@string/menu_sort_new" />
     
                 <item
                     android:id="@+id/menu_sort_old"
-                    android:title="@string/list_menu_sort_old" />
+                    android:title="@string/menu_sort_old" />
     
                 <item
                     android:id="@+id/menu_sort_heart"
-                    android:title="@string/list_menu_sort_heart" />
+                    android:title="@string/menu_sort_heart" />
     
                 <item
                     android:id="@+id/menu_sort_fav"
-                    android:title="@string/list_menu_sort_fav" />
+                    android:title="@string/menu_sort_fav" />
                 
             </group>
         </menu>
