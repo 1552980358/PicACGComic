@@ -68,6 +68,54 @@ object ApiComics {
         (API_COMICS + comicsParams(page, category, sort)).let {
             httpGet(API_URL + it, generateHeaders(it, GET, token))
         }
+    
+    @Serializable
+    data class AdvancedSearchRequestBody(val categories: String, val keyword: String, val sort: String)
+    
+    @Serializable
+    data class AdvancedSearchResponseBody(val code: Int, val message: String, val data: Data) {
+        
+        @Serializable
+        data class Data(val comics: Comics) {
+            
+            @Serializable
+            data class Comics(val docs: List<Doc>, val total: Int, val limit: Int, val page: Int, val pages: Int) {
+                
+                @Serializable
+                data class Doc(
+                    @SerialName("_id")
+                    val id: String,
+                    val title: String,
+                    val author: String,
+                    val description: String = "",
+                    val chineseTeam: String = "",
+                    val categories: List<String>,
+                    val tags: List<String>,
+                    @SerialName("created_at")
+                    val createDate: String,
+                    @SerialName("updated_at")
+                    val updateDate: String,
+                    val thumb: Image,
+                    val finished: Boolean,
+                    val likesCount: Int,
+                    val totalViews: Int = -1,
+                    val totalLikes: Int = -1,
+                )
+                
+            }
+            
+        }
+        
+    }
+    
+    fun advancedSearch(categories: String, keyword: String, sort: String, page: Int, token: String) =
+        advancedSearchMethod(page).let { method ->
+            httpPost(
+                API_URL + method,
+                generateHeaders(method, POST, token),
+                AdvancedSearchRequestBody(categories, keyword, sort).encodeJson
+            )
+        }
 
     @Serializable
     data class ComicResponseBody(val code: Int, val message: String, val data: Data) {
@@ -187,18 +235,6 @@ object ApiComics {
     fun episodeContent(comicId: String, episodeOrder: Int, page: Int = EPISODE_CONTENT_FIRST_PAGE, token: String) =
         comicEpisodeContentOf(comicId, episodeOrder, page).let { method ->
             httpGet(API_URL + method, generateHeaders(method, GET, token))
-        }
-    
-    @Serializable
-    data class AdvancedSearchRequestBody(val categories: String, val keyword: String, val sort: String)
-    
-    fun advancedSearch(categories: String, keyword: String, sort: String, page: Int, token: String) =
-        advancedSearchMethod(page).let { method ->
-            httpPost(
-                API_URL + method,
-                generateHeaders(method, POST, token),
-                AdvancedSearchRequestBody(categories, keyword, sort).encodeJson
-            )
         }
 
 }

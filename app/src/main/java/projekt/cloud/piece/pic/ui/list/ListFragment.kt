@@ -65,7 +65,7 @@ class ListFragment: BaseFragment<FragmentListBinding>() {
     private val comicDetail: ComicDetail by activityViewModels()
 
     private val comicList: ArrayList<Doc>
-        get() = comics.comicList
+        get() = comics.categoryComicList
     private val coverImages: ObservableArrayMap<String, Bitmap?>
         get() = comics.coverImages
 
