@@ -200,7 +200,12 @@ class Comics: BaseTaskViewModel() {
     fun clear() {
         page = PAGE_DEFAULT_VALUE
         hasMorePage = HAS_MORE_PAGE_DEFAULT_VALUE
-        categoryComicList.clear()
+        if (categoryComicList.isNotEmpty()) {
+            categoryComicList.clear()
+        }
+        if (searchComicList.isNotEmpty()) {
+            searchComicList.clear()
+        }
         coverImages.clear()
     }
     
