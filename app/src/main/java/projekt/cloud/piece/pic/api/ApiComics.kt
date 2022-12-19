@@ -86,7 +86,7 @@ object ApiComics {
                     @SerialName("_id")
                     val id: String,
                     val title: String,
-                    val author: String,
+                    val author: String = "",
                     val description: String = "",
                     val chineseTeam: String = "",
                     val categories: List<String>,
