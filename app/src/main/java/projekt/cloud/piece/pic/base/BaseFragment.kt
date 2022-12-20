@@ -180,7 +180,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     }
     
     override fun onDestroy() {
-        Log.i(this::class.simpleName, "onDestroyView")
+        Log.i(this::class.simpleName, "onDestroy")
         super.onDestroy()
     }
     
