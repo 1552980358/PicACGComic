@@ -63,6 +63,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+    implementation("androidx.core:core-splashscreen:1.0.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.22")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.4.1")
     implementation("com.fasterxml.uuid:java-uuid-generator:4.0.1")

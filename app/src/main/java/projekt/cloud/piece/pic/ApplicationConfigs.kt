@@ -17,11 +17,12 @@ import projekt.cloud.piece.pic.util.StorageUtil.readAccount
 
 class ApplicationConfigs: ViewModel() {
     
-    fun initializeAccount(context: Context) {
+    fun initializeAccount(context: Context, callback: () -> Unit) {
         viewModelScope.ui {
             _account.value = withContext(io) {
                 context.readAccount()
             }
+            callback.invoke()
         }
     }
 
