@@ -76,7 +76,7 @@ class Comics: BaseTaskViewModel() {
     }
     
     fun requestCategoryPage(token: String) {
-        Log.i(TAG, "requestCategoryPage category=$key sort=${sort.sortName} page=${page.plus(1)}")
+        Log.i(TAG, "requestCategoryPage category=$key sort=${sort.sortName}")
         val oldJob = job
         job = viewModelScope.ui {
             oldJob?.join()
@@ -86,9 +86,10 @@ class Comics: BaseTaskViewModel() {
     }
     
     private suspend fun requestCategoryPageInternal(token: String) {
-        Log.i(TAG, "requestCategoryPageInternal category=$key sort=${sort.sortName} page=${page.plus(1)}")
+        page++
+        Log.i(TAG, "requestCategoryPageInternal category=$key sort=${sort.sortName} page=${page}")
         val httpResponse = withContext(io) {
-            comics(token, ++page, key, sort.sortName)
+            comics(token, page, key, sort.sortName)
         }
         val response = httpResponse.response
         if (httpResponse.code != CodeBook.HTTP_REQUEST_CODE_SUCCESS || response == null) {
@@ -141,7 +142,7 @@ class Comics: BaseTaskViewModel() {
     }
     
     fun requestSearchPage(token: String) {
-        Log.i(TAG, "requestSearchPage searchKey=$key sort=${sort.sortName} page=${page.plus(1)}")
+        Log.i(TAG, "requestSearchPage searchKey=$key sort=${sort.sortName}")
         val oldJob = job
         job = viewModelScope.ui {
             oldJob?.join()
@@ -151,9 +152,10 @@ class Comics: BaseTaskViewModel() {
     }
     
     private suspend fun requestSearchPageInternal(token: String) {
-        Log.i(TAG, "requestSearchPageInternal keyword=$key sort=${sort.sortName} page=${page.plus(1)}")
+        page++
+        Log.i(TAG, "requestSearchPageInternal keyword=$key sort=${sort.sortName} page=${page}")
         val httpResponse = withContext(io) {
-            advancedSearch("", key, sort.sortName, ++page, token)
+            advancedSearch("", key, sort.sortName, page, token)
         }
         val response = httpResponse.response
         if (httpResponse.code != CodeBook.HTTP_REQUEST_CODE_SUCCESS || response == null) {
