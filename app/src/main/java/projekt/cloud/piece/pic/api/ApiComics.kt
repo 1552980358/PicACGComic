@@ -129,7 +129,7 @@ object ApiComics {
                              @SerialName("_creator")
                              val creator: Creator,
                              val title: String,
-                             val description: String,
+                             val description: String = "",
                              val thumb: Image,
                              val author: String,
                              val chineseTeam: String = "",
