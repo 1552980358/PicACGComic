@@ -53,11 +53,4 @@ class ApplicationConfigs: ViewModel() {
         this._account.value = account
     }
 
-    private val _token = MutableLiveData<String?>()
-    val token: LiveData<String?>
-        get() = _token
-    fun updateToken(token: String?) {
-        _token.value = token
-    }
-
 }
