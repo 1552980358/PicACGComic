@@ -56,8 +56,6 @@ import projekt.cloud.piece.pic.util.StorageUtil.Account
 class SearchFragment: BaseFragment<FragmentSearchBinding>() {
     
     private companion object {
-        const val ARG_KEYWORD = "keyword"
-        
         private const val GRID_SPAN = 2
     }
 
@@ -149,9 +147,19 @@ class SearchFragment: BaseFragment<FragmentSearchBinding>() {
     override fun setUpViews() {
         postponeEnterTransition()
         
-        searchBar.text = args.getString(ARG_KEYWORD)
-        searchView.editText.addTextChangedListener {
-            searchBar.text = it
+        searchBar.text = comics.key
+        with(searchView.editText) {
+            setText(comics.key)
+            addTextChangedListener { searchBar.text = it }
+            setOnEditorActionListener { _, _, _ ->
+                val keyword = text?.toString()
+                if (!keyword.isNullOrBlank()) {
+                    recyclerView.adapterAs<RecyclerViewAdapter>().notifyListReset()
+                    comics.requestSearch(token, keyword)
+                    searchView.hide()
+                }
+                true
+            }
         }
         
         with(recyclerView) {
@@ -268,13 +276,14 @@ class SearchFragment: BaseFragment<FragmentSearchBinding>() {
             searchView.hide()
             false
         }
-        else -> {
-            setFragmentResult(
-                getString(R.string.result_search),
-                bundleOf(getString(R.string.result_search) to searchBar.text)
-            )
-            super.onBackPressed()
+        else -> super.onBackPressed()
+    }
+    
+    override fun onDestroyView() {
+        getString(R.string.result_search).let { resultSearch ->
+            setFragmentResult(resultSearch, bundleOf(resultSearch to searchBar.text))
         }
+        super.onDestroyView()
     }
 
 }
