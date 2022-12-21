@@ -62,7 +62,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (onBackPressed()) {
-                    isEnabled = false
+                    remove()
                     requireActivity().onBackPressedDispatcher.onBackPressed()
                 }
             }
