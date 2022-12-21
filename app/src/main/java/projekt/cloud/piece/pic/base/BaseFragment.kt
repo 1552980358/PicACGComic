@@ -132,6 +132,8 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     
     protected open val snackAnchor: View?
         get() = null
+    protected open val snackContainer: View
+        get() = binding.root
     
     protected open fun sendSnack(message: String,
                                  length: Int = LENGTH_INDEFINITE,
@@ -140,7 +142,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
         makeSnack(message, length, resId, action).apply { show() }
     
     protected open fun makeSnack(message: String, length: Int = LENGTH_INDEFINITE, @StringRes resId: Int?, action: OnClickListener?) =
-        binding.root.snack(message, length)
+        snackContainer.snack(message, length)
             .apply { resId?.let { setAction(resId, action) } }
             .setAnchorView(snackAnchor)
     
