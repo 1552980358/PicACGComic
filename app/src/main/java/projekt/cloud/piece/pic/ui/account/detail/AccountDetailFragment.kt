@@ -29,7 +29,7 @@ import kotlinx.coroutines.withContext
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.ApiUser.ProfileResponseBody
 import projekt.cloud.piece.pic.api.ApiUser.userProfile
-import projekt.cloud.piece.pic.base.BaseFragment
+import projekt.cloud.piece.pic.base.BaseAuthFragment
 import projekt.cloud.piece.pic.databinding.FragmentAccountDetailBinding
 import projekt.cloud.piece.pic.util.AnimationUtil.animateAlphaTo
 import projekt.cloud.piece.pic.util.CircularCroppedDrawable
@@ -47,7 +47,7 @@ import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
 import projekt.cloud.piece.pic.util.StorageUtil.Account
 import projekt.cloud.piece.pic.util.StorageUtil.saveAccount
 
-class AccountDetailFragment: BaseFragment<FragmentAccountDetailBinding>() {
+class AccountDetailFragment: BaseAuthFragment<FragmentAccountDetailBinding>() {
 
     class AccountDetail: ViewModel() {
         

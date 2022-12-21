@@ -46,7 +46,7 @@ import kotlin.math.abs
 import projekt.cloud.piece.pic.ComicDetail
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.ApiComics.EpisodeResponseBody.Data.Episode
-import projekt.cloud.piece.pic.base.BaseFragment
+import projekt.cloud.piece.pic.base.BaseAuthFragment
 import projekt.cloud.piece.pic.databinding.FragmentComicDetailBinding
 import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_ACCOUNT_INVALID
 import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_CONNECTION
@@ -64,7 +64,7 @@ import projekt.cloud.piece.pic.util.NestedScrollViewUtil.isScrollable
 import projekt.cloud.piece.pic.util.RecyclerViewUtil.adapterAs
 import projekt.cloud.piece.pic.util.StorageUtil.Account
 
-class ComicDetailFragment: BaseFragment<FragmentComicDetailBinding>(), OnClickListener {
+class ComicDetailFragment: BaseAuthFragment<FragmentComicDetailBinding>(), OnClickListener {
     
     private val appBarLayout: AppBarLayout
         get() = binding.appBarLayout

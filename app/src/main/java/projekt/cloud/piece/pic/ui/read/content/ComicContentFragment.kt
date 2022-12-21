@@ -32,7 +32,7 @@ import projekt.cloud.piece.pic.api.ApiComics.EpisodeContentResponseBody
 import projekt.cloud.piece.pic.api.ApiComics.EpisodeContentResponseBody.Data.Pages.Doc
 import projekt.cloud.piece.pic.api.ApiComics.episodeContent
 import projekt.cloud.piece.pic.api.CommonBody.ErrorResponseBody
-import projekt.cloud.piece.pic.base.BaseFragment
+import projekt.cloud.piece.pic.base.BaseAuthFragment
 import projekt.cloud.piece.pic.databinding.FragmentComicContentBinding
 import projekt.cloud.piece.pic.ui.read.ReadComic
 import projekt.cloud.piece.pic.ui.read.ReadFragment
@@ -51,7 +51,7 @@ import projekt.cloud.piece.pic.util.RecyclerViewUtil.adapterAs
 import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
 import projekt.cloud.piece.pic.util.StorageUtil.Account
 
-class ComicContentFragment: BaseFragment<FragmentComicContentBinding>(), OnClickListener {
+class ComicContentFragment: BaseAuthFragment<FragmentComicContentBinding>(), OnClickListener {
 
     private val readFragment: ReadFragment
         get() = findParentAs()

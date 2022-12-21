@@ -34,7 +34,7 @@ import projekt.cloud.piece.pic.api.CommonParam.ComicsSort.MORE_FAVOURITE
 import projekt.cloud.piece.pic.api.CommonParam.ComicsSort.MORE_HEART
 import projekt.cloud.piece.pic.api.CommonParam.ComicsSort.NEW_TO_OLD
 import projekt.cloud.piece.pic.api.CommonParam.ComicsSort.OLD_TO_NEW
-import projekt.cloud.piece.pic.base.BaseFragment
+import projekt.cloud.piece.pic.base.BaseAuthFragment
 import projekt.cloud.piece.pic.databinding.FragmentListBinding
 import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_ACCOUNT_INVALID
 import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_CONNECTION
@@ -50,7 +50,7 @@ import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.RecyclerViewUtil.adapterAs
 import projekt.cloud.piece.pic.util.StorageUtil.Account
 
-class ListFragment: BaseFragment<FragmentListBinding>() {
+class ListFragment: BaseAuthFragment<FragmentListBinding>() {
 
     companion object {
         private const val GRID_SPAN = 2

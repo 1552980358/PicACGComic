@@ -36,7 +36,7 @@ import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.ApiCategories.CategoriesResponseBody
 import projekt.cloud.piece.pic.api.ApiCategories.CategoriesResponseBody.Data.Category
 import projekt.cloud.piece.pic.api.ApiCategories.categories
-import projekt.cloud.piece.pic.base.BaseFragment
+import projekt.cloud.piece.pic.base.BaseAuthFragment
 import projekt.cloud.piece.pic.databinding.FragmentHomeBinding
 import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_ACCOUNT_INVALID
 import projekt.cloud.piece.pic.util.CodeBook.AUTH_CODE_ERROR_CONNECTION
@@ -52,7 +52,7 @@ import projekt.cloud.piece.pic.util.HttpUtil.HTTP_RESPONSE_CODE_SUCCESS
 import projekt.cloud.piece.pic.util.ResponseUtil.decodeJson
 import projekt.cloud.piece.pic.util.StorageUtil.Account
 
-class HomeFragment: BaseFragment<FragmentHomeBinding>(), OnClickListener {
+class HomeFragment: BaseAuthFragment<FragmentHomeBinding>(), OnClickListener {
 
     companion object {
         private const val RECYCLER_VIEW_MAX_SPAN = 2
