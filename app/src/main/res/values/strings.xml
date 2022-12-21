@@ -99,10 +99,6 @@
     
     <string name="result_search">result_search</string>
     
-    <string name="fragment_message">fragment_message</string>
-    <string name="fragment_message_sender">fragment_message_sender</string>
-    <string name="fragment_message_message">fragment_message_message</string>
-    
     <string name="menu_sort">Sorting</string>
     <string name="menu_sort_new">New to Old</string>
     <string name="menu_sort_old">Old to New</string>
