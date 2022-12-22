@@ -72,7 +72,15 @@
                 android:name="order"
                 app:argType="integer" />
         </action>
+        <action
+            android:id="@+id/to_comment_fragment"
+            app:destination="@id/comment" />
     </fragment>
+    
+    <fragment
+        android:id="@+id/comment"
+        android:name="projekt.cloud.piece.pic.ui.comment.CommentFragment"
+        tools:layout="@layout/fragment_comment" />
     
     <fragment
         android:id="@+id/read"

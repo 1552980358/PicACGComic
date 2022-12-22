@@ -116,6 +116,7 @@ class ComicDetailFragment: BaseAuthFragment<FragmentComicDetailBinding>(),
     override fun setUpActionBar() {
         setSupportActionBar(bottomAppBar)
         toolbar.setupWithNavController(navController)
+        bottomAppBar.setNavigationOnClickListener { drawerLayout.open() }
     }
     
     override fun setUpViews() {
@@ -191,6 +192,8 @@ class ComicDetailFragment: BaseAuthFragment<FragmentComicDetailBinding>(),
                 }
             }
         }
+        
+        navigationView.setNavigationItemSelectedListener(this)
     }
     
     override val containerTransitionName: String?
@@ -291,6 +294,16 @@ class ComicDetailFragment: BaseAuthFragment<FragmentComicDetailBinding>(),
                 }
             }
         }
+    }
+    
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_comment -> {
+                clearComicData = false
+                navController.navigate(ComicDetailFragmentDirections.toCommentFragment())
+            }
+        }
+        return true
     }
     
 }

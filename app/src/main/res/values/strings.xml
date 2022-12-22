@@ -93,6 +93,9 @@
     <string name="comic_content_snack_request_server_rejected">Request rejected by server: %s</string>
     <string name="comic_content_snack_action_retry">Retry</string>
     
+    <string name="comment_list">Comments</string>
+    <string name="comment_list_title">@string/comment_list</string>
+    
     <string name="storage_account">storage_account</string>
     
     <string name="result_search">result_search</string>
@@ -102,5 +105,7 @@
     <string name="menu_sort_old">Old to New</string>
     <string name="menu_sort_heart">Heart</string>
     <string name="menu_sort_fav">Favourite</string>
+    
+    <string name="nav_comic_detail_comment">Comments</string>
     
 </resources>
