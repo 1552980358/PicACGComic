@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/nav_account"
+        android:title="@string/nav_home_account"
+        android:icon="@drawable/ic_round_account_circle_24" />
+
+    <item
+        android:id="@+id/nav_favorites"
+        android:title="@string/nav_home_favorites"
+        android:icon="@drawable/ic_round_favorite_24" />
+
+</menu>

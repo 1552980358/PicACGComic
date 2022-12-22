@@ -1,3 +1,6 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="constraint_fill_parent">0dp</dimen>
+
 </resources>
