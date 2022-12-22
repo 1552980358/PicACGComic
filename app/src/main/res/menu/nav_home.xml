@@ -5,13 +5,23 @@
     tools:showIn="navigation_view">
 
     <item
-        android:id="@+id/nav_account"
-        android:title="@string/nav_home_account"
-        android:icon="@drawable/ic_round_account_circle_24" />
+        android:id="@+id/index"
+        android:title="@string/nav_home_index"
+        android:icon="@drawable/ic_round_home_24" />
 
     <item
-        android:id="@+id/nav_favorites"
+        android:id="@+id/search"
+        android:title="@string/nav_home_search"
+        android:icon="@drawable/ic_round_search_24" />
+
+    <item
+        android:id="@+id/favorites"
         android:title="@string/nav_home_favorites"
         android:icon="@drawable/ic_round_favorite_24" />
+
+    <item
+        android:id="@+id/account"
+        android:title="@string/nav_home_account"
+        android:icon="@drawable/ic_round_account_circle_24" />
 
 </menu>

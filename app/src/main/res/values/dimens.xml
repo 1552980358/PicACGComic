@@ -3,4 +3,7 @@
 
     <dimen name="constraint_fill_parent">0dp</dimen>
 
+    <dimen name="md_spec_spacing_hor_16">16dp</dimen>
+    <dimen name="md_spec_spacing_ver_16">16dp</dimen>
+
 </resources>

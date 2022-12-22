@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">pic</string>
 
+    <string name="nav_home_index">Index</string>
+    <string name="nav_home_search">Search</string>
     <string name="nav_home_account">Account</string>
     <string name="nav_home_favorites">Favorites</string>
 
