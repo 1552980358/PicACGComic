@@ -44,7 +44,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
         super.onCreate(savedInstanceState)
 
         onBackPressedDispatcher = requireActivity().onBackPressedDispatcher
-        onBackPressedDispatcher.addCallback(viewLifecycleOwner, object: OnBackPressedCallback(true) {
+        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (onBackPressed()) {
                     remove()
