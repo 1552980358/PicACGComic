@@ -13,223 +13,238 @@
             type="projekt.cloud.piece.pic.ComicDetail" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:background="?attr/colorSurface">
-
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_bar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true">
-
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/collapsing_toolbar_layout"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-                app:titleEnabled="false"
-                style="?attr/collapsingToolbarLayoutLargeStyle">
-                
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:fitsSystemWindows="true"
-                    app:shapeAppearance="@style/Widget.ShapeableImageView.RoundCorners.Bottom"
-                    app:layout_collapseMode="parallax"
-                    bitmap="@{comicDetail.cover}" />
-
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/material_toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin" />
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nested_scroll_view"
+        tools:openDrawer="start">
+    
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinator_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-    
-            <androidx.appcompat.widget.LinearLayoutCompat
+            android:fitsSystemWindows="true"
+            android:background="?attr/colorSurface">
+        
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/app_bar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingBottom="@{applicationConfigs.windowInsetBottom}">
-    
+                android:fitsSystemWindows="true">
+            
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:id="@+id/collapsing_toolbar_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                    app:titleEnabled="false"
+                    style="?attr/collapsingToolbarLayoutLargeStyle">
+                
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:fitsSystemWindows="true"
+                        app:shapeAppearance="@style/Widget.ShapeableImageView.RoundCorners.Bottom"
+                        app:layout_collapseMode="parallax"
+                        bitmap="@{comicDetail.cover}" />
+                
+                    <com.google.android.material.appbar.MaterialToolbar
+                        android:id="@+id/material_toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        app:layout_collapseMode="pin" />
+            
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+        
+            </com.google.android.material.appbar.AppBarLayout>
+        
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nested_scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+            
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
-                    android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16">
-    
-                    <com.google.android.material.textview.MaterialTextView
+                    android:paddingBottom="@{applicationConfigs.windowInsetBottom}">
+                
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{comicDetail.comic.title}"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                        android:layout_marginEnd="@dimen/md_spec_spacing_hor_16" />
+                        android:orientation="vertical"
+                        android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
+                        android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16">
                     
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/material_card_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="@dimen/md_spec_spacing_ver_8"
-                        android:background="?attr/colorSurfaceVariant"
-                        android:foreground="?attr/selectableItemBackground"
-                        app:cardBackgroundColor="?attr/colorSurfaceVariant"
-                        app:cardCornerRadius="@dimen/md_spec_radius_12"
-                        app:cardElevation="0dp"
-                        app:strokeWidth="0dp">
-                        
-                        <androidx.appcompat.widget.LinearLayoutCompat
+                        <com.google.android.material.textview.MaterialTextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:animateLayoutChanges="true">
-    
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginVertical="@dimen/md_spec_spacing_ver_8">
-        
-                                <androidx.appcompat.widget.AppCompatImageView
-                                    android:id="@+id/app_compat_image_view"
-                                    android:layout_width="@dimen/md_spec_avatar_size"
-                                    android:layout_height="@dimen/md_spec_avatar_size"
-                                    android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
-                                    circleBitmap="@{comicDetail.avatar}" />
-                                
-                                <com.google.android.material.checkbox.MaterialCheckBox
-                                    android:id="@+id/material_check_box"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:button="@drawable/button_arrow_up_down"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginEnd="@dimen/md_spec_spacing_hor_8" />
-        
-                                <com.google.android.material.textview.MaterialTextView
-                                    android:id="@+id/material_text_view_name"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_toEndOf="@id/app_compat_image_view"
-                                    android:layout_toStartOf="@id/material_check_box"
-                                    android:maxLines="1"
-                                    android:text="@{comicDetail.comic.creator.name}"
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                                    android:textColor="?attr/colorOnSurfaceVariant" />
-        
-                                <com.google.android.material.textview.MaterialTextView
-                                    android:id="@+id/material_text_view_title"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/material_text_view_name"
-                                    android:layout_toEndOf="@id/app_compat_image_view"
-                                    android:layout_toStartOf="@id/material_check_box"
-                                    android:maxLines="1"
-                                    android:text="@{`Lv. ` + comicDetail.comic.creator.level}"
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
-    
-                            </RelativeLayout>
-                            
-                            <androidx.appcompat.widget.LinearLayoutCompat
-                                android:id="@+id/linear_layout_compat"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
-                                android:layout_marginBottom="@dimen/md_spec_spacing_ver_8"
-                                android:orientation="vertical"
-                                android:visibility="gone">
-                                
-                                <com.google.android.material.textview.MaterialTextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@{` - ` + comicDetail.comic.creator.title + ` - `}"
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-                                    android:gravity="center" />
-                                
-                                <com.google.android.material.textview.MaterialTextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:text="@{comicDetail.comic.creator.slogan}"
-                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
-                                
-                            </androidx.appcompat.widget.LinearLayoutCompat>
-                            
-                        </androidx.appcompat.widget.LinearLayoutCompat>
-                        
-                    </com.google.android.material.card.MaterialCardView>
-    
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@{comicDetail.comic.author}"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
-            
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@{comicDetail.comic.chineseTeam}"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
-    
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/chip_group"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:chipSpacingVertical="0dp"/>
+                            android:text="@{comicDetail.comic.title}"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                            android:layout_marginEnd="@dimen/md_spec_spacing_hor_16" />
                     
-                    <com.google.android.material.textview.MaterialTextView
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/material_card_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="@dimen/md_spec_spacing_ver_8"
+                            android:background="?attr/colorSurfaceVariant"
+                            android:foreground="?attr/selectableItemBackground"
+                            app:cardBackgroundColor="?attr/colorSurfaceVariant"
+                            app:cardCornerRadius="@dimen/md_spec_radius_12"
+                            app:cardElevation="0dp"
+                            app:strokeWidth="0dp">
+                        
+                            <androidx.appcompat.widget.LinearLayoutCompat
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:animateLayoutChanges="true">
+                            
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginVertical="@dimen/md_spec_spacing_ver_8">
+                                
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:id="@+id/app_compat_image_view"
+                                        android:layout_width="@dimen/md_spec_avatar_size"
+                                        android:layout_height="@dimen/md_spec_avatar_size"
+                                        android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
+                                        circleBitmap="@{comicDetail.avatar}" />
+                                
+                                    <com.google.android.material.checkbox.MaterialCheckBox
+                                        android:id="@+id/material_check_box"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:button="@drawable/button_arrow_up_down"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginEnd="@dimen/md_spec_spacing_hor_8" />
+                                
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/material_text_view_name"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_toEndOf="@id/app_compat_image_view"
+                                        android:layout_toStartOf="@id/material_check_box"
+                                        android:maxLines="1"
+                                        android:text="@{comicDetail.comic.creator.name}"
+                                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                        android:textColor="?attr/colorOnSurfaceVariant" />
+                                
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:id="@+id/material_text_view_title"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@id/material_text_view_name"
+                                        android:layout_toEndOf="@id/app_compat_image_view"
+                                        android:layout_toStartOf="@id/material_check_box"
+                                        android:maxLines="1"
+                                        android:text="@{`Lv. ` + comicDetail.comic.creator.level}"
+                                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+                            
+                                </RelativeLayout>
+                            
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:id="@+id/linear_layout_compat"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
+                                    android:layout_marginBottom="@dimen/md_spec_spacing_ver_8"
+                                    android:orientation="vertical"
+                                    android:visibility="gone">
+                                
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="@{` - ` + comicDetail.comic.creator.title + ` - `}"
+                                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                                        android:gravity="center" />
+                                
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="@{comicDetail.comic.creator.slogan}"
+                                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
+                            
+                                </androidx.appcompat.widget.LinearLayoutCompat>
+                        
+                            </androidx.appcompat.widget.LinearLayoutCompat>
+                    
+                        </com.google.android.material.card.MaterialCardView>
+                    
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{comicDetail.comic.author}"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+                    
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{comicDetail.comic.chineseTeam}"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+                    
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/chip_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:chipSpacingVertical="0dp"/>
+                    
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textIsSelectable="true"
+                            android:text="@{comicDetail.comic.description}"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+                
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textIsSelectable="true"
-                        android:text="@{comicDetail.comic.description}"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
-    
+                        android:layout_height="match_parent"
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            
                 </androidx.appcompat.widget.LinearLayoutCompat>
+        
+            </androidx.core.widget.NestedScrollView>
+        
+            <com.google.android.material.bottomappbar.BottomAppBar
+                android:id="@+id/bottom_app_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                android:layout_gravity="bottom"
+                app:hideOnScroll="true"
+                app:navigationIcon="@drawable/ic_round_menu_24"
+                app:menu="@menu/menu_comic_detail"
+                style="@style/Widget.Material3.BottomAppBar" />
+        
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floating_action_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_round_play_arrow_24"
+                android:fitsSystemWindows="true"
+                android:layout_marginTop="@dimen/md_spec_fab_spacing_top"
+                android:layout_marginEnd="@dimen/md_spec_fab_spacing_end"
+                android:layout_marginBottom="@dimen/md_spec_fab_spacing_bottom"
+                app:layout_anchor="@id/bottom_app_bar"
+                tools:ignore="ContentDescription" />
     
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:nestedScrollingEnabled="false"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-    
-            </androidx.appcompat.widget.LinearLayoutCompat>
-    
-        </androidx.core.widget.NestedScrollView>
-    
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottom_app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
-            android:layout_gravity="bottom"
-            app:hideOnScroll="true"
-            app:menu="@menu/menu_comic_detail"
-            style="@style/Widget.Material3.BottomAppBar" />
-    
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floating_action_button"
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigation_view"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_round_play_arrow_24"
-            android:fitsSystemWindows="true"
-            android:layout_marginTop="@dimen/md_spec_fab_spacing_top"
-            android:layout_marginEnd="@dimen/md_spec_fab_spacing_end"
-            android:layout_marginBottom="@dimen/md_spec_fab_spacing_bottom"
-            android:transitionName="@string/read_transition"
-            app:layout_anchor="@id/bottom_app_bar"
-            tools:ignore="ContentDescription" />
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:menu="@menu/nav_comic_detail" />
+        
+    </androidx.drawerlayout.widget.DrawerLayout>
 </layout>

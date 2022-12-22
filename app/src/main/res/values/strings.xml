@@ -79,9 +79,7 @@
     <string name="comic_detail_snack_request_unknown_id">Empty comic id</string>
     <string name="comic_detail_snack_request_unknown_code">Unknown Error: Unknown code [%d] - %s</string>
     
-    <string name="read_transition">read_transition</string>
-    <string name="read_transition_item">read_transition_item</string>
-    <string name="read_transition_order">order</string>
+    <string name="read_arg_order">order</string>
     <string name="comic_content_fab_prev">Previous Episode</string>
     <string name="comic_content_fab_next">Next Episode</string>
     <string name="comic_content_snack_unknown_comic">Empty comic id</string>

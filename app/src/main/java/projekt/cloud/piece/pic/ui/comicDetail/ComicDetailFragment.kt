@@ -9,22 +9,17 @@ import android.view.View.GONE
 import android.view.View.OnClickListener
 import android.view.View.VISIBLE
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.app.SharedElementCallback
-import androidx.core.transition.doOnEnd
 import androidx.core.view.MenuProvider
 import androidx.core.view.doOnPreDraw
-import androidx.core.view.forEach
 import androidx.core.view.get
 import androidx.core.view.marginBottom
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.widget.NestedScrollView
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Lifecycle.State
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -37,11 +32,13 @@ import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.Callback
-import com.google.android.material.transition.platform.Hold
 import com.google.android.material.transition.platform.MaterialContainerTransform
+import com.google.android.material.transition.platform.MaterialSharedAxis
 import kotlin.math.abs
 import projekt.cloud.piece.pic.ComicDetail
 import projekt.cloud.piece.pic.R
@@ -57,15 +54,20 @@ import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_ERROR_REJECTED
 import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_ERROR_UNKNOWN_ID
 import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_PART_SUCCESS
 import projekt.cloud.piece.pic.util.CodeBook.COMIC_DETAIL_CODE_SUCCESS
-import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.DisplayUtil.deviceBounds
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.NestedScrollViewUtil.isScrollable
 import projekt.cloud.piece.pic.util.RecyclerViewUtil.adapterAs
 import projekt.cloud.piece.pic.util.StorageUtil.Account
 
-class ComicDetailFragment: BaseAuthFragment<FragmentComicDetailBinding>(), OnClickListener {
+class ComicDetailFragment: BaseAuthFragment<FragmentComicDetailBinding>(),
+                           OnClickListener,
+                           OnNavigationItemSelectedListener {
     
+    private val drawerLayout: DrawerLayout
+        get() = binding.root
+    private val navigationView: NavigationView
+        get() = binding.navigationView
     private val appBarLayout: AppBarLayout
         get() = binding.appBarLayout
     private val collapsingToolbarLayout: CollapsingToolbarLayout
@@ -102,40 +104,8 @@ class ComicDetailFragment: BaseAuthFragment<FragmentComicDetailBinding>(), OnCli
         navController = findNavController()
         
         sharedElementEnterTransition = MaterialContainerTransform()
-        exitTransition = Hold()
-        reenterTransition = MaterialContainerTransform().apply {
-            doOnEnd {
-                lifecycleScope.io {
-                    recyclerView.forEach { it.transitionName = null }
-                }
-            }
-        }
-        val readTransitionItem = getString(R.string.read_transition_item)
-        
-        val orderKey = getString(R.string.read_transition_order)
-        setFragmentResultListener(orderKey) { _, bundle ->
-            if (bundle.containsKey(orderKey)) {
-                setExitSharedElementCallback(object : SharedElementCallback() {
-                    override fun onMapSharedElements(names: MutableList<String>, sharedElements: MutableMap<String, View>) {
-                        if (names.isNotEmpty() && names.first() == readTransitionItem) {
-                            val order = bundle.getInt(orderKey)
-                            sharedElements[readTransitionItem] = recyclerView[docList.indexOfFirst { it.order == order }].also {
-                                it.transitionName = readTransitionItem
-                            }
-                        }
-                        setExitSharedElementCallback(null)
-                    }
-                    /**
-                     * // Fuck it, it does not being called when animation end
-                     * override fun onSharedElementEnd(sharedElementNames: MutableList<String>,
-                     *                                 sharedElements: MutableList<View>,
-                     *                                 sharedElementSnapshots: MutableList<View>) {
-                     *     sharedElements.forEach { it.transitionName = null }
-                     * }
-                     **/
-                })
-            }
-        }
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
+        reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
     }
     
     override fun setViewModels(binding: FragmentComicDetailBinding) {
@@ -203,7 +173,7 @@ class ComicDetailFragment: BaseAuthFragment<FragmentComicDetailBinding>(), OnCli
         }, viewLifecycleOwner, State.CREATED)
     
         recyclerView.adapter = RecyclerViewAdapter(docList) { doc, view ->
-            launchReadComic(view, getString(R.string.read_transition_item), doc.order)
+            launchReadComic(doc.order)
         }
         recyclerView.doOnPreDraw { startPostponedEnterTransition() }
     
@@ -292,14 +262,10 @@ class ComicDetailFragment: BaseAuthFragment<FragmentComicDetailBinding>(), OnCli
         }
     }
     
-    private fun launchReadComic(view: View, transitionName: String, order: Int) {
-        if (view.transitionName != transitionName) {
-            view.transitionName = transitionName
-        }
+    private fun launchReadComic(order: Int) {
         clearComicData = false
         navController.navigate(
-            ComicDetailFragmentDirections.toReadFragment(transitionName, order),
-            FragmentNavigatorExtras(view to view.transitionName)
+            ComicDetailFragmentDirections.toReadFragment(order)
         )
     }
     
@@ -321,7 +287,7 @@ class ComicDetailFragment: BaseAuthFragment<FragmentComicDetailBinding>(), OnCli
             }
             floatingActionButton -> {
                 if (docList.isNotEmpty()) {
-                    launchReadComic(floatingActionButton, floatingActionButton.transitionName, 1)
+                    launchReadComic(1)
                 }
             }
         }

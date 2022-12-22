@@ -67,10 +67,7 @@
         tools:layout="@layout/fragment_comic_detail" >
         <action
             android:id="@+id/to_read_fragment"
-            app:destination="@id/readFragment">
-            <argument
-                android:name="read_transition"
-                app:argType="string" />
+            app:destination="@id/read">
             <argument
                 android:name="order"
                 app:argType="integer" />
@@ -78,7 +75,7 @@
     </fragment>
     
     <fragment
-        android:id="@+id/readFragment"
+        android:id="@+id/read"
         android:name="projekt.cloud.piece.pic.ui.read.ReadFragment"
         tools:layout="@layout/fragment_read" />
 
