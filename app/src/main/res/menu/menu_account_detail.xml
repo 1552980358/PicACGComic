@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item
-        android:id="@+id/menu_exit"
-        android:title="@string/account_detail_menu_exit"
-        android:icon="@drawable/ic_round_exit_to_app_24" />
-    
-</menu>

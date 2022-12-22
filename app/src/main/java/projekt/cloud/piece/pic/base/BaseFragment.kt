@@ -1,41 +1,33 @@
 package projekt.cloud.piece.pic.base
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.annotation.StringRes
+import androidx.activity.OnBackPressedDispatcher
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.viewbinding.ViewBinding
-import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
 import java.lang.reflect.ParameterizedType
-import projekt.cloud.piece.pic.ApplicationConfigs
-import projekt.cloud.piece.pic.util.SnackUtil.snack
 
 abstract class BaseFragment<VB: ViewBinding>: Fragment() {
-    
+
     private companion object {
         const val VIEW_BINDING_INFLATE_METHOD_NAME = "inflate"
     }
-    
-    protected val applicationConfigs: ApplicationConfigs by activityViewModels()
-    
+
     private var _binding: VB? = null
-    protected val binding: VB
+    private val binding: VB
         get() = _binding!!
-    
-    protected val args by lazy { requireArguments() }
-    
+
+    private lateinit var onBackPressedDispatcher: OnBackPressedDispatcher
+
     @Suppress("UNCHECKED_CAST")
     private val viewBindingClass =
         ((this::class.java.genericSuperclass as ParameterizedType)
             .actualTypeArguments.first() as Class<VB>)
-    
+
     private val viewBindingInflateMethod =
         viewBindingClass.getDeclaredMethod(
             VIEW_BINDING_INFLATE_METHOD_NAME,
@@ -43,18 +35,16 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
             ViewGroup::class.java,
             Boolean::class.java
         )
-    
+
     @Suppress("UNCHECKED_CAST")
     protected fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
         viewBindingInflateMethod.invoke(null, inflater, container, false) as VB
-    
-    protected open fun setViewModels(binding: VB) = Unit
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.i(this::class.java.simpleName, "onCreate")
         super.onCreate(savedInstanceState)
-        
-        requireActivity().onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+
+        onBackPressedDispatcher = requireActivity().onBackPressedDispatcher
+        onBackPressedDispatcher.addCallback(viewLifecycleOwner, object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (onBackPressed()) {
                     remove()
@@ -63,91 +53,36 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
             }
         })
     }
-    
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Log.i(this::class.java.simpleName, "onCreateView")
         _binding = inflateViewBinding(inflater, container)
         val binding = binding
         if (binding is ViewDataBinding) {
-            binding.lifecycleOwner = this
-            setViewModels(binding)
+            binding.lifecycleOwner = viewLifecycleOwner
+            onSetupViewModel(binding)
         }
-        return binding.root.apply { containerTransitionName?.let { transitionName = it } }
+        return binding.root
     }
-    
+
+    protected open fun onSetupViewModel(binding: VB) = Unit
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.i(this::class.java.simpleName, "onViewCreated")
-        setUpActionBar()
-        setUpViews()
+        onSetupActionBar(binding)
+        onSetupView(binding)
     }
-    
-    override fun onStart() {
-        Log.i(this::class.java.simpleName, "onStart")
-        super.onStart()
-    }
-    
-    override fun onResume() {
-        Log.i(this::class.java.simpleName, "onResume")
-        super.onResume()
-    }
-    
-    override fun onPause() {
-        Log.i(this::class.simpleName, "onPause")
-        super.onPause()
-    }
-    
-    override fun onStop() {
-        Log.i(this::class.simpleName, "onStop")
-        super.onStop()
-    }
-    
-    override fun onDestroy() {
-        Log.i(this::class.simpleName, "onDestroy")
-        super.onDestroy()
-    }
-    
+
+    protected open fun onSetupActionBar(binding: VB) = Unit
+
+    protected open fun onSetupView(binding: VB) = Unit
+
+    protected fun performBackPress() =
+        onBackPressedDispatcher.onBackPressed()
+
+    protected open fun onBackPressed() = true
+
     override fun onDestroyView() {
-        Log.i(this::class.simpleName, "onDestroyView")
         _binding = null
         super.onDestroyView()
     }
-    
-    protected fun performBackPress() {
-        requireActivity().onBackPressedDispatcher.onBackPressed()
-    }
-    
-    protected open fun onBackPressed(): Boolean {
-        return true
-    }
-    
-    protected open fun setUpActionBar() = Unit
-    
-    protected abstract fun setUpViews()
-    protected open val containerTransitionName: String?
-        get() = null
-    
-    protected inline fun <reified F: Fragment> findParentAs(): F {
-        var parent = requireParentFragment()
-        while (parent !is F) {
-            parent = parent.requireParentFragment()
-        }
-        return parent
-    }
-    
-    protected open val snackAnchor: View?
-        get() = null
-    protected open val snackContainer: View
-        get() = binding.root
-    
-    protected open fun sendSnack(message: String,
-                                 length: Int = LENGTH_INDEFINITE,
-                                 @StringRes resId: Int? = null,
-                                 action: OnClickListener? = null) =
-        makeSnack(message, length, resId, action).apply { show() }
-    
-    protected open fun makeSnack(message: String, length: Int = LENGTH_INDEFINITE, @StringRes resId: Int?, action: OnClickListener?) =
-        snackContainer.snack(message, length)
-            .apply { resId?.let { setAction(resId, action) } }
-            .setAnchorView(snackAnchor)
-    
+
 }

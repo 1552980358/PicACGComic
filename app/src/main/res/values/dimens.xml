@@ -1,25 +1,3 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
-
-    <dimen name="md_spec_spacing_hor_4">4dp</dimen>
-    <dimen name="md_spec_spacing_hor_8">8dp</dimen>
-    <dimen name="md_spec_spacing_hor_16">16dp</dimen>
-    <dimen name="md_spec_spacing_hor_24">24dp</dimen>
-    <dimen name="md_spec_spacing_ver_8">8dp</dimen>
-    <dimen name="md_spec_spacing_ver_16">16dp</dimen>
-    <dimen name="md_spec_fab_spacing_top">12dp</dimen>
-    <dimen name="md_spec_fab_spacing_bottom">16dp</dimen>
-    <dimen name="md_spec_fab_spacing_end">16dp</dimen>
-    <dimen name="md_spec_radius_12">12dp</dimen>
-    <dimen name="md_spec_avatar_size">40dp</dimen>
-    <dimen name="md_spec_height_56">56dp</dimen>
-
-    <dimen name="home_search_height">48dp</dimen>
-    <dimen name="home_search_radius">24dp</dimen>
-    <dimen name="home_search_padding_hor">24dp</dimen>
-    <dimen name="home_search_space_hor">@dimen/md_spec_spacing_hor_16</dimen>
-    
-    <dimen name="account_detail_small_avatar_spacing_hor">@dimen/md_spec_spacing_hor_8</dimen>
-    <dimen name="account_detail_small_avatar_spacing_ver">@dimen/account_detail_small_avatar_spacing_hor</dimen>
-
 </resources>
