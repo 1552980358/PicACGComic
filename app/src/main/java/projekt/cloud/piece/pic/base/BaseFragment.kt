@@ -58,7 +58,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
             override fun handleOnBackPressed() {
                 if (onBackPressed()) {
                     remove()
-                    requireActivity().onBackPressedDispatcher.onBackPressed()
+                    performBackPress()
                 }
             }
         })
@@ -110,6 +110,10 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
         Log.i(this::class.simpleName, "onDestroyView")
         _binding = null
         super.onDestroyView()
+    }
+    
+    protected fun performBackPress() {
+        requireActivity().onBackPressedDispatcher.onBackPressed()
     }
     
     protected open fun onBackPressed(): Boolean {
