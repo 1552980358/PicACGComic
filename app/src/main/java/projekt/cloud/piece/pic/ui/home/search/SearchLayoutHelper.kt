@@ -3,7 +3,6 @@ package projekt.cloud.piece.pic.ui.home.search
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.search.SearchBar
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.databinding.FragmentSearchBinding
@@ -29,6 +28,7 @@ object SearchLayoutHelper {
         override fun setupSearchBar(fragment: Fragment, navController: NavController) {
             val drawerLayout = fragment.requireParentFragment().requireParentFragment()
                 .requireView().findViewById<DrawerLayout>(R.id.drawer_layout)
+            fragment.setSupportActionBar(searchBar)
             searchBar.setNavigationOnClickListener {
                 if (!drawerLayout.isOpen) {
                     drawerLayout.open()
@@ -41,7 +41,6 @@ object SearchLayoutHelper {
     private open class SearchLayoutW600dp(binding: FragmentSearchBinding): SearchLayout(binding) {
         override fun setupSearchBar(fragment: Fragment, navController: NavController) {
             fragment.setSupportActionBar(searchBar)
-            searchBar.setupWithNavController(navController)
         }
     }
 
