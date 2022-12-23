@@ -9,4 +9,8 @@
         android:id="@+id/index"
         android:name="projekt.cloud.piece.pic.ui.home.index.Index" />
 
+    <fragment
+        android:id="@+id/search"
+        android:name="projekt.cloud.piece.pic.ui.home.search.Search" />
+
 </navigation>
