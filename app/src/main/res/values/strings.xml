@@ -3,7 +3,10 @@
 
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
-
+    
+    <string name="nav_launcher_splash">Splash</string>
+    <string name="nav_launcher_signing">Signing</string>
+    
     <string name="nav_home_index">Index</string>
     <string name="nav_home_search">Search</string>
     <string name="nav_home_account">Account</string>

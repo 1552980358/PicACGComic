@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph_launcher"
+    app:startDestination="@id/splash">
+    
+    <fragment
+        android:id="@+id/splash"
+        android:name="projekt.cloud.piece.pic.ui.splash.Splash" />
+    
+    <fragment
+        android:id="@+id/signing"
+        android:name="projekt.cloud.piece.pic.ui.signing.Signing" />
+
+</navigation>
