@@ -1,12 +1,10 @@
 package projekt.cloud.piece.pic.ui.home.index
 
-import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.MaterialToolbar
-import projekt.cloud.piece.pic.R.id
-import projekt.cloud.piece.pic.R.string
+import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.databinding.FragmentIndexBinding
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode
@@ -23,18 +21,15 @@ class IndexLayoutHelper(binding: FragmentIndexBinding, layoutSizeMode: LayoutSiz
 
         open fun setupActionBar(fragment: Fragment, navController: NavController) {
             fragment.setSupportActionBar(toolbar)
-            toolbar.setupWithNavController(navController)
-            val actionBarToggle = ActionBarDrawerToggle(
-                fragment.requireActivity(),
-                // Index -> NavHostFragment -> Home
-                fragment.requireParentFragment().requireParentFragment()
-                    .requireView().findViewById(id.drawer_layout),
-                binding.materialToolbar,
-                string.navigation_drawer_open,
-                string.navigation_drawer_close
-            )
-            actionBarToggle.isDrawerIndicatorEnabled = true
-            actionBarToggle.syncState()
+            // Just open drawer, allow NavigationView switching fragments,
+            // all fragments in NavController is singleTop mode
+            val drawerLayout = fragment.requireParentFragment().requireParentFragment()
+                .requireView().findViewById<DrawerLayout>(R.id.drawer_layout)
+            toolbar.setNavigationOnClickListener {
+                if (!drawerLayout.isOpen) {
+                    drawerLayout.open()
+                }
+            }
         }
 
     }
