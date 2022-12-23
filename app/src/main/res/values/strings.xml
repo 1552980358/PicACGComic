@@ -9,6 +9,10 @@
     <string name="nav_home_account">Account</string>
     <string name="nav_home_favorites">Favorites</string>
     
+    <string name="splash_greeting_a">You seem discovered</string>
+    <string name="splash_greeting_b">an interesting entry</string>
+    <string name="splash_go_forward">GO FORWARD</string>
+    
     <string name="signing_greeting_a">Oh, it\'s already here…</string>
     <string name="signing_greeting_b">Are you ready —</string>
     <string name="signing_greeting_c">to go forward?</string>
