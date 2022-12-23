@@ -8,5 +8,12 @@
     <string name="nav_home_search">Search</string>
     <string name="nav_home_account">Account</string>
     <string name="nav_home_favorites">Favorites</string>
+    
+    <string name="signing_greeting_a">Oh, it\'s already here…</string>
+    <string name="signing_greeting_b">Are you ready —</string>
+    <string name="signing_greeting_c">to go forward?</string>
+    <string name="signing_greeting_sign_in">Already have an account?</string>
+    <string name="signing_sign_in">Sign in</string>
+    <string name="signing_sign_up">SIGN UP</string>
 
 </resources>
