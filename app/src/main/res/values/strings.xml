@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">pic</string>
 
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_close">Close Navigation Drawer</string>
+
     <string name="nav_home_index">Index</string>
     <string name="nav_home_search">Search</string>
     <string name="nav_home_account">Account</string>

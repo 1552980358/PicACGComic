@@ -13,6 +13,8 @@ class HomeLayoutHelper(binding: FragmentHomeBinding, layoutSizeMode: LayoutSizeM
 
     private open class HomeLayoutCompat(protected val binding: FragmentHomeBinding) {
 
+        protected val drawerLayout: DrawerLayout
+            get() = binding.drawerLayout!!
         protected val navigationView: NavigationView
             get() = binding.navigationView
 
@@ -24,8 +26,6 @@ class HomeLayoutHelper(binding: FragmentHomeBinding, layoutSizeMode: LayoutSizeM
 
     private class HomeLayoutW600dp(binding: FragmentHomeBinding): HomeLayoutCompat(binding) {
 
-        private val drawerLayout: DrawerLayout
-            get() = binding.drawerLayout!!
         private val navigationRail: NavigationRailView
             get() = binding.navigationRail!!
 
@@ -45,8 +45,7 @@ class HomeLayoutHelper(binding: FragmentHomeBinding, layoutSizeMode: LayoutSizeM
 
     }
 
-    private class HomeLayoutW1240dp(binding: FragmentHomeBinding) : HomeLayoutCompat(binding) {
-    }
+    private class HomeLayoutW1240dp(binding: FragmentHomeBinding) : HomeLayoutCompat(binding)
 
     private val homeLayout = when (layoutSizeMode) {
         LayoutSizeMode.COMPACT -> HomeLayoutCompat(binding)
