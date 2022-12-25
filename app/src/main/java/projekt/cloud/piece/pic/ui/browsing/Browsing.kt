@@ -4,11 +4,9 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.platform.MaterialSharedAxis
 import projekt.cloud.piece.pic.base.BaseFragment
 import projekt.cloud.piece.pic.databinding.FragmentBrowsingBinding
-import projekt.cloud.piece.pic.ui.browsing.BrowsingLayoutHelper.BrowsingLayoutCompat
-import projekt.cloud.piece.pic.ui.browsing.BrowsingLayoutHelper.getLayoutHelper
+import projekt.cloud.piece.pic.ui.browsing.BrowsingLayoutCompat.BrowsingLayoutCompatUtil.getLayoutCompat
 import projekt.cloud.piece.pic.util.LayoutUtil
 import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode.COMPACT
-import projekt.cloud.piece.pic.util.LayoutUtil.getLayoutSize
 
 class Browsing: BaseFragment<FragmentBrowsingBinding>() {
 
@@ -30,12 +28,12 @@ class Browsing: BaseFragment<FragmentBrowsingBinding>() {
     }
 
     override fun onSetupLayoutHelper(binding: FragmentBrowsingBinding) {
-        layoutCompat = binding.getLayoutHelper(requireActivity().getLayoutSize())
+        layoutCompat = binding.getLayoutCompat(requireActivity())
+        layoutCompat.setNavController(findNavController())
     }
 
     override fun onSetupActionBar(binding: FragmentBrowsingBinding) {
-        val navController = findNavController()
-        layoutCompat.setupActionBar(this, navController)
+        layoutCompat.setupActionBar(this)
     }
 
     override fun onSetupView(binding: FragmentBrowsingBinding) {

@@ -17,7 +17,11 @@
     <fragment
         android:id="@+id/browsing"
         android:name="projekt.cloud.piece.pic.ui.browsing.Browsing"
-        android:label="@string/nav_launcher_browsing"/>
+        android:label="@string/nav_launcher_browsing">
+        <action
+            android:id="@+id/to_signing"
+            app:destination="@id/signing" />
+    </fragment>
     
     <fragment
         android:id="@+id/signing"
