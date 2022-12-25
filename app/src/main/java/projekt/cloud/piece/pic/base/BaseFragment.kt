@@ -9,6 +9,8 @@ import androidx.activity.OnBackPressedDispatcher
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode
+import projekt.cloud.piece.pic.util.LayoutUtil.getLayoutSize
 import java.lang.reflect.ParameterizedType
 
 abstract class BaseFragment<VB: ViewBinding>: Fragment() {
@@ -37,8 +39,10 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
         )
 
     @Suppress("UNCHECKED_CAST")
-    protected fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
+    private fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
         viewBindingInflateMethod.invoke(null, inflater, container, false) as VB
+
+    protected lateinit var layoutSizeMode: LayoutSizeMode
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +56,12 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
                 }
             }
         })
+
+        layoutSizeMode = requireActivity().getLayoutSize()
+        onSetupAnimation(layoutSizeMode)
     }
+
+    protected open fun onSetupAnimation(layoutSizeMode: LayoutSizeMode) = Unit
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = inflateViewBinding(inflater, container)
