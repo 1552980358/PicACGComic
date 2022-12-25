@@ -9,6 +9,12 @@
         android:title="@string/nav_launcher_splash"
         android:icon="@drawable/ic_round_play_arrow_24"
         android:checkable="true" />
+
+    <item
+        android:id="@+id/browsing"
+        android:title="@string/nav_launcher_browsing"
+        android:icon="@drawable/ic_round_device_hub_24"
+        android:checkable="true" />
     
     <item
         android:id="@+id/signing"

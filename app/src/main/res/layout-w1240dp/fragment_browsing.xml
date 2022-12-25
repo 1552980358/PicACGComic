@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_diversion"
+            android:layout_width="@dimen/constraint_fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/md_spec_spacing_hor_16"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintWidth_percent=".5">
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/material_switch_diversion"
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/browsing_diversion_enable"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <RadioGroup
+                android:id="@+id/radio_group_diversion"
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/material_switch_diversion"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/material_radio_button_diversion_b"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="@{materialSwitchDiversion.checked}"/>
+
+            </RadioGroup>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="@dimen/constraint_fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/md_spec_spacing_hor_16"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/constraint_layout_diversion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/material_switch_proxy"
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/browsing_proxy_enable"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_proxy_type"
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="wrap_content"
+                android:enabled="@{materialSwitchProxy.checked}"
+                android:layout_marginTop="@dimen/md_spec_spacing_ver_16"
+                app:layout_constraintTop_toBottomOf="@id/material_switch_proxy"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    app:simpleItems="@array/browsing_proxy_types" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_proxy_address"
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="wrap_content"
+                android:enabled="@{materialSwitchProxy.checked}"
+                android:layout_marginTop="@dimen/md_spec_spacing_ver_16"
+                android:hint="@string/browsing_proxy_address"
+                app:layout_constraintTop_toBottomOf="@id/text_input_layout_proxy_type"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_input_layout_proxy_port"
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="wrap_content"
+                android:enabled="@{materialSwitchProxy.checked}"
+                android:layout_marginTop="@dimen/md_spec_spacing_ver_16"
+                android:hint="@string/browsing_proxy_port"
+                app:layout_constraintTop_toBottomOf="@id/text_input_layout_proxy_address"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="5" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_greeting"
+            android:layout_width="@dimen/constraint_fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/material_button_go"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/browsing_go"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/md_spec_spacing_hor_16"
+                android:text="@string/browsing_greeting"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/material_button_go"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="@dimen/constraint_fill_parent"
+            android:layout_height="wrap_content"
+            app:dividerInsetStart="@dimen/md_spec_spacing_hor_16"
+            app:dividerInsetEnd="@dimen/md_spec_spacing_hor_16"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/constraint_layout_greeting" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -7,10 +7,21 @@
     
     <fragment
         android:id="@+id/splash"
-        android:name="projekt.cloud.piece.pic.ui.splash.Splash" />
+        android:name="projekt.cloud.piece.pic.ui.splash.Splash"
+        android:label="@string/nav_launcher_splash">
+        <action
+            android:id="@+id/to_browsing"
+            app:destination="@id/browsing" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/browsing"
+        android:name="projekt.cloud.piece.pic.ui.browsing.Browsing"
+        android:label="@string/nav_launcher_browsing"/>
     
     <fragment
         android:id="@+id/signing"
-        android:name="projekt.cloud.piece.pic.ui.signing.Signing" />
+        android:name="projekt.cloud.piece.pic.ui.signing.Signing"
+        android:label="@string/nav_launcher_signing" />
 
 </navigation>

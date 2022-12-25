@@ -5,6 +5,7 @@
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
     
     <string name="nav_launcher_splash">Splash</string>
+    <string name="nav_launcher_browsing">Browsing</string>
     <string name="nav_launcher_signing">Signing</string>
     
     <string name="nav_home_index">Index</string>
@@ -17,7 +18,20 @@
     <string name="splash_go_forward">GO FORWARD</string>
     <string name="splash_license_greeting">This Project is distributed under</string>
     <string name="splash_license">GNU General Public License v3.0</string>
-    
+
+    <string name="browsing_diversion_enable">Apply Diversion Server</string>
+    <string name="browsing_proxy_enable">Apply proxy server</string>
+    <string name="browsing_proxy_type">Type</string>
+    <string-array name="browsing_proxy_types">
+        <item>Http</item>
+        <item>Sock5</item>
+    </string-array>
+    <string name="browsing_proxy_address">Address</string>
+    <string name="browsing_proxy_port">Port</string>
+    <string name="browsing_proxy_port_help_text">Leave empty will be set to 8080</string>
+    <string name="browsing_greeting">All configure complete?</string>
+    <string name="browsing_go">GO</string>
+
     <string name="signing_greeting_a">Oh, it\'s already here…</string>
     <string name="signing_greeting_b">Are you ready —</string>
     <string name="signing_greeting_c">to go forward?</string>
