@@ -1,22 +1,19 @@
 package projekt.cloud.piece.pic.ui.home.search
 
-import androidx.navigation.fragment.findNavController
 import projekt.cloud.piece.pic.base.BaseFragment
 import projekt.cloud.piece.pic.databinding.FragmentSearchBinding
-import projekt.cloud.piece.pic.ui.home.search.SearchLayoutHelper.SearchLayout
-import projekt.cloud.piece.pic.ui.home.search.SearchLayoutHelper.getSearchLayout
-import projekt.cloud.piece.pic.util.LayoutUtil.getLayoutSize
+import projekt.cloud.piece.pic.ui.home.search.SearchLayoutCompact.SearchLayoutCompactUtil.getLayoutCompat
 
 class Search: BaseFragment<FragmentSearchBinding>() {
 
-    private lateinit var searchLayout: SearchLayout
+    private lateinit var layoutCompat: SearchLayoutCompact
 
     override fun onSetupLayoutHelper(binding: FragmentSearchBinding) {
-        searchLayout = binding.getSearchLayout(requireActivity().getLayoutSize())
+        layoutCompat = binding.getLayoutCompat(requireActivity())
     }
 
     override fun onSetupActionBar(binding: FragmentSearchBinding) {
-        searchLayout.setupSearchBar(this, findNavController())
+        layoutCompat.setupSearchBar(this)
     }
 
 }
