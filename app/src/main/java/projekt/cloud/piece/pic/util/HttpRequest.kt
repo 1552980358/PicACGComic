@@ -75,11 +75,14 @@ class HttpRequest private constructor(
     var state = STATE_WAITING
         private set
 
+    val isComplete: Boolean
+        get() = state == STATE_COMPLETED
+
     private var _response: Response? = null
     val response: Response
         get() {
             val response = _response
-            if (state != STATE_COMPLETED || response == null) {
+            if (!isComplete || response == null) {
                 throw InvalidStateException()
             }
             return response
