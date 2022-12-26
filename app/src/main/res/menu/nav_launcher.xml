@@ -21,5 +21,11 @@
         android:title="@string/nav_launcher_signing"
         android:icon="@drawable/ic_round_account_circle_24"
         android:checkable="true" />
+
+    <item
+        android:id="@+id/sign_in"
+        android:title="@string/nav_launcher_sign_in"
+        android:icon="@drawable/ic_round_key_24"
+        android:checkable="true" />
     
 </menu>

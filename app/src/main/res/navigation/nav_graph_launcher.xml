@@ -26,6 +26,15 @@
     <fragment
         android:id="@+id/signing"
         android:name="projekt.cloud.piece.pic.ui.signing.Signing"
-        android:label="@string/nav_launcher_signing" />
+        android:label="@string/nav_launcher_signing" >
+        <action
+            android:id="@+id/to_sign_in"
+            app:destination="@id/sign_in" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/sign_in"
+        android:name="projekt.cloud.piece.pic.ui.signIn.SignIn"
+        android:label="@string/nav_launcher_sign_in" />
 
 </navigation>
