@@ -9,11 +9,14 @@ import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.HttpRequest
 import projekt.cloud.piece.pic.util.HttpRequest.HttpRequestUtil.HttpRequestMethod.POST
 import projekt.cloud.piece.pic.util.HttpRequest.HttpRequestUtil.postJsonRequest
+import projekt.cloud.piece.pic.util.SerializeUtil.decodeJson
 import projekt.cloud.piece.pic.util.SerializeUtil.encodeJson
 
 object SignIn {
 
     private const val SIGN_IN_API = "auth/sign-in"
+
+    const val SIGN_IN_ERROR_INVALID = 1004
 
     @Serializable
     data class SignInRequestBody(
@@ -44,6 +47,12 @@ object SignIn {
                 Header.getHeader(SIGN_IN_API, requestMethod = POST),
                 SignInRequestBody(username, password).encodeJson()
             )
+        }
+    }
+
+    suspend fun String.decodeSignInResponse(): SignInResponseBody {
+        return withContext(io) {
+            decodeJson()
         }
     }
 
