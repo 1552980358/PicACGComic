@@ -22,6 +22,7 @@ import projekt.cloud.piece.pic.util.HttpRequest.HttpRequestUtil.HttpRequestState
 class HttpRequest private constructor(
     private val domain: String,
     private val path: String,
+    private val query: String,
     private val headers: Headers,
     private val method: HttpRequestMethod,
     private val requestBody: RequestBody?
@@ -58,16 +59,16 @@ class HttpRequest private constructor(
             "application/json; charset=UTF-8".toMediaType()
 
         @JvmStatic
-        private fun newRequest(domain: String, path: String, headers: Headers, method: HttpRequestMethod, requestBody: RequestBody?) =
-            HttpRequest(domain, path, headers, method, requestBody).request()
+        private fun newRequest(domain: String, path: String, query: String, headers: Headers, method: HttpRequestMethod, requestBody: RequestBody?) =
+            HttpRequest(domain, path, query, headers, method, requestBody).request()
 
         @JvmStatic
-        fun getRequest(domain: String, path: String, headers: Map<String, String> = mapOf()) =
-            newRequest(domain, path, headers.toHeaders(), GET, null)
+        fun getRequest(domain: String, path: String, query: String, headers: Map<String, String> = mapOf()) =
+            newRequest(domain, path, query, headers.toHeaders(), GET, null)
 
         @JvmStatic
         fun postJsonRequest(domain: String, path: String, headers: Map<String, String> = mapOf(), postBody: String) =
-            newRequest(domain, path, headers.toHeaders(), POST, postBody.toRequestBody(postJsonBodyType))
+            newRequest(domain, path, "", headers.toHeaders(), POST, postBody.toRequestBody(postJsonBodyType))
 
     }
 
@@ -93,7 +94,7 @@ class HttpRequest private constructor(
         try {
             _response = okHttpClient.newCall(
                 Request.Builder()
-                    .url(domain + path)
+                    .url(domain + path + query)
                     .headers(headers)
                     .method(method.string, requestBody)
                     .build()
