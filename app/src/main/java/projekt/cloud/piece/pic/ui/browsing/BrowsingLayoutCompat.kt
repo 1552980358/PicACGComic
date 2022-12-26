@@ -4,7 +4,6 @@ import android.app.Activity
 import android.widget.AutoCompleteTextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.radiobutton.MaterialRadioButton
@@ -72,7 +71,7 @@ abstract class BrowsingLayoutCompat private constructor(protected val binding: F
 
         override fun setupActionBar(fragment: Fragment) {
             fragment.setSupportActionBar(toolbar)
-            toolbar.setupWithNavController(navController)
+            toolbar.setNavigationOnClickListener { navController.navigateUp() }
         }
 
         override fun onSetupInputs() {
