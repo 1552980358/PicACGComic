@@ -12,10 +12,10 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputLayout
 import projekt.cloud.piece.pic.databinding.FragmentBrowsingBinding
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
-import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode.COMPACT
-import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode.MEDIUM
-import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode.EXPANDED
-import projekt.cloud.piece.pic.util.LayoutUtil.getLayoutSize
+import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
+import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
+import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
+import projekt.cloud.piece.pic.util.LayoutSizeMode.LayoutSizeModeUtil.getLayoutSize
 
 abstract class BrowsingLayoutCompat private constructor(protected val binding: FragmentBrowsingBinding) {
 

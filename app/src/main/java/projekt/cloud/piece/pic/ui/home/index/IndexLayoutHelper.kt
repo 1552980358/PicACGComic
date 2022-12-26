@@ -7,10 +7,10 @@ import com.google.android.material.appbar.MaterialToolbar
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.databinding.FragmentIndexBinding
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
-import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode
-import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode.COMPACT
-import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode.EXPANDED
-import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode.MEDIUM
+import projekt.cloud.piece.pic.util.LayoutSizeMode
+import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
+import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
+import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
 
 class IndexLayoutHelper(binding: FragmentIndexBinding, layoutSizeMode: LayoutSizeMode) {
 

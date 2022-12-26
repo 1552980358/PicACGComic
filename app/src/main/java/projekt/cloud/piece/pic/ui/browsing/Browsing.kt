@@ -5,14 +5,14 @@ import com.google.android.material.transition.platform.MaterialSharedAxis
 import projekt.cloud.piece.pic.base.BaseFragment
 import projekt.cloud.piece.pic.databinding.FragmentBrowsingBinding
 import projekt.cloud.piece.pic.ui.browsing.BrowsingLayoutCompat.BrowsingLayoutCompatUtil.getLayoutCompat
-import projekt.cloud.piece.pic.util.LayoutUtil
-import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode.COMPACT
+import projekt.cloud.piece.pic.util.LayoutSizeMode
+import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
 
 class Browsing: BaseFragment<FragmentBrowsingBinding>() {
 
     private lateinit var layoutCompat: BrowsingLayoutCompat
 
-    override fun onSetupAnimation(layoutSizeMode: LayoutUtil.LayoutSizeMode) {
+    override fun onSetupAnimation(layoutSizeMode: LayoutSizeMode) {
         when (layoutSizeMode) {
             COMPACT -> {
                 enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)

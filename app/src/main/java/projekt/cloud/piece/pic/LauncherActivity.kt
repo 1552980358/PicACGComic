@@ -8,11 +8,11 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import projekt.cloud.piece.pic.databinding.ActivityLauncherBinding
-import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode
-import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode.COMPACT
-import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode.MEDIUM
-import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode.EXPANDED
-import projekt.cloud.piece.pic.util.LayoutUtil.getLayoutSize
+import projekt.cloud.piece.pic.util.LayoutSizeMode
+import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
+import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
+import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
+import projekt.cloud.piece.pic.util.LayoutSizeMode.LayoutSizeModeUtil.getLayoutSize
 
 class LauncherActivity: AppCompatActivity() {
     

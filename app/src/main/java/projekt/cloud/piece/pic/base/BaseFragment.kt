@@ -9,8 +9,8 @@ import androidx.activity.OnBackPressedDispatcher
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode
-import projekt.cloud.piece.pic.util.LayoutUtil.getLayoutSize
+import projekt.cloud.piece.pic.util.LayoutSizeMode
+import projekt.cloud.piece.pic.util.LayoutSizeMode.LayoutSizeModeUtil.getLayoutSize
 import java.lang.reflect.ParameterizedType
 
 abstract class BaseFragment<VB: ViewBinding>: Fragment() {

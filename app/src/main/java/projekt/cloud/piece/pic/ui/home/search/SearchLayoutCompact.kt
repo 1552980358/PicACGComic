@@ -7,10 +7,10 @@ import com.google.android.material.search.SearchBar
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.databinding.FragmentSearchBinding
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
-import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode.COMPACT
-import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode.MEDIUM
-import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode.EXPANDED
-import projekt.cloud.piece.pic.util.LayoutUtil.getLayoutSize
+import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
+import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
+import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
+import projekt.cloud.piece.pic.util.LayoutSizeMode.LayoutSizeModeUtil.getLayoutSize
 
 open class SearchLayoutCompact private constructor(protected val binding: FragmentSearchBinding) {
 

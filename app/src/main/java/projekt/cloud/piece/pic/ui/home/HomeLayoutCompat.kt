@@ -9,10 +9,10 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigationrail.NavigationRailView
 import projekt.cloud.piece.pic.databinding.FragmentHomeBinding
 import projekt.cloud.piece.pic.databinding.NavRailHeaderHomeBinding
-import projekt.cloud.piece.pic.util.LayoutUtil.getLayoutSize
-import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode.COMPACT
-import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode.MEDIUM
-import projekt.cloud.piece.pic.util.LayoutUtil.LayoutSizeMode.EXPANDED
+import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
+import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
+import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
+import projekt.cloud.piece.pic.util.LayoutSizeMode.LayoutSizeModeUtil.getLayoutSize
 
 abstract class HomeLayoutCompat(protected val binding: FragmentHomeBinding) {
 
