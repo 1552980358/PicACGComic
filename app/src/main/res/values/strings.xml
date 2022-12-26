@@ -7,6 +7,7 @@
     <string name="nav_launcher_splash">Splash</string>
     <string name="nav_launcher_browsing">Browsing</string>
     <string name="nav_launcher_signing">Signing</string>
+    <string name="nav_launcher_sign_in">Sign In</string>
     
     <string name="nav_home_index">Index</string>
     <string name="nav_home_search">Search</string>
@@ -38,5 +39,25 @@
     <string name="signing_greeting_sign_in">Already have an account?</string>
     <string name="signing_sign_in">Sign in</string>
     <string name="signing_sign_up">SIGN UP</string>
+
+    <string name="sign_in_title">Sign In</string>
+    <string name="sign_in_username">Username</string>
+    <string name="sign_in_password">Password</string>
+    <string name="sign_in_forgot">Forgot Password?</string>
+    <string name="sign_in_button">SIGN IN</string>
+    <string name="sign_in_greeting_sign_up">Don\'t have an account?</string>
+    <string name="sign_in_to_sign_up">Sign Up</string>
+    <string name="sign_in_invalid_field">Invalid Username / Password</string>
+
+    <string name="auth_sign_in_result">sign_in_result</string>
+    <string name="auth_sign_in_result_username">username</string>
+    <string name="auth_sign_in_result_password">password</string>
+    <string name="auth_sign_in_result_token">token</string>
+    
+    <string name="request_io_exception">Connection Exception: %s</string>
+    <string name="request_unknown_exception">Unknown Exception: %s</string>
+    <string name="request_unexpected_state">Unexpected State: %s</string>
+    <string name="response_error">Response Code [%d] with Error [%d]: %s - %s</string>
+    <string name="response_rejected">Request Rejected by Server</string>
 
 </resources>
