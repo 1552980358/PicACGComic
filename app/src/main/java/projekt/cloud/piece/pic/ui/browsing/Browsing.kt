@@ -39,5 +39,10 @@ class Browsing: BaseFragment<FragmentBrowsingBinding>() {
     override fun onSetupView(binding: FragmentBrowsingBinding) {
         layoutCompat.onSetupInputs()
     }
+    
+    override fun onBackPressed(): Boolean {
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
+        return super.onBackPressed()
+    }
 
 }

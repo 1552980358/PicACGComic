@@ -9,6 +9,7 @@ import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.radiobutton.MaterialRadioButton
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.transition.platform.MaterialSharedAxis
 import projekt.cloud.piece.pic.databinding.FragmentBrowsingBinding
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
@@ -71,7 +72,10 @@ abstract class BrowsingLayoutCompat private constructor(protected val binding: F
 
         override fun setupActionBar(fragment: Fragment) {
             fragment.setSupportActionBar(toolbar)
-            toolbar.setNavigationOnClickListener { navController.navigateUp() }
+            toolbar.setNavigationOnClickListener {
+                fragment.exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
+                navController.navigateUp()
+            }
         }
 
         override fun onSetupInputs() {
