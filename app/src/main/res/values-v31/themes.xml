@@ -1,0 +1,8 @@
+<resources>
+    <style name="Theme.Pic" parent="Base.Theme.Pic" />
+    <style name="Theme.Pic.Launcher" parent="Theme.Pic">
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="android:windowSplashScreenAnimationDuration">400</item>
+        <item name="android:windowSplashScreenBackground">?attr/colorPrimary</item>
+    </style>
+</resources>
