@@ -72,6 +72,7 @@ abstract class BrowsingLayoutCompat private constructor(protected val binding: F
 
         override fun setupActionBar(fragment: Fragment) {
             fragment.setSupportActionBar(toolbar)
+            toolbar.title = null
             toolbar.setNavigationOnClickListener {
                 fragment.exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
                 navController.navigateUp()
