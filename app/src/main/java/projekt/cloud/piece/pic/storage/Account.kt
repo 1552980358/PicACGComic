@@ -5,6 +5,7 @@ import android.content.Context.MODE_PRIVATE
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.storage.Account.AccountUtil.AccountSignState.SIGNED_IN
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.SerializeUtil.decodeJson
@@ -18,13 +19,11 @@ data class Account(var username: String, var password: String) {
 
         private class IllegalSignStateException: IllegalStateException("Not signed in")
 
-        private const val ACCOUNT_JSON_FILE_NAME = "account"
-
         @JvmStatic
         suspend fun Context.getAccount(): Account? {
             return withContext(io) {
                 runCatching {
-                    openFileInput(ACCOUNT_JSON_FILE_NAME).bufferedReader().use { bufferedReader ->
+                    openFileInput(getString(R.string.account)).bufferedReader().use { bufferedReader ->
                         bufferedReader.readText().decodeJson<Account>()
                     }
                 }.getOrNull()
@@ -64,14 +63,14 @@ data class Account(var username: String, var password: String) {
     }
 
     fun save(context: Context) {
-        context.openFileOutput(ACCOUNT_JSON_FILE_NAME, MODE_PRIVATE).bufferedWriter().use { bufferedWriter ->
+        context.openFileOutput(context.getString(R.string.account), MODE_PRIVATE).bufferedWriter().use { bufferedWriter ->
             bufferedWriter.write(encodeJson())
         }
     }
 
     fun saveAsync(context: Context) {
         io {
-            context.openFileOutput(ACCOUNT_JSON_FILE_NAME, MODE_PRIVATE).bufferedWriter().use { bufferedWriter ->
+            context.openFileOutput(context.getString(R.string.account), MODE_PRIVATE).bufferedWriter().use { bufferedWriter ->
                 bufferedWriter.write(encodeJson())
             }
         }
