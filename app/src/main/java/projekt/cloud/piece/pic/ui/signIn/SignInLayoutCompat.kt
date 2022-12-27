@@ -1,14 +1,19 @@
 package projekt.cloud.piece.pic.ui.signIn
 
 import android.app.Activity
+import android.content.Context
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.progressindicator.CircularProgressIndicatorSpec
+import com.google.android.material.progressindicator.IndeterminateDrawable
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.transition.platform.MaterialSharedAxis
+import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.databinding.FragmentSignInBinding
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
@@ -40,6 +45,9 @@ abstract class SignInLayoutCompat(protected val binding: FragmentSignInBinding) 
     private var callback: SignInButtonOnClickCallback? = null
     private var snackBar: Snackbar? = null
 
+    private val signIn: MaterialButton
+        get() = binding.materialButtonSignIn
+
     init {
         @Suppress("LeakingThis")
         binding.layoutCompat = this
@@ -64,11 +72,40 @@ abstract class SignInLayoutCompat(protected val binding: FragmentSignInBinding) 
 
     open fun setupActionBar(fragment: Fragment) = Unit
 
-    fun onSignInButtonClick() {
+    fun onSignInButtonClick(context: Context) {
         val username = username.editText?.text?.toString()
         val password = password.editText?.text?.toString()
         if (!username.isNullOrBlank() && !password.isNullOrBlank()) {
+            context.theme.obtainStyledAttributes(
+                intArrayOf(
+                    com.google.android.material.R.attr.colorSecondaryContainer,
+                    com.google.android.material.R.attr.colorOnSecondaryContainer
+                )
+            ).use {
+                signIn.setBackgroundColor(it.getColor(0, 0))
+                @Suppress("ResourceType")
+                signIn.setTextColor(it.getColor(1, 0))
+            }
+            signIn.setText(R.string.sign_in_button_signing_in)
+            signIn.icon = IndeterminateDrawable.createCircularDrawable(
+                context, CircularProgressIndicatorSpec(context, null)
+            )
             callback?.invoke(username, password)
+        }
+    }
+
+    fun onSignInRequestCompleted(context: Context) {
+        signIn.icon = null
+        signIn.setText(R.string.sign_in_button)
+        context.theme.obtainStyledAttributes(
+            intArrayOf(
+                com.google.android.material.R.attr.colorPrimary,
+                com.google.android.material.R.attr.colorOnPrimary
+            )
+        ).use {
+            signIn.setBackgroundColor(it.getColor(0, 0))
+            @Suppress("ResourceType")
+            signIn.setTextColor(it.getColor(1, 0))
         }
     }
 

@@ -45,6 +45,7 @@
     <string name="sign_in_password">Password</string>
     <string name="sign_in_forgot">Forgot Password?</string>
     <string name="sign_in_button">SIGN IN</string>
+    <string name="sign_in_button_signing_in">SIGNING IN…</string>
     <string name="sign_in_greeting_sign_up">Don\'t have an account?</string>
     <string name="sign_in_to_sign_up">Sign Up</string>
     <string name="sign_in_invalid_field">Invalid Username / Password</string>

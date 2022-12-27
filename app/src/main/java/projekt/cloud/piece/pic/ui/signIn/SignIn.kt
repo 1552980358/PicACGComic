@@ -67,6 +67,7 @@ class SignIn: BaseFragment<FragmentSignInBinding>() {
 
                     // Error
                     if (!response.isSuccessful) {
+                        layoutCompat.onSignInRequestCompleted(requireContext())
                         val error = response.decodeErrorResponse()
                         if (error.error == SIGN_IN_ERROR_INVALID) {
                             return@ui layoutCompat.shortSnack(
@@ -74,7 +75,9 @@ class SignIn: BaseFragment<FragmentSignInBinding>() {
                             )
                         }
                         return@ui layoutCompat.shortSnack(
-                            getString(R.string.response_error, error.code, error.error, error.message, error.detail)
+                            getString(
+                                R.string.response_error, error.code, error.error, error.message, error.detail
+                            )
                         )
                     }
 
@@ -82,11 +85,12 @@ class SignIn: BaseFragment<FragmentSignInBinding>() {
 
                     // Rejected
                     if (responseText.checkRejected()) {
+                        layoutCompat.onSignInRequestCompleted(requireContext())
                         return@ui layoutCompat.shortSnack(getString(R.string.response_rejected))
                     }
 
                     // Complete Auth signing in
-                    setFragmentResult(
+                    return@ui setFragmentResult(
                         getString(R.string.auth_sign_in_result),
                         bundleOf(
                             getString(R.string.auth_sign_in_result_username) to username,
@@ -96,6 +100,7 @@ class SignIn: BaseFragment<FragmentSignInBinding>() {
                     )
                 }
 
+                layoutCompat.onSignInRequestCompleted(requireContext())
                 when (httpRequest.state) {
                     STATE_IO_EXCEPTION -> {
                         layoutCompat.shortSnack(getString(R.string.request_io_exception, httpRequest.exceptionMessage))

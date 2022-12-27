@@ -107,11 +107,12 @@
                         app:layout_constraintEnd_toEndOf="parent" />
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/material_button_sign_in"
                         android:layout_width="@dimen/constraint_fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
                         android:text="@string/sign_in_button"
-                        android:onClick="@{() -> layoutCompat.onSignInButtonClick()}"
+                        android:onClick="@{(view) -> layoutCompat.onSignInButtonClick(view.context)}"
                         app:layout_constraintTop_toBottomOf="@id/material_text_view_forgot"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
