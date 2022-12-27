@@ -80,7 +80,7 @@ abstract class BrowsingLayoutCompat private constructor(protected val binding: F
 
         override fun onSetupInputs() {
             super.onSetupInputs()
-            diversionServerField.setText(diversionServerField.adapter.getItem(0).toString(), false)
+            // diversionServerField.setText(diversionServerField.adapter.getItem(0).toString(), false)
         }
 
     }
