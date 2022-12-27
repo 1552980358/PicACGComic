@@ -13,7 +13,8 @@ import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
 import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
 import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
 import projekt.cloud.piece.pic.util.LayoutSizeMode.LayoutSizeModeUtil.getLayoutSize
-import projekt.cloud.piece.pic.util.SplashScreenCompat.Companion.splashScreenCompat
+import projekt.cloud.piece.pic.util.SplashScreenCompat
+import projekt.cloud.piece.pic.util.SplashScreenCompat.Companion.applySplashScreenCompat
 
 class LauncherActivity: AppCompatActivity() {
     
@@ -46,8 +47,10 @@ class LauncherActivity: AppCompatActivity() {
 
     private lateinit var navController: NavController
     
+    private lateinit var splashScreenCompat: SplashScreenCompat
+    
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splashScreenCompat = splashScreenCompat
+        splashScreenCompat = applySplashScreenCompat
         splashScreenCompat.setKeepOnScreen(true)
         
         WindowCompat.setDecorFitsSystemWindows(window, false)
