@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_sign_in_result" translatable="false">sign_in_result</string>
+    <string name="auth_sign_in_result_username" translatable="false">username</string>
+    <string name="auth_sign_in_result_password" translatable="false">password</string>
+    <string name="auth_sign_in_result_token" translatable="false">token</string>
+</resources>
