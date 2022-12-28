@@ -27,8 +27,8 @@ class Browsing: BaseFragment<FragmentBrowsingBinding>() {
         }
     }
 
-    override fun onSetupLayoutCompat(binding: FragmentBrowsingBinding) {
-        layoutCompat = binding.getLayoutCompat(requireActivity())
+    override fun onSetupLayoutCompat(binding: FragmentBrowsingBinding, layoutSizeMode: LayoutSizeMode) {
+        layoutCompat = binding.getLayoutCompat(layoutSizeMode)
         layoutCompat.setNavController(findNavController())
     }
 

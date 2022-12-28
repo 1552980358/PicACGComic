@@ -27,8 +27,8 @@ class Signing: BaseFragment<FragmentSigningBinding>() {
     
     private lateinit var layoutCompat: SigningLayoutCompat
     
-    override fun onSetupLayoutCompat(binding: FragmentSigningBinding) {
-        layoutCompat = binding.getLayoutCompat(requireActivity())
+    override fun onSetupLayoutCompat(binding: FragmentSigningBinding, layoutSizeMode: LayoutSizeMode) {
+        layoutCompat = binding.getLayoutCompat(layoutSizeMode)
         layoutCompat.setNavController(findNavController())
     }
     

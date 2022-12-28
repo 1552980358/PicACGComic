@@ -1,6 +1,5 @@
 package projekt.cloud.piece.pic.ui.home
 
-import android.app.Activity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.fragment.NavHostFragment
@@ -9,15 +8,15 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigationrail.NavigationRailView
 import projekt.cloud.piece.pic.databinding.FragmentHomeBinding
 import projekt.cloud.piece.pic.databinding.NavRailHeaderHomeBinding
+import projekt.cloud.piece.pic.util.LayoutSizeMode
 import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
 import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
 import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
-import projekt.cloud.piece.pic.util.LayoutSizeMode.LayoutSizeModeUtil.getLayoutSize
 
 abstract class HomeLayoutCompat(protected val binding: FragmentHomeBinding) {
 
     companion object HomeLayoutCompatUtil {
-        fun FragmentHomeBinding.getLayoutCompat(activity: Activity) = when (activity.getLayoutSize()) {
+        fun FragmentHomeBinding.getLayoutCompat(layoutSizeMode: LayoutSizeMode) = when (layoutSizeMode) {
             COMPACT -> HomeLayoutCompatImpl(this)
             MEDIUM -> HomeLayoutCompatW600dpImpl(this)
             EXPANDED -> HomeLayoutCompatW1240dpImpl(this)

@@ -42,8 +42,8 @@ class SignIn: BaseFragment<FragmentSignInBinding>() {
 
     private lateinit var layoutCompat: SignInLayoutCompat
 
-    override fun onSetupLayoutCompat(binding: FragmentSignInBinding) {
-        layoutCompat = binding.getLayoutCompat(requireActivity())
+    override fun onSetupLayoutCompat(binding: FragmentSignInBinding, layoutSizeMode: LayoutSizeMode) {
+        layoutCompat = binding.getLayoutCompat(layoutSizeMode)
         layoutCompat.setNavController(findNavController())
     }
 

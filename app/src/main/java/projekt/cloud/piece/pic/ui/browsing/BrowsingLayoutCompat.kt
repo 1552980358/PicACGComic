@@ -1,6 +1,5 @@
 package projekt.cloud.piece.pic.ui.browsing
 
-import android.app.Activity
 import android.widget.AutoCompleteTextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -12,16 +11,16 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.transition.platform.MaterialSharedAxis
 import projekt.cloud.piece.pic.databinding.FragmentBrowsingBinding
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
+import projekt.cloud.piece.pic.util.LayoutSizeMode
 import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
 import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
 import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
-import projekt.cloud.piece.pic.util.LayoutSizeMode.LayoutSizeModeUtil.getLayoutSize
 
 abstract class BrowsingLayoutCompat private constructor(protected val binding: FragmentBrowsingBinding) {
 
     companion object BrowsingLayoutCompatUtil {
         @JvmStatic
-        fun FragmentBrowsingBinding.getLayoutCompat(activity: Activity) = when (activity.getLayoutSize()) {
+        fun FragmentBrowsingBinding.getLayoutCompat(layoutSizeMode: LayoutSizeMode) = when (layoutSizeMode) {
             COMPACT -> BrowsingLayoutCompatImpl(this)
             MEDIUM -> BrowsingCompatW600dpImpl(this)
             EXPANDED -> BrowsingCompatW1240dpImpl(this)

@@ -1,21 +1,20 @@
 package projekt.cloud.piece.pic.ui.home.search
 
-import android.app.Activity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.search.SearchBar
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.databinding.FragmentSearchBinding
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
+import projekt.cloud.piece.pic.util.LayoutSizeMode
 import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
 import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
 import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
-import projekt.cloud.piece.pic.util.LayoutSizeMode.LayoutSizeModeUtil.getLayoutSize
 
 open class SearchLayoutCompact private constructor(protected val binding: FragmentSearchBinding) {
 
     companion object SearchLayoutCompactUtil {
-        fun FragmentSearchBinding.getLayoutCompat(activity: Activity) = when (activity.getLayoutSize()) {
+        fun FragmentSearchBinding.getLayoutCompat(layoutSizeMode: LayoutSizeMode) = when (layoutSizeMode) {
             COMPACT -> SearchLayoutCompactImpl(this)
             MEDIUM -> SearchLayoutCompactW600dpImpl(this)
             EXPANDED -> SearchLayoutCompactW1240dpImpl(this)

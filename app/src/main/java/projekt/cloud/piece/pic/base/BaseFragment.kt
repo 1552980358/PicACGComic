@@ -43,6 +43,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
         viewBindingInflateMethod.invoke(null, inflater, container, false) as VB
 
     protected lateinit var layoutSizeMode: LayoutSizeMode
+        private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,12 +77,12 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     protected open fun onSetupViewModel(binding: VB) = Unit
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        onSetupLayoutCompat(binding)
+        onSetupLayoutCompat(binding, layoutSizeMode)
         onSetupActionBar(binding)
         onSetupView(binding)
     }
 
-    protected open fun onSetupLayoutCompat(binding: VB) = Unit
+    protected open fun onSetupLayoutCompat(binding: VB, layoutSizeMode: LayoutSizeMode) = Unit
 
     protected open fun onSetupActionBar(binding: VB) = Unit
 
