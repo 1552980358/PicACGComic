@@ -12,7 +12,7 @@ import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
 import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
 import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
 
-abstract class IndexLayoutCompat(protected val binding: FragmentIndexBinding) {
+abstract class IndexLayoutCompat private constructor(protected val binding: FragmentIndexBinding) {
     
     companion object IndexLayoutCompatUtil {
         @JvmStatic
