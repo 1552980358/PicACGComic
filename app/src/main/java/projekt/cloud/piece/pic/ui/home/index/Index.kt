@@ -1,24 +1,22 @@
 package projekt.cloud.piece.pic.ui.home.index
 
-import android.os.Bundle
-import android.view.View
 import androidx.navigation.fragment.findNavController
 import projekt.cloud.piece.pic.base.BaseFragment
 import projekt.cloud.piece.pic.databinding.FragmentIndexBinding
-import projekt.cloud.piece.pic.util.LayoutSizeMode.LayoutSizeModeUtil.getLayoutSize
+import projekt.cloud.piece.pic.ui.home.index.IndexLayoutCompat.IndexLayoutCompatUtil.getLayoutCompat
+import projekt.cloud.piece.pic.util.LayoutSizeMode
 
 class Index: BaseFragment<FragmentIndexBinding>() {
 
-    private lateinit var indexLayoutHelper: IndexLayoutHelper
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        indexLayoutHelper = IndexLayoutHelper(binding, requireActivity().getLayoutSize())
-        super.onViewCreated(view, savedInstanceState)
+    private lateinit var layoutCompat: IndexLayoutCompat
+    
+    override fun onSetupLayoutCompat(binding: FragmentIndexBinding, layoutSizeMode: LayoutSizeMode) {
+        layoutCompat = binding.getLayoutCompat(layoutSizeMode)
+        layoutCompat.setNavController(findNavController())
     }
 
     override fun onSetupActionBar(binding: FragmentIndexBinding) {
-        val navController = findNavController()
-        indexLayoutHelper.setupActionBar(this, navController)
+        layoutCompat.setupActionBar(this)
     }
 
 }
