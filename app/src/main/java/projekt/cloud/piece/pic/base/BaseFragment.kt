@@ -69,12 +69,12 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
         val binding = binding
         if (binding is ViewDataBinding) {
             binding.lifecycleOwner = viewLifecycleOwner
-            onSetupViewModel(binding)
+            onBindData(binding)
         }
         return binding.root
     }
-
-    protected open fun onSetupViewModel(binding: VB) = Unit
+    
+    protected open fun onBindData(binding: VB) = Unit
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         onSetupLayoutCompat(binding, layoutSizeMode)
