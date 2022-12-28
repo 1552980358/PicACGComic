@@ -15,14 +15,6 @@
         android:background="?attr/colorSurface"
         android:fitsSystemWindows="true">
         
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/material_toolbar"
-            android:layout_width="@dimen/constraint_fill_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-        
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_layout_greeting"
             android:layout_width="wrap_content"

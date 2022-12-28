@@ -1,22 +1,14 @@
 package projekt.cloud.piece.pic.ui.signing
 
-import android.view.View
-import android.view.View.OnClickListener
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.textview.MaterialTextView
 import com.google.android.material.transition.platform.MaterialSharedAxis
 import projekt.cloud.piece.pic.base.BaseFragment
 import projekt.cloud.piece.pic.databinding.FragmentSigningBinding
+import projekt.cloud.piece.pic.ui.signing.SigningLayoutCompat.SigningLayoutCompatUtil.getLayoutCompat
 import projekt.cloud.piece.pic.util.LayoutSizeMode
 import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
 
-class Signing: BaseFragment<FragmentSigningBinding>(), OnClickListener {
-
-    private lateinit var navController: NavController
-
-    private val signIn: MaterialTextView
-        get() = binding.materialTextViewSignIn
+class Signing: BaseFragment<FragmentSigningBinding>() {
 
     override fun onSetupAnimation(layoutSizeMode: LayoutSizeMode) {
         when (layoutSizeMode) {
@@ -32,18 +24,16 @@ class Signing: BaseFragment<FragmentSigningBinding>(), OnClickListener {
             }
         }
     }
-
-    override fun onSetupView(binding: FragmentSigningBinding) {
-        navController = findNavController()
-        signIn.setOnClickListener(this)
+    
+    private lateinit var layoutCompat: SigningLayoutCompat
+    
+    override fun onSetupLayoutHelper(binding: FragmentSigningBinding) {
+        layoutCompat = binding.getLayoutCompat(requireActivity())
+        layoutCompat.setNavController(findNavController())
     }
-
-    override fun onClick(v: View?) {
-        when (v) {
-            signIn -> {
-                navController.navigate(SigningDirections.toSignIn())
-            }
-        }
+    
+    override fun onSetupActionBar(binding: FragmentSigningBinding) {
+        layoutCompat.setupActionBar(this)
     }
 
 }
