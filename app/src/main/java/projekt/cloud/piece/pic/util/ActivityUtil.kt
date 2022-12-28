@@ -16,6 +16,11 @@ object ActivityUtil {
     }
     
     @JvmStatic
+    fun <T: Activity> Activity.startActivity(activityClass: Class<T>) {
+        startActivity(Intent(this, activityClass))
+    }
+    
+    @JvmStatic
     val Activity.defaultSharedPreference: SharedPreferences
         get() = PreferenceManager.getDefaultSharedPreferences(this)
     
