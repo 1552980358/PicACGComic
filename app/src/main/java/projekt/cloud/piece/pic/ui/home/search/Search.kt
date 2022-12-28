@@ -8,7 +8,7 @@ class Search: BaseFragment<FragmentSearchBinding>() {
 
     private lateinit var layoutCompat: SearchLayoutCompact
 
-    override fun onSetupLayoutHelper(binding: FragmentSearchBinding) {
+    override fun onSetupLayoutCompat(binding: FragmentSearchBinding) {
         layoutCompat = binding.getLayoutCompat(requireActivity())
     }
 

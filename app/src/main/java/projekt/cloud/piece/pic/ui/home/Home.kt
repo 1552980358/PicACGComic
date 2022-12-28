@@ -8,7 +8,7 @@ class Home: BaseFragment<FragmentHomeBinding>() {
 
     private lateinit var homeLayoutCompat: HomeLayoutCompat
 
-    override fun onSetupLayoutHelper(binding: FragmentHomeBinding) {
+    override fun onSetupLayoutCompat(binding: FragmentHomeBinding) {
         homeLayoutCompat = binding.getLayoutCompat(requireActivity())
     }
 

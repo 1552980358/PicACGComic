@@ -76,12 +76,12 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     protected open fun onSetupViewModel(binding: VB) = Unit
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        onSetupLayoutHelper(binding)
+        onSetupLayoutCompat(binding)
         onSetupActionBar(binding)
         onSetupView(binding)
     }
 
-    protected open fun onSetupLayoutHelper(binding: VB) = Unit
+    protected open fun onSetupLayoutCompat(binding: VB) = Unit
 
     protected open fun onSetupActionBar(binding: VB) = Unit
 
