@@ -5,10 +5,10 @@ import projekt.cloud.piece.pic.api.ErrorResponse.RejectedResponseBody
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.SerializeUtil.decodeJson
 
-abstract class BaseStringApiRequest: BaseApiRequest() {
+abstract class BaseStringApiRequest<ResponseBody>: BaseApiRequest() {
     
     private var _responseBody: String? = null
-    val responseBody: String
+    protected val responseBody: String
         get() = _responseBody!!
     
     val isComplete: Boolean
@@ -26,7 +26,9 @@ abstract class BaseStringApiRequest: BaseApiRequest() {
         }
     }
     
-    suspend inline fun <reified Body> reflectTo(): Body {
+    abstract suspend fun responseBody(): ResponseBody
+    
+    protected suspend inline fun <reified Body> reflectInline(responseBody: String): Body {
         return withContext(io) {
             responseBody.decodeJson()
         }
