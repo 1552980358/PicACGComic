@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <declare-styleable name="FixRatioImageView">
+        <attr name="ratio_x" format="integer" />
+        <attr name="ratio_y" format="integer" />
+    </declare-styleable>
+    <integer name="fix_ratio_image_view_ratio_default">0</integer>
+    
+</resources>
