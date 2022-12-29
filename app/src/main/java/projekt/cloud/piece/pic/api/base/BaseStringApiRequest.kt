@@ -1,6 +1,8 @@
 package projekt.cloud.piece.pic.api.base
 
 import kotlinx.coroutines.withContext
+import okhttp3.Response
+import projekt.cloud.piece.pic.api.ErrorResponse.ErrorResponseBody
 import projekt.cloud.piece.pic.api.ErrorResponse.RejectedResponseBody
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.SerializeUtil.decodeJson
@@ -14,10 +16,21 @@ abstract class BaseStringApiRequest<ResponseBody>: BaseApiRequest() {
     val isComplete: Boolean
         get() = httpRequest.isComplete
     
-    fun isEmptyResponse(): Boolean {
-        _responseBody = httpRequest.response.body.string()
-        return _responseBody.isNullOrBlank()
+    override fun copyStreamData(response: Response) {
+        _responseBody = response.body.string()
     }
+    
+    val isErrorResponse: Boolean
+        get() = !isSuccessful
+    
+    suspend fun errorResponse(): ErrorResponseBody {
+        return withContext(io) {
+            responseBody.decodeJson()
+        }
+    }
+    
+    val isEmptyResponse: Boolean
+        get() = _responseBody.isNullOrBlank()
     
     suspend fun isRejected(): Boolean {
         return withContext(io) {
