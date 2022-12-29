@@ -30,7 +30,6 @@ class Header private constructor() {
     private lateinit var path: String
     private lateinit var query: String
     private lateinit var requestMethod: HttpRequestMethod
-    private var token = ""
 
     fun updateMetadata(path: String, query: String, requestMethod: HttpRequestMethod) {
         this.path = path
@@ -47,11 +46,11 @@ class Header private constructor() {
         val timeStr = (time / 1000).toString()
         return when {
             token.isEmpty() -> headerWithoutAuth(timeStr, nonce)
-            else -> headerWithAuth(timeStr, nonce)
+            else -> headerWithAuth(timeStr, nonce, token)
         }
     }
 
-    private fun headerWithAuth(timeStr: String, nonce: String) = mapOf(
+    private fun headerWithAuth(timeStr: String, nonce: String, token: String) = mapOf(
         "api-key" to API_KEY,
         "accept" to "application/vnd.picacomic.com.v1+json",
         "User-Agent" to "okhttp/3.8.1",
