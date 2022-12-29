@@ -55,5 +55,6 @@
     <string name="request_unexpected_state">Unexpected State: %s</string>
     <string name="response_error">Response Code [%d] with Error [%d]: %s - %s</string>
     <string name="response_rejected">Request Rejected by Server</string>
+    <string name="response_empty">Response Content Null</string>
 
 </resources>
