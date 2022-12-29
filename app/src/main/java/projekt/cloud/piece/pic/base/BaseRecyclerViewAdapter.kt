@@ -25,7 +25,7 @@ abstract class BaseRecyclerViewAdapter<VH: ViewHolder, T>(protected val itemList
     
     override fun notifyClear() {
         notifyItemRangeRemoved(0, itemListSize)
-        itemListSize = itemList.size
+        itemListSize = 0
     }
     
 }
