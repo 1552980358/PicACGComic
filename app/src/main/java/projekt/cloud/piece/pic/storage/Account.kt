@@ -56,8 +56,8 @@ data class Account(var username: String, var password: String) {
 
     fun signing(token: String?) {
         state = when (token) {
-            null -> SIGNED_IN
-            else -> SIGNED_OUT
+            null -> SIGNED_OUT
+            else -> SIGNED_IN
         }
         _token = token
     }
