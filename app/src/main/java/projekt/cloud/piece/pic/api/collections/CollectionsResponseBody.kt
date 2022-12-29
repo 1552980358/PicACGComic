@@ -2,7 +2,7 @@ package projekt.cloud.piece.pic.api.collections
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import projekt.cloud.piece.pic.api.Image.ImageBody
+import projekt.cloud.piece.pic.api.image.Image
 
 @Serializable
 data class CollectionsResponseBody(val code: Int, val message: String, private val data: Data) {
@@ -23,7 +23,8 @@ data class CollectionsResponseBody(val code: Int, val message: String, private v
                 @SerialName("_id") val id: String,
                 val title: String,
                 val author: String,
-                val cover: ImageBody,
+                @SerialName("thumb")
+                val cover: Image,
                 @SerialName("categories")
                 val categoryList: List<String>,
                 @SerialName("epsCount")
@@ -32,8 +33,12 @@ data class CollectionsResponseBody(val code: Int, val message: String, private v
                 val pages: Int,
                 val finished: Boolean,
                 val totalViews: Int,
-                val totalLikes: Int
-            )
+                val totalLikes: Int) {
+                
+                val categoryStr: String
+                    get() = categoryList.joinToString(separator = " ") { it }
+                
+            }
             
         }
         

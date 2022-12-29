@@ -4,8 +4,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import projekt.cloud.piece.pic.api.ApiConstants.IGNORE_INT
 import projekt.cloud.piece.pic.api.ApiConstants.IGNORE_STRING
-import projekt.cloud.piece.pic.api.Image.ImageBody
 import projekt.cloud.piece.pic.api.Sort
+import projekt.cloud.piece.pic.api.image.Image
 import projekt.cloud.piece.pic.ui.home.search.SearchApi.SearchResponseBody.Data.Comics
 
 object SearchApi {
@@ -50,7 +50,7 @@ object SearchApi {
                     @SerialName("updated_at")
                     val updateDate: String,
                     @SerialName("thumb")
-                    val cover: ImageBody,
+                    val cover: Image,
                     val finished: Boolean,
                     val likesCount: Int,
                     val totalViews: Int = IGNORE_INT,
