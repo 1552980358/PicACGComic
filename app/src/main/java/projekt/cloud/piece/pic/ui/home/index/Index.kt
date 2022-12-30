@@ -50,6 +50,7 @@ class Index: BaseCallbackFragment<FragmentIndexBinding, IndexViewModel>() {
                 else -> mainViewModel.performSignIn(requireActivity())
             }
         }
+        layoutCompat.setupBeforeCompleteLoading(resources)
     }
     
     private fun obtainCollection(token: String) {
@@ -64,6 +65,7 @@ class Index: BaseCallbackFragment<FragmentIndexBinding, IndexViewModel>() {
             COLLECTIONS_COMPLETE -> {
                 // Complete
                 layoutCompat.notifyUpdate()
+                layoutCompat.completeLoading()
             }
             COLLECTIONS_IO_EXCEPTION -> {
                 layoutCompat.indefiniteSnack(getString(R.string.request_io_exception, message))

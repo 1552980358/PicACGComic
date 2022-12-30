@@ -33,11 +33,22 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-            
+    
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/linear_progress_indicator"
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                app:hideAnimationBehavior="outward"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+    
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nested_scroll_view"
                 android:layout_width="@dimen/constraint_fill_parent"
                 android:layout_height="@dimen/constraint_fill_parent"
+                android:visibility="gone"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -133,14 +144,6 @@
             
             </androidx.core.widget.NestedScrollView>
             
-            <com.google.android.material.progressindicator.LinearProgressIndicator
-                android:layout_width="@dimen/constraint_fill_parent"
-                android:layout_height="wrap_content"
-                android:indeterminate="true"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-        
         </androidx.constraintlayout.widget.ConstraintLayout>
     
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

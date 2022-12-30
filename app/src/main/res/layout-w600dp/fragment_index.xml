@@ -21,6 +21,7 @@
             android:layout_height="match_parent">
         
             <androidx.core.widget.NestedScrollView
+                android:id="@+id/nested_scroll_view"
                 android:layout_width="@dimen/constraint_fill_parent"
                 android:layout_height="@dimen/constraint_fill_parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -117,9 +118,11 @@
             </androidx.core.widget.NestedScrollView>
         
             <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/circular_progress_indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
+                app:hideAnimationBehavior="outward"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
