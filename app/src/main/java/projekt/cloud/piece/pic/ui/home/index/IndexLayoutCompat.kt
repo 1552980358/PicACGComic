@@ -18,6 +18,7 @@ import androidx.transition.TransitionManager
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.progressindicator.BaseProgressIndicator
 import com.google.android.material.transition.MaterialFade
+import projekt.cloud.piece.pic.MainViewModel
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.collections.CollectionsResponseBody.Data.Collection.Comic
 import projekt.cloud.piece.pic.base.BaseRecyclerViewAdapter.BaseRecyclerViewAdapterUtil.adapterInterface
@@ -102,6 +103,10 @@ abstract class IndexLayoutCompat private constructor(
     }
     
     open fun setupActionBar(fragment: Fragment) = Unit
+    
+    fun setupViewModel(mainViewModel: MainViewModel) {
+    
+    }
     
     override val snackContainer: View
         get() = coordinatorLayout

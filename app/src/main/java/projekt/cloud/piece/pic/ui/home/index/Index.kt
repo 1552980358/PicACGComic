@@ -35,6 +35,7 @@ class Index: BaseCallbackFragment<FragmentIndexBinding, IndexViewModel>() {
     
     override fun onBindData(binding: FragmentIndexBinding) {
         binding.viewModel = viewModel
+        binding.mainViewModel = mainViewModel
     }
 
     override fun onSetupActionBar(binding: FragmentIndexBinding) {
