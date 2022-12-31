@@ -17,9 +17,9 @@
         android:checkable="true" />
 
     <item
-        android:id="@+id/favorites"
-        android:title="@string/nav_home_favorites"
-        android:icon="@drawable/ic_round_favorite_24"
+        android:id="@+id/stars"
+        android:title="@string/nav_home_stars"
+        android:icon="@drawable/ic_round_star_24"
         android:checkable="true" />
 
     <item
