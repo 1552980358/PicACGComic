@@ -20,9 +20,12 @@ abstract class BaseViewModelFragment<VB: ViewBinding, VM: ViewModel>: BaseFragme
             .actualTypeArguments[1] as Class<VM>)
     
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        viewModel = ViewModelProvider(viewModelOwner)[viewModelClass]
+        viewModel = createViewModel()
         return super.onCreateView(inflater, container, savedInstanceState)
     }
+    
+    protected open fun createViewModel(): VM =
+        ViewModelProvider(viewModelOwner)[viewModelClass]
     
     protected open val viewModelOwner: ViewModelStoreOwner
         get() = this
