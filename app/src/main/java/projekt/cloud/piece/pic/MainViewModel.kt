@@ -1,6 +1,10 @@
 package projekt.cloud.piece.pic
 
 import android.app.Activity
+import android.graphics.Rect
+import android.view.View
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat.Type
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -58,6 +62,24 @@ class MainViewModel: ViewModel() {
         with(activity) {
             startActivity(LauncherActivity::class.java)
             finish()
+        }
+    }
+    
+    private val _systemInsets = MutableLiveData<Rect>()
+    val systemInsets: LiveData<Rect>
+        get() = _systemInsets
+    
+    fun obtainSystemInsets(decorView: View) {
+        ViewCompat.setOnApplyWindowInsetsListener(decorView) { _, windowInsetsCompat ->
+            windowInsetsCompat.getInsets(Type.systemBars()).let {  insets ->
+                val rect = Rect()
+                rect.top = insets.top
+                rect.left = insets.left
+                rect.right = insets.right
+                rect.bottom = insets.bottom
+                _systemInsets.value = rect
+            }
+            return@setOnApplyWindowInsetsListener windowInsetsCompat
         }
     }
 
