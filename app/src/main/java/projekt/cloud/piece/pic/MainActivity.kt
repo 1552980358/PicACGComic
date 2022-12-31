@@ -27,13 +27,13 @@ class MainActivity : AppCompatActivity() {
         val username = intent.getStringExtra(getString(R.string.auth_sign_in_result_username))
         val password = intent.getStringExtra(getString(R.string.auth_sign_in_result_password))
         val token = intent.getStringExtra(getString(R.string.auth_sign_in_result_token))
-        
         if (username.isNullOrBlank() || password.isNullOrBlank() || token.isNullOrBlank()) {
             startActivity(LauncherActivity::class.java)
             finish()
             return
         }
         viewModel.setAccount(username, password, token)
+        viewModel.obtainSystemInsets(window.decorView)
         
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
