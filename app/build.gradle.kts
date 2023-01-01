@@ -68,7 +68,7 @@ dependencies {
     implementation("com.fasterxml.uuid:java-uuid-generator:4.0.1")
     implementation("com.google.android.material:material:1.8.0-beta01")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.22")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.4.1")
     kapt("androidx.databinding:databinding-compiler-common:7.3.1")
     testImplementation("junit:junit:4.13.2")
