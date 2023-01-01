@@ -22,3 +22,9 @@ add_library(
         ${BITMAP-BUNDLE-SRC-H}
         ${BITMAP-BUNDLE-SRC-CPP}
 )
+
+target_link_libraries(
+        bitmap-bundle-lib
+        jnigraphics
+        ${log-lib}
+)
