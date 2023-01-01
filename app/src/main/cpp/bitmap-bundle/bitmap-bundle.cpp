@@ -11,6 +11,7 @@
 
 jfieldID get_bitmap_bundle_pointer(JNIEnv *, jobject);
 bitmap_t *get_bitmap(JNIEnv *, jobject);
+void cleanup(JNIEnv *, jobject, bitmap_t *);
 
 extern "C"
 JNIEXPORT jboolean JNICALL
@@ -101,11 +102,19 @@ Java_projekt_cloud_piece_pic_util_BitmapBundle_recoverBitmap(JNIEnv *env, jobjec
             break;
         default:
             AndroidBitmap_unlockPixels(env, jbitmap);
+            cleanup(env, thiz, bitmap);
             return false;
     }
     AndroidBitmap_unlockPixels(env, jbitmap);
-
+    cleanup(env, thiz, bitmap);
     return true;
+}
+
+void cleanup(JNIEnv *env, jobject thiz, bitmap_t *bitmap) {
+    // Clean up
+    delete bitmap;
+    auto pointer = get_bitmap_bundle_pointer(env, thiz);
+    env->SetLongField(thiz, pointer, 0);
 }
 
 extern "C"
