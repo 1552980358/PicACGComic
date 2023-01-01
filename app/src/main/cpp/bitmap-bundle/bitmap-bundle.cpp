@@ -121,7 +121,11 @@ extern "C"
 JNIEXPORT jboolean JNICALL
 Java_projekt_cloud_piece_pic_util_BitmapBundle_getSize(JNIEnv *env, jobject thiz, jobject jrect) {
     auto bitmap = get_bitmap(env, thiz);
+    if (!bitmap) {
+        return false;
+    }
     rect_set(env, jrect, 0, 0, bitmap->get_width(), bitmap->get_height());
+    return true;
 }
 
 extern "C"
