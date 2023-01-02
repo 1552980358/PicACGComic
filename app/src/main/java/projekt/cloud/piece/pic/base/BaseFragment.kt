@@ -41,6 +41,14 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     @Suppress("UNCHECKED_CAST")
     private fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
         viewBindingInflateMethod.invoke(null, inflater, container, false) as VB
+    
+    protected inline fun <reified F: Fragment> findParentAs(): F {
+        var parent = requireParentFragment()
+        while (parent !is F) {
+            parent = parent.requireParentFragment()
+        }
+        return parent
+    }
 
     protected lateinit var layoutSizeMode: LayoutSizeMode
         private set
