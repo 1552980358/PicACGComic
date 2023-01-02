@@ -12,12 +12,9 @@ import androidx.viewbinding.ViewBinding
 import projekt.cloud.piece.pic.util.LayoutSizeMode
 import projekt.cloud.piece.pic.util.LayoutSizeMode.LayoutSizeModeUtil.getLayoutSize
 import java.lang.reflect.ParameterizedType
+import projekt.cloud.piece.pic.util.ViewBindingInflater
 
 abstract class BaseFragment<VB: ViewBinding>: Fragment() {
-
-    private companion object {
-        const val VIEW_BINDING_INFLATE_METHOD_NAME = "inflate"
-    }
 
     private var _binding: VB? = null
     protected val binding: VB
@@ -29,18 +26,6 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     private val viewBindingClass =
         ((this::class.java.genericSuperclass as ParameterizedType)
             .actualTypeArguments.first() as Class<VB>)
-
-    private val viewBindingInflateMethod =
-        viewBindingClass.getDeclaredMethod(
-            VIEW_BINDING_INFLATE_METHOD_NAME,
-            LayoutInflater::class.java,
-            ViewGroup::class.java,
-            Boolean::class.java
-        )
-
-    @Suppress("UNCHECKED_CAST")
-    private fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        viewBindingInflateMethod.invoke(null, inflater, container, false) as VB
     
     protected inline fun <reified F: Fragment> findParentAs(): F {
         var parent = requireParentFragment()
@@ -73,11 +58,12 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     protected open fun onSetupAnimation(layoutSizeMode: LayoutSizeMode) = Unit
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = inflateViewBinding(inflater, container)
-        val binding = binding
-        if (binding is ViewDataBinding) {
-            binding.lifecycleOwner = viewLifecycleOwner
-            onBindData(binding)
+        _binding = ViewBindingInflater(viewBindingClass).inflate(inflater, container, false)
+        binding.let { binding ->
+            if (binding is ViewDataBinding) {
+                binding.lifecycleOwner = viewLifecycleOwner
+                onBindData(binding)
+            }
         }
         return binding.root
     }
