@@ -18,13 +18,14 @@ import androidx.transition.TransitionManager
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.progressindicator.BaseProgressIndicator
 import com.google.android.material.transition.MaterialFade
-import projekt.cloud.piece.pic.MainViewModel
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.collections.CollectionsResponseBody.Data.Collection.Comic
 import projekt.cloud.piece.pic.base.BaseRecyclerViewAdapter.BaseRecyclerViewAdapterUtil.adapterInterface
 import projekt.cloud.piece.pic.base.SnackLayoutCompat
 import projekt.cloud.piece.pic.databinding.FragmentIndexBinding
+import projekt.cloud.piece.pic.ui.home.HomeDirections
 import projekt.cloud.piece.pic.util.AdapterInterface
+import projekt.cloud.piece.pic.util.BitmapBundle.Companion.toNavArg
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.LayoutSizeMode
 import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
@@ -62,10 +63,18 @@ abstract class IndexLayoutCompat private constructor(
         this.navController = navController
     }
     
-    fun setupRecyclerViews(resources: Resources, comicListA: List<Comic>, comicListB: List<Comic>, coverMap: ObservableArrayMap<String, Bitmap?>) {
+    fun setupRecyclerViews(resources: Resources,
+                           comicListA: List<Comic>, comicListB: List<Comic>,
+                           coverMap: ObservableArrayMap<String, Bitmap?>) {
+        val onClick: (Comic) -> Unit = {
+            navController.navigate(
+                HomeDirections.toComic(it.id, it.title, coverMap[it.id]?.toNavArg())
+            )
+        }
+        
         val recyclerViewListSpacingVertical = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_ver_8)
         
-        recyclerViewA.adapter = RecyclerViewAdapter(comicListA, coverMap)
+        recyclerViewA.adapter = RecyclerViewAdapter(comicListA, coverMap, onClick)
         recyclerViewA.addItemDecoration(object: ItemDecoration() {
             override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                 super.getItemOffsets(outRect, view, parent, state)
@@ -74,7 +83,7 @@ abstract class IndexLayoutCompat private constructor(
             }
         })
         
-        recyclerViewB.adapter = RecyclerViewAdapter(comicListB, coverMap)
+        recyclerViewB.adapter = RecyclerViewAdapter(comicListB, coverMap, onClick)
         recyclerViewB.addItemDecoration(object: ItemDecoration() {
             override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                 super.getItemOffsets(outRect, view, parent, state)
@@ -103,10 +112,6 @@ abstract class IndexLayoutCompat private constructor(
     }
     
     open fun setupActionBar(fragment: Fragment) = Unit
-    
-    fun setupViewModel(mainViewModel: MainViewModel) {
-    
-    }
     
     override val snackContainer: View
         get() = coordinatorLayout

@@ -7,6 +7,25 @@
 
     <fragment
         android:id="@+id/home"
-        android:name="projekt.cloud.piece.pic.ui.home.Home" />
+        android:name="projekt.cloud.piece.pic.ui.home.Home">
+        <action
+            android:id="@+id/to_comic"
+            app:destination="@id/comic">
+            <argument
+                android:name="id"
+                app:argType="string" />
+            <argument
+                android:name="title"
+                app:argType="string" />
+            <argument
+                android:name="cover"
+                app:argType="projekt.cloud.piece.pic.util.BitmapBundle"
+                app:nullable="true" />
+        </action>
+    </fragment>
+    
+    <fragment
+        android:id="@+id/comic"
+        android:name="projekt.cloud.piece.pic.ui.comic.Comic" />
 
 </navigation>

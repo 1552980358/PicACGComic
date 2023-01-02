@@ -30,7 +30,10 @@ class Index: BaseCallbackFragment<FragmentIndexBinding, IndexViewModel>() {
     
     override fun onSetupLayoutCompat(binding: FragmentIndexBinding, layoutSizeMode: LayoutSizeMode) {
         layoutCompat = binding.getLayoutCompat(layoutSizeMode)
-        layoutCompat.setNavController(findNavController())
+        layoutCompat.setNavController(
+            requireParentFragment().requireParentFragment()
+                .findNavController()
+        )
     }
     
     override fun onBindData(binding: FragmentIndexBinding) {

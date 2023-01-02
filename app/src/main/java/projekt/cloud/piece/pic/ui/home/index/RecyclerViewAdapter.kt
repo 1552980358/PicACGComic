@@ -10,12 +10,14 @@ import projekt.cloud.piece.pic.databinding.LayoutRecyclerIndexBinding
 
 class RecyclerViewAdapter(
     itemList: List<Comic>,
-    private val coverMap: ObservableArrayMap<String, Bitmap?>
+    private val coverMap: ObservableArrayMap<String, Bitmap?>,
+    private val onClick: (Comic) -> Unit
 ): BaseRecyclerViewAdapter<RecyclerViewAdapter.RecyclerViewHolder, Comic>(itemList) {
     
     class RecyclerViewHolder(parent: ViewGroup): BaseRecyclerViewHolder<(LayoutRecyclerIndexBinding)>(parent, LayoutRecyclerIndexBinding::class.java) {
-        fun onBind(comic: Comic, coverMap: ObservableArrayMap<String, Bitmap?>) {
+        fun onBind(comic: Comic, coverMap: ObservableArrayMap<String, Bitmap?>, onClick: (Comic) -> Unit) {
             binding.comic = comic
+            binding.onClick = onClick
             if (binding.coverMap != coverMap) {
                 binding.coverMap = coverMap
             }
@@ -25,7 +27,7 @@ class RecyclerViewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = RecyclerViewHolder(parent)
     
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
-        holder.onBind(itemList[position], coverMap)
+        holder.onBind(itemList[position], coverMap, onClick)
     }
     
 }
