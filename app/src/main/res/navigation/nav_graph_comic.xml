@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph_comic"
+    app:startDestination="@id/metadata">
+    
+    <fragment
+        android:id="@+id/metadata"
+        android:name="projekt.cloud.piece.pic.ui.comic.metadata.Metadata" />
+
+</navigation>

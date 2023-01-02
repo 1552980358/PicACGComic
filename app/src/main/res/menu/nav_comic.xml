@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/metadata"
+        android:title="@string/nav_comic_metadata"
+        android:icon="@drawable/ic_round_book_24"
+        android:checkable="true" />
+
+</menu>

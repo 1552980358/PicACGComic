@@ -14,6 +14,8 @@
     <string name="nav_home_account">Account</string>
     <string name="nav_home_stars">Stars</string>
     
+    <string name="nav_comic_metadata">Comic</string>
+    
     <string name="splash_greeting_a">You seem discovered</string>
     <string name="splash_greeting_b">an interesting entry</string>
     <string name="splash_go_forward">GO FORWARD</string>
@@ -56,5 +58,7 @@
     <string name="response_error">Response Code [%d] with Error [%d]: %s - %s</string>
     <string name="response_rejected">Request Rejected by Server</string>
     <string name="response_empty">Response Content Null</string>
+    
+    
 
 </resources>
