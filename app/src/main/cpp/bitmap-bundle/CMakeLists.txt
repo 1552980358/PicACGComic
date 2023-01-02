@@ -14,6 +14,7 @@ list(
         bitmap.cpp
         copy_pixel.cpp
         rect.cpp
+        log.h
 )
 
 add_library(

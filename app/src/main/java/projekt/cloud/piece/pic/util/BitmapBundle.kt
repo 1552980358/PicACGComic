@@ -57,9 +57,9 @@ class BitmapBundle: Serializable {
         }
         @Suppress("DEPRECATION")
         val config = when (getConfig()) {
-            3 -> Config.RGB_565
-            4 -> Config.ARGB_4444
-            5 -> Config.ARGB_8888
+            1 -> Config.ARGB_8888
+            4 -> Config.RGB_565
+            7 -> Config.ARGB_4444
             else -> return null
         }
         return Bitmap.createBitmap(rect.width(), rect.height(), config)
