@@ -46,6 +46,11 @@ class BitmapBundle: Serializable {
             return bitmapBundle.recoverBitmap()
         }
         
+        @JvmStatic
+        fun Bitmap.toNavArg(): BitmapBundle? {
+            return BitmapBundle().takeIf { it.parseBitmap(this) }
+        }
+        
     }
     
     private var pointer = 0L
