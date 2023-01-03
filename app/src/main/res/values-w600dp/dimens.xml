@@ -1,3 +1,7 @@
 <resources>
     <dimen name="fab_margin">48dp</dimen>
+    
+    <dimen name="metadata_cover_size_width">180dp</dimen>
+    <dimen name="metadata_cover_size_height">240dp</dimen>
+    
 </resources>
