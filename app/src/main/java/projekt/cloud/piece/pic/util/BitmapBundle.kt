@@ -8,7 +8,7 @@ import android.os.Bundle
 import java.io.Serializable
 import projekt.cloud.piece.pic.util.ExtraUtil.getSerializableOf
 
-class BitmapBundle: Serializable {
+class BitmapBundle: Serializable, AutoCloseable {
     
     companion object {
         
@@ -42,8 +42,12 @@ class BitmapBundle: Serializable {
         
         @JvmStatic
         fun Bundle.getBitmap(name: String): Bitmap? {
-            val bitmapBundle = getSerializableOf<BitmapBundle>(name) ?: return null
-            return bitmapBundle.recoverBitmap()
+            return getSerializableOf<BitmapBundle>(name)?.recoverBitmap()
+        }
+    
+        @JvmStatic
+        fun Bundle.getBitmapAndClose(name: String): Bitmap? {
+            return getSerializableOf<BitmapBundle>(name)?.use { it.recoverBitmap() }
         }
         
         @JvmStatic
@@ -71,6 +75,10 @@ class BitmapBundle: Serializable {
             .takeIf { recoverBitmap(it) }
     }
     
+    override fun close() {
+        recycle()
+    }
+    
     private external fun parseBitmap(bitmap: Bitmap): Boolean
     
     private external fun getSize(rect: Rect): Boolean
@@ -78,5 +86,7 @@ class BitmapBundle: Serializable {
     private external fun getConfig(): Int
     
     private external fun recoverBitmap(bitmap: Bitmap): Boolean
+    
+    private external fun recycle()
     
 }
