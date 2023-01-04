@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <data>
+        <import type="androidx.databinding.ObservableArrayMap" />
+        <import type="projekt.cloud.piece.pic.api.collections.CollectionsResponseBody.Data.Collection.Comic" />
+        <import type="android.graphics.Bitmap" />
+        <import type="kotlin.jvm.functions.Function1" />
+        <import type="kotlin.Unit" />
+        <variable
+            name="comic"
+            type="Comic" />
+        <variable
+            name="coverMap"
+            type="ObservableArrayMap&lt;String, Bitmap>" />
+        <variable
+            name="onClick"
+            type="Function1&lt;Comic, Unit>" />
+    </data>
+    
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="@dimen/index_recycler_cover_size_width"
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground"
+        android:onClick="@{() -> onClick.invoke(comic)}"
+        style="@style/Widget.Material3.CardView.Filled">
+        
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/md_spec_spacing_ver_8">
+    
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/shapeable_image_view"
+                android:layout_width="@dimen/index_recycler_cover_size_width"
+                android:layout_height="@dimen/index_recycler_cover_size_height"
+                android:scaleType="centerCrop"
+                app:shapeAppearance="@style/Widget.ShapeableImageView.RoundCorners.Full"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                bitmap="@{coverMap[comic.id]}" />
+            
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/material_text_view_title"
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:text="@{comic.title}"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                app:layout_constraintTop_toBottomOf="@id/shapeable_image_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/material_text_view_author"
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{comic.author}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                app:layout_constraintTop_toBottomOf="@id/material_text_view_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{comic.categoryStr}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                app:layout_constraintTop_toBottomOf="@id/material_text_view_author"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+            
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    
+    </com.google.android.material.card.MaterialCardView>
+</layout>

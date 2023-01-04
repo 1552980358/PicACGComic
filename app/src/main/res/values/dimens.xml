@@ -12,6 +12,9 @@
     <dimen name="md_spec_size_96">96dp</dimen>
     <dimen name="md_spec_card_radius_12">12dp</dimen>
     
+    <dimen name="index_recycler_cover_size_width">72dp</dimen>
+    <dimen name="index_recycler_cover_size_height">96dp</dimen>
+    
     <dimen name="metadata_cover_size_width">120dp</dimen>
     <dimen name="metadata_cover_size_height">160dp</dimen>
 
