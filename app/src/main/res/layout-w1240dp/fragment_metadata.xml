@@ -115,7 +115,7 @@
                                 android:id="@+id/shapeable_image_view"
                                 android:layout_width="@dimen/metadata_cover_size_width"
                                 android:layout_height="@dimen/metadata_cover_size_height"
-                                android:scaleType="fitXY"
+                                android:scaleType="centerCrop"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
