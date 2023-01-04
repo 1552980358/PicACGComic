@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     
     <data>
         <import type="projekt.cloud.piece.pic.MainViewModel" />
@@ -15,6 +17,204 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="?attr/colorSurface">
+            
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint_layout_chapter"
+                android:layout_width="360dp"
+                android:layout_height="@dimen/constraint_fill_parent"
+                android:paddingTop="@{mainViewModel.systemInsets.top}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+                
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="@dimen/constraint_fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
+                    android:layout_marginTop="@dimen/md_spec_spacing_ver_16"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+    
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/material_button_toggle_group"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="true"
+                        app:selectionRequired="true"
+                        app:checkedButton="@id/material_button_dsc"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+    
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/material_button_asc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/metadata_chapter_asc"
+                            style="?attr/materialButtonOutlinedStyle" />
+    
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/material_button_dsc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/metadata_chapter_dsc"
+                            style="?attr/materialButtonOutlinedStyle" />
+                        
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+                    
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="@dimen/constraint_fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/metadata_chapter_title"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/material_button_toggle_group"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+                    
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="@dimen/constraint_fill_parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/constraint_layout_chapter"
+                app:layout_constraintBottom_toBottomOf="parent">
+                
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="@{mainViewModel.systemInsets.top}">
+                    
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="@dimen/constraint_fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
+                        android:layout_marginVertical="@dimen/md_spec_spacing_ver_16"
+                        app:cardCornerRadius="@dimen/md_spec_card_radius_12"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="?materialCardViewFilledStyle">
+                        
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+    
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/shapeable_image_view"
+                                android:layout_width="@dimen/metadata_cover_size_width"
+                                android:layout_height="@dimen/metadata_cover_size_height"
+                                android:scaleType="fitXY"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:shapeAppearance="@style/Widget.ShapeableImageView.RoundCorners.Full"
+                                bitmap="@{comicViewModel.cover}" />
+                            
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="@dimen/constraint_fill_parent"
+                                android:layout_height="@dimen/constraint_fill_parent"
+                                android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/shapeable_image_view"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent">
+    
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/material_text_view_title"
+                                    android:layout_width="@dimen/constraint_fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/md_spec_spacing_ver_16"
+                                    android:minLines="2"
+                                    android:maxLines="4"
+                                    android:text="@{comicViewModel.title}"
+                                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent" />
+                                
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/constraint_layout_likes"
+                                    android:layout_width="@dimen/constraint_fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/md_spec_spacing_ver_16"
+                                    app:layout_constraintTop_toBottomOf="@id/material_text_view_title"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent">
+                                    
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:id="@+id/app_compat_image_view_likes"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        app:srcCompat="@drawable/ic_round_favorite_24"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintBottom_toBottomOf="parent" />
+                                    
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="@dimen/constraint_fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/md_spec_spacing_hor_16"
+                                        android:text="@{String.valueOf(comicViewModel.comic.likesCount)}"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintStart_toEndOf="@id/app_compat_image_view_likes"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintBottom_toBottomOf="parent" />
+                                    
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+    
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/constraint_layout_views"
+                                    android:layout_width="@dimen/constraint_fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/md_spec_spacing_ver_16"
+                                    app:layout_constraintTop_toBottomOf="@id/constraint_layout_likes"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent">
+        
+                                    <androidx.appcompat.widget.AppCompatImageView
+                                        android:id="@+id/app_compat_image_view_views"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        app:srcCompat="@drawable/ic_round_eye_24"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintBottom_toBottomOf="parent" />
+        
+                                    <com.google.android.material.textview.MaterialTextView
+                                        android:layout_width="@dimen/constraint_fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/md_spec_spacing_hor_16"
+                                        android:text="@{String.valueOf(comicViewModel.comic.viewsCount)}"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintStart_toEndOf="@id/app_compat_image_view_views"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintBottom_toBottomOf="parent" />
+    
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+                                
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                            
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        
+                    </com.google.android.material.card.MaterialCardView>
+                    
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                
+            </androidx.core.widget.NestedScrollView>
+            
+        </androidx.constraintlayout.widget.ConstraintLayout>
         
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

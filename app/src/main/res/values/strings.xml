@@ -52,6 +52,10 @@
     <string name="sign_in_to_sign_up">Sign Up</string>
     <string name="sign_in_invalid_field">Invalid Username / Password</string>
     
+    <string name="metadata_chapter_title">Chapter</string>
+    <string name="metadata_chapter_asc">ASC</string>
+    <string name="metadata_chapter_dsc">DSC</string>
+    
     <string name="request_io_exception">Connection Exception: %s</string>
     <string name="request_unknown_exception">Unknown Exception: %s</string>
     <string name="request_unexpected_state">Unexpected State: %s</string>
@@ -59,6 +63,4 @@
     <string name="response_rejected">Request Rejected by Server</string>
     <string name="response_empty">Response Content Null</string>
     
-    
-
 </resources>
