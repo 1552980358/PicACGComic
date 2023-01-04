@@ -130,15 +130,15 @@
                     
                     </com.google.android.material.card.MaterialCardView>
                     
-                    <View
+                    <projekt.cloud.piece.pic.widget.InsetSpaceView
                         android:layout_width="@dimen/constraint_fill_parent"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="@{mainViewModel.systemInsets.bottom}"
                         app:layout_constraintTop_toBottomOf="@id/material_card_view_recommend_bottom"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-                
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        inset_vertical="@{mainViewModel.systemInsets.bottom}" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
             
             </androidx.core.widget.NestedScrollView>
