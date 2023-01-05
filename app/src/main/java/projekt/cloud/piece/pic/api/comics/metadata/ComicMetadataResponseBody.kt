@@ -49,8 +49,26 @@ data class ComicMetadataResponseBody(val code: Int, val message: String, private
         val likesCount: Int,
         val commentsCount: Int,
         val isFavourite: Boolean,
-        val isLiked: Boolean
-    )
+        val isLiked: Boolean) {
+        
+        companion object {
+            private const val DATE_DIVIDER = 'T'
+            private const val DATE_END = "Z"
+            private const val DATE_TIME_DIVIDER = ' '
+        }
+        
+        val createDateStr = createDate.dateStr
+    
+        val updateDateStr = updateDate.dateStr
+        
+        private val String.dateStr: String
+            get() = let { date ->
+                date.indexOf(DATE_DIVIDER).let { divider ->
+                    date.substring(0, divider) + DATE_TIME_DIVIDER + date.substring(divider + 1, date.indexOf(DATE_END))
+                }
+            }
+        
+    }
     
     @Serializable
     data class Creator(
