@@ -3,8 +3,15 @@
     <style name="Widget.ShapeableImageView.RoundCorners" parent="">
         <item name="cornerFamily">rounded</item>
     </style>
+    
     <style name="Widget.ShapeableImageView.RoundCorners.Full" 
         parent="Widget.ShapeableImageView.RoundCorners">
         <item name="cornerSize">@dimen/md_spec_card_radius_12</item>
     </style>
+    
+    <style name="Widget.ShapeableImageView.Circle"
+        parent="Widget.ShapeableImageView.RoundCorners">
+        <item name="cornerSize">50%</item>
+    </style>
+    
 </resources>

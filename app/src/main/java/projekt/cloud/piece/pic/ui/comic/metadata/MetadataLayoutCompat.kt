@@ -1,8 +1,11 @@
 package projekt.cloud.piece.pic.ui.comic.metadata
 
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.checkbox.MaterialCheckBox
 import projekt.cloud.piece.pic.base.SnackLayoutCompat
 import projekt.cloud.piece.pic.databinding.FragmentMetadataBinding
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
@@ -22,7 +25,20 @@ abstract class MetadataLayoutCompat(protected val binding: FragmentMetadataBindi
         }
     }
     
+    init {
+        @Suppress("LeakingThis")
+        binding.metadataLayoutCompat = this
+    }
+    
     open fun setupActionBar(fragment: Fragment) = Unit
+    
+    fun triggerShowOrGone(container: View, materialCheckBox: MaterialCheckBox) {
+        container.visibility = when (container.visibility) {
+            VISIBLE -> GONE
+            else -> VISIBLE
+        }
+        materialCheckBox.isChecked = container.visibility != GONE
+    }
     
     override val snackContainer: View
         get() = binding.root
