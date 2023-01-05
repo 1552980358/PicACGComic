@@ -23,8 +23,7 @@
         android:layout_width="@dimen/index_recycler_cover_size_width"
         android:layout_height="wrap_content"
         android:foreground="?attr/selectableItemBackground"
-        android:onClick="@{() -> onClick.invoke(comic)}"
-        style="@style/Widget.Material3.CardView.Filled">
+        android:onClick="@{() -> onClick.invoke(comic)}">
         
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

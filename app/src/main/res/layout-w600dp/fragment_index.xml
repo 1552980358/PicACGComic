@@ -57,8 +57,7 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        style="@style/Widget.Material3.CardView.Filled">
+                        app:layout_constraintEnd_toEndOf="parent">
                         
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -97,8 +96,7 @@
                         android:layout_marginTop="@dimen/md_spec_spacing_ver_16"
                         app:layout_constraintTop_toBottomOf="@id/material_card_view_recommend_upper"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        style="@style/Widget.Material3.CardView.Filled">
+                        app:layout_constraintEnd_toEndOf="parent">
                         
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"

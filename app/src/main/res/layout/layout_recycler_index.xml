@@ -23,8 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/md_spec_size_96"
         android:foreground="?attr/selectableItemBackground"
-        android:onClick="@{() -> onClick.invoke(comic)}"
-        style="@style/Widget.Material3.CardView.Filled">
+        android:onClick="@{() -> onClick.invoke(comic)}">
         
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

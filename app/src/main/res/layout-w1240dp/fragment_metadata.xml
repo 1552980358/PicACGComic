@@ -110,8 +110,7 @@
                         app:cardCornerRadius="@dimen/md_spec_card_radius_12"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        style="?materialCardViewFilledStyle">
+                        app:layout_constraintEnd_toEndOf="parent">
                         
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"

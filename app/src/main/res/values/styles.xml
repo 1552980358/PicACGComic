@@ -14,4 +14,8 @@
         <item name="cornerSize">50%</item>
     </style>
     
+    <style name="Widget.MaterialCardView" parent="Widget.Material3.CardView.Filled">
+        <item name="cornerSize">@dimen/md_spec_card_radius_12</item>
+    </style>
+    
 </resources>
