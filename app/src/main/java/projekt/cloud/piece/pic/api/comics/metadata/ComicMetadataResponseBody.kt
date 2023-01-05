@@ -30,7 +30,8 @@ data class ComicMetadataResponseBody(val code: Int, val message: String, private
         val chineseTeam: String = IGNORE_STRING,
         @SerialName("categories")
         val categoryList: List<String>,
-        val tags: List<String>,
+        @SerialName("tags")
+        val tagList: List<String>,
         @SerialName("pagesCount")
         val pages: Int,
         @SerialName("epsCount")

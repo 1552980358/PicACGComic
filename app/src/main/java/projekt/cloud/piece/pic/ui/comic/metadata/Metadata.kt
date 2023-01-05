@@ -3,6 +3,7 @@ package projekt.cloud.piece.pic.ui.comic.metadata
 import android.util.Log
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.lifecycleScope
 import projekt.cloud.piece.pic.MainViewModel
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.base.BaseCallbackFragment
@@ -39,6 +40,11 @@ class Metadata: BaseCallbackFragment<FragmentMetadataBinding, ComicViewModel>() 
     override fun onBindData(binding: FragmentMetadataBinding) {
         binding.mainViewModel = mainViewModel
         binding.comicViewModel = viewModel
+        viewModel.comic.observe(viewLifecycleOwner) {
+            it?.let {
+                layoutCompat.startUpdateCategoryAndTag(lifecycleScope, requireContext(), it.categoryList, it.tagList)
+            }
+        }
     }
     
     override fun onSetupActionBar(binding: FragmentMetadataBinding) {
