@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    <data>
+        <import type="kotlin.jvm.functions.Function1" />
+        <import type="kotlin.Unit" />
+        <variable
+            name="text"
+            type="String" />
+        <variable
+            name="onClick"
+            type="Function1&lt;String, Unit>" />
+    </data>
+    
+    <com.google.android.material.chip.Chip
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> onClick.invoke(text)}"
+        android:text="@{text}"
+        style="@style/Widget.Material3.Chip.Assist" />
+    
+</layout>
