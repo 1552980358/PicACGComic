@@ -9,6 +9,7 @@
         <import type="projekt.cloud.piece.pic.MainViewModel" />
         <import type="projekt.cloud.piece.pic.ui.comic.ComicViewModel" />
         <import type="projekt.cloud.piece.pic.ui.comic.metadata.MetadataLayoutCompat" />
+        <import type="projekt.cloud.piece.pic.util.ViewBindingUtil" />
         <variable
             name="mainViewModel"
             type="MainViewModel" />
@@ -370,7 +371,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="@{comicViewModel.creator.slogan}"
                                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                                    android:visibility="@{comicViewModel.creator.slogan == null ? View.GONE : View.VISIBLE}"
+                                    android:visibility="@{ViewBindingUtil.isNullOrBlank(comicViewModel.creator.slogan) ? View.GONE : View.VISIBLE}"
                                     app:layout_constraintTop_toBottomOf="@id/material_text_view_creator_level"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent" />
@@ -409,6 +410,13 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent" />
         
+                        <com.google.android.material.divider.MaterialDivider
+                            android:layout_width="@dimen/constraint_fill_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/chip_group_category"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
+        
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/material_text_view_tag"
                             android:layout_width="@dimen/constraint_fill_parent"
@@ -426,6 +434,25 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
                             app:layout_constraintTop_toBottomOf="@id/material_text_view_tag"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
+        
+                        <com.google.android.material.divider.MaterialDivider
+                            android:layout_width="@dimen/constraint_fill_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="@{ViewBindingUtil.isNullOrBlank(comicViewModel.comic.description) ? View.GONE : View.VISIBLE}"
+                            app:layout_constraintTop_toBottomOf="@id/chip_group_tag"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
+        
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="@dimen/constraint_fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
+                            android:text="@{comicViewModel.comic.description}"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                            android:visibility="@{ViewBindingUtil.isNullOrBlank(comicViewModel.comic.description) ? View.GONE : View.VISIBLE}"
+                            app:layout_constraintTop_toBottomOf="@id/chip_group_tag"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent" />
     
