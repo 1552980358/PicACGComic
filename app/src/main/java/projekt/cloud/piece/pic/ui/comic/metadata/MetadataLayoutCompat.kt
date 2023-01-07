@@ -35,6 +35,7 @@ abstract class MetadataLayoutCompat(protected val binding: FragmentMetadataBindi
     init {
         @Suppress("LeakingThis")
         binding.metadataLayoutCompat = this
+        binding.dscOrder = true
     }
     
     private val category: ChipGroup
@@ -51,6 +52,12 @@ abstract class MetadataLayoutCompat(protected val binding: FragmentMetadataBindi
             else -> VISIBLE
         }
         materialCheckBox.isChecked = container.visibility != GONE
+    }
+    
+    fun changeOrder(dscOrder: Boolean) {
+        if (binding.dscOrder != dscOrder) {
+            binding.dscOrder = dscOrder
+        }
     }
     
     override val snackContainer: View

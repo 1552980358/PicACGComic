@@ -19,6 +19,9 @@
         <variable
             name="metadataLayoutCompat"
             type="MetadataLayoutCompat" />
+        <variable
+            name="dscOrder"
+            type="Boolean" />
     </data>
     
     <androidx.coordinatorlayout.widget.CoordinatorLayout
