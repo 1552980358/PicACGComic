@@ -74,10 +74,6 @@ abstract class ComicLayoutCompat(protected val binding: FragmentComicBinding) {
                             drawerLayout.open()
                         }
                     }
-                    floatingActionButton.setOnClickListener {
-                        fragment.exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
-                        navController.navigateUp()
-                    }
                 }
             }
         }
