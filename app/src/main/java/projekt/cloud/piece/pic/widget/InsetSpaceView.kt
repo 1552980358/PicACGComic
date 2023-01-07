@@ -13,11 +13,8 @@ class InsetSpaceView(context: Context, attributeSet: AttributeSet): View(context
     companion object {
         private const val INSET_DEFAULT = 0
         
-        private const val BINDING_ADAPTER_INSET_HORIZONTAL = "inset_horizontal"
-        private const val BINDING_ADAPTER_INSET_VERTICAL = "inset_vertical"
-        
         @JvmStatic
-        @BindingAdapter(BINDING_ADAPTER_INSET_HORIZONTAL)
+        @BindingAdapter("inset_horizontal")
         fun InsetSpaceView.setInsetHorizontal(insetHorizontal: Int?) {
             insetHorizontal?.let {
                 this.insetHorizontal = insetHorizontal
@@ -25,7 +22,7 @@ class InsetSpaceView(context: Context, attributeSet: AttributeSet): View(context
         }
     
         @JvmStatic
-        @BindingAdapter(BINDING_ADAPTER_INSET_VERTICAL)
+        @BindingAdapter("inset_vertical")
         fun InsetSpaceView.setInsetVertical(insetVertical: Int?) {
             insetVertical?.let {
                 this.insetVertical = insetVertical
