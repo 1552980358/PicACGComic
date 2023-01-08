@@ -189,12 +189,26 @@
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:shapeAppearance="@style/Widget.ShapeableImageView.RoundCorners.Full"
                                     bitmap="@{comicViewModel.cover}" />
-                    
+                                
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/material_text_view_title"
+                                    android:layout_width="@dimen/constraint_fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
+                                    android:layout_marginTop="@dimen/md_spec_spacing_ver_16"
+                                    android:minLines="5"
+                                    android:maxLines="5"
+                                    android:text="@{comicViewModel.title}"
+                                    android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toEndOf="@id/shapeable_image_view"
+                                    app:layout_constraintEnd_toEndOf="parent" />
+                                
                                 <androidx.constraintlayout.widget.ConstraintLayout
                                     android:layout_width="@dimen/constraint_fill_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
-                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/material_text_view_title"
                                     app:layout_constraintStart_toEndOf="@id/shapeable_image_view"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintBottom_toBottomOf="parent">
