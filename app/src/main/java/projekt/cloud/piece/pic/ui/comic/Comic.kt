@@ -24,15 +24,9 @@ class Comic: BaseCallbackFragment<FragmentComicBinding, ComicViewModel>() {
         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
     }
     
-    override fun onSetupLayoutCompat(binding: FragmentComicBinding, layoutSizeMode: LayoutSizeMode) {
-        layoutCompat = binding.getLayoutCompat(layoutSizeMode)
-        layoutCompat.setNavController(findNavController())
-        layoutCompat.setupNavigation(this)
-    }
-    
     override fun onBindData(binding: FragmentComicBinding) {
         binding.mainViewModel = mainViewModel
-    
+        
         val arguments = requireArguments()
         val id = arguments.getString(getString(R.string.comic_arg_id))
         if (id != null && viewModel.id.value != id) {
@@ -46,6 +40,12 @@ class Comic: BaseCallbackFragment<FragmentComicBinding, ComicViewModel>() {
                 }
             }
         }
+    }
+    
+    override fun onSetupLayoutCompat(binding: FragmentComicBinding, layoutSizeMode: LayoutSizeMode) {
+        layoutCompat = binding.getLayoutCompat(layoutSizeMode)
+        layoutCompat.setNavController(findNavController())
+        layoutCompat.setupNavigation(this)
     }
 
     private fun startRequestComicMetadata(token: String, id: String) {

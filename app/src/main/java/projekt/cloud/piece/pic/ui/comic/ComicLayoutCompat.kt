@@ -1,6 +1,5 @@
 package projekt.cloud.piece.pic.ui.comic
 
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.NavController
@@ -12,7 +11,6 @@ import com.google.android.material.navigationrail.NavigationRailView
 import com.google.android.material.transition.platform.MaterialSharedAxis
 import projekt.cloud.piece.pic.databinding.FragmentComicBinding
 import projekt.cloud.piece.pic.databinding.NavHeaderComicBinding
-import projekt.cloud.piece.pic.databinding.NavRailHeaderComicBinding
 import projekt.cloud.piece.pic.util.LayoutSizeMode
 import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
 import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
@@ -44,6 +42,11 @@ abstract class ComicLayoutCompat(protected val binding: FragmentComicBinding) {
     
     abstract fun setupNavigation(fragment: Fragment)
     
+    fun onBackward(fragment: Fragment) {
+        fragment.exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
+        navController.navigateUp()
+    }
+    
     private class ComicLayoutCompatImpl(binding: FragmentComicBinding): ComicLayoutCompat(binding) {
     
         private val bottomNavigationView: BottomNavigationView
@@ -57,27 +60,18 @@ abstract class ComicLayoutCompat(protected val binding: FragmentComicBinding) {
     
     private class ComicLayoutCompatW600dpImpl(binding: FragmentComicBinding): ComicLayoutCompat(binding) {
     
-        private val drawerLayout: DrawerLayout
-            get() = binding.drawerLayout!!
-        private val navigationView: NavigationView
-            get() = binding.navigationView!!
         private val navigationRailView: NavigationRailView
             get() = binding.navigationRailView!!
-    
-        override fun setupNavigation(fragment: Fragment) {
-            navigationView.setupWithNavController(childNavController)
-            navigationRailView.setupWithNavController(childNavController)
-            navigationRailView.headerView?.let { headerView ->
-                with(NavRailHeaderComicBinding.bind(headerView)) {
-                    appCompatImageButton.setOnClickListener {
-                        if (!drawerLayout.isOpen) {
-                            drawerLayout.open()
-                        }
-                    }
-                }
-            }
-        }
         
+        override fun setupNavigation(fragment: Fragment) {
+            navigationRailView.setupWithNavController(childNavController)
+            val headerView = navigationRailView.headerView?.let {
+                NavHeaderComicBinding.bind(it)
+            }
+            headerView?.fragment = fragment
+            headerView?.layoutCompat = this
+            headerView?.mainViewModel = binding.mainViewModel
+        }
     }
     
     private class ComicLayoutCompatW1240dpImpl(binding: FragmentComicBinding): ComicLayoutCompat(binding) {
@@ -87,12 +81,10 @@ abstract class ComicLayoutCompat(protected val binding: FragmentComicBinding) {
         
         override fun setupNavigation(fragment: Fragment) {
             navigationView.setupWithNavController(childNavController)
-            with(NavHeaderComicBinding.bind(navigationView.getHeaderView(0))) {
-                appCompatImageButton.setOnClickListener {
-                    fragment.exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
-                    navController.navigateUp()
-                }
-            }
+            val headerView = NavHeaderComicBinding.bind(navigationView.getHeaderView(0))
+            headerView.fragment = fragment
+            headerView.layoutCompat = this
+            headerView.mainViewModel = binding.mainViewModel
         }
         
     }
