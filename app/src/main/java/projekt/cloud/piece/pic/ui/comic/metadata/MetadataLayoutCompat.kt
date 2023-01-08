@@ -128,19 +128,8 @@ abstract class MetadataLayoutCompat(protected val binding: FragmentMetadataBindi
         
     }
     
-    private class MetadataLayoutCompatW600dpImpl(binding: FragmentMetadataBinding): MetadataLayoutCompat(binding) {
-        
-        private val toolbar: MaterialToolbar
-            get() = binding.materialToolbar!!
+    private class MetadataLayoutCompatW600dpImpl(binding: FragmentMetadataBinding): MetadataLayoutCompat(binding)
     
-        override fun setupActionBar(fragment: Fragment) {
-            fragment.setSupportActionBar(toolbar)
-        }
-        
-    }
-    
-    private class MetadataLayoutCompatW1240dpImpl(binding: FragmentMetadataBinding): MetadataLayoutCompat(binding) {
-    
-    }
+    private class MetadataLayoutCompatW1240dpImpl(binding: FragmentMetadataBinding): MetadataLayoutCompat(binding)
 
 }

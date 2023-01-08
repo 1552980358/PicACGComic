@@ -28,33 +28,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@{mainViewModel.systemInsets.top}">
-            
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:layout_width="match_parent"
-                android:layout_height="?attr/collapsingToolbarLayoutMediumSize"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-                app:maxLines="3"
-                app:title="@{comicViewModel.title}"
-                app:titleCollapseMode="fade"
-                app:titleTextEllipsize="end"
-                style="?attr/collapsingToolbarLayoutMediumStyle">
-                
-                <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/material_toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:elevation="0dp"
-                    app:layout_collapseMode="pin"
-                    app:navigationIcon="@drawable/ic_round_arrow_back_24" />
-            
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-        
-        </com.google.android.material.appbar.AppBarLayout>
-        
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -62,15 +35,27 @@
             
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:paddingTop="@{mainViewModel.systemInsets.top}">
                 
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/material_text_view_title"
+                    android:layout_width="@dimen/constraint_fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
+                    android:text="@{comicViewModel.title}"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+                    
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/material_card_view_cover"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
                     android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/material_text_view_title"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
                     
