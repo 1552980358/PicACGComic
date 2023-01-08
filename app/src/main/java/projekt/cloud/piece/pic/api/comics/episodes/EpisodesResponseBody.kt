@@ -2,6 +2,8 @@ package projekt.cloud.piece.pic.api.comics.episodes
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import projekt.cloud.piece.pic.api.base.BaseDateBody
+import projekt.cloud.piece.pic.api.base.Date
 
 @Serializable
 data class EpisodesResponseBody(val code: Int, val message: String, private val data: Data) {
@@ -11,13 +13,6 @@ data class EpisodesResponseBody(val code: Int, val message: String, private val 
     
     val episodes: Episodes
         get() = data.eps
-    
-    operator fun get(order: Int): Episode {
-        return episodes.episodeList.find { it.order == order }!!
-    }
-    
-    val maxOrder: Int
-        get() = episodes.episodeList.maxOf { it.order }
     
     @Serializable
     data class Episodes(
@@ -36,9 +31,14 @@ data class EpisodesResponseBody(val code: Int, val message: String, private val 
         val title: String,
         val order: Int,
         @SerialName("updated_at")
-        val updateDate: String,
+        val updateDate: Date,
         @SerialName("id")
         private val privateId: String
-    )
+    ): BaseDateBody() {
+        
+        val updateDateStr: String
+            get() = updateDate.str
+    
+    }
     
 }
