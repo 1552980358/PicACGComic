@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.Bitmap.Config
 import android.graphics.Rect
 import android.os.Bundle
+import androidx.annotation.Keep
 import java.io.Serializable
 import projekt.cloud.piece.pic.util.ExtraUtil.getSerializableOf
 
@@ -57,6 +58,7 @@ class BitmapBundle: Serializable, AutoCloseable {
         
     }
     
+    @Keep
     private var pointer = 0L
     
     private fun recoverBitmap(): Bitmap? {
