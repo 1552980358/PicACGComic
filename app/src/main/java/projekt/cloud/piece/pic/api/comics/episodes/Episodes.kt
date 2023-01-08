@@ -9,7 +9,7 @@ import projekt.cloud.piece.pic.util.HttpRequest
 import projekt.cloud.piece.pic.util.HttpRequest.HttpRequestUtil.asQueryStr
 import projekt.cloud.piece.pic.util.HttpRequest.HttpRequestUtil.HttpRequestMethod.GET
 
-class Episodes(private val token: String, private val id: String, val page: String): BaseStringApiRequest<EpisodesResponseBody>() {
+class Episodes(private val token: String, private val id: String, private val page: Int): BaseStringApiRequest<EpisodesResponseBody>() {
     
     companion object {
         private const val API_EPISODES_PREFIX = "comics/"
@@ -23,7 +23,7 @@ class Episodes(private val token: String, private val id: String, val page: Stri
     
     override suspend fun requestApi(): HttpRequest {
         val path = API_EPISODES_PREFIX + id + API_EPISODES_SUFFIX
-        val query = mapOf(API_EPISODES_ARG_PAGE to page).asQueryStr
+        val query = mapOf(API_EPISODES_ARG_PAGE to page.toString()).asQueryStr
         return withContext(io) {
             HttpRequest.getRequest(
                 PICA_COMIC_API_DOMAIN,
