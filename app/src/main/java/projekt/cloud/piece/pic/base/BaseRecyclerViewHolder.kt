@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.viewbinding.ViewBinding
 import projekt.cloud.piece.pic.util.ViewBindingInflater
 
-abstract class BaseRecyclerViewHolder<VB: ViewBinding>private constructor(
+abstract class BaseRecyclerViewHolder<VB: ViewBinding> private constructor(
     protected val binding: VB
 ): ViewHolder(binding.root) {
 
