@@ -431,7 +431,6 @@
                     android:layout_width="@dimen/constraint_fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/md_spec_spacing_ver_16"
-                    android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
                     app:layout_constraintTop_toBottomOf="@id/constraint_layout_metadata"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
@@ -440,6 +439,7 @@
                         android:id="@+id/constraint_layout_chapter_header"
                         android:layout_width="@dimen/constraint_fill_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">

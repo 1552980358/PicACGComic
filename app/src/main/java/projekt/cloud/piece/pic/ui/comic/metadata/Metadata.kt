@@ -10,13 +10,20 @@ import projekt.cloud.piece.pic.base.BaseCallbackFragment
 import projekt.cloud.piece.pic.databinding.FragmentMetadataBinding
 import projekt.cloud.piece.pic.ui.comic.Comic
 import projekt.cloud.piece.pic.ui.comic.ComicViewModel
-import projekt.cloud.piece.pic.ui.comic.ComicViewModel.MetadataCallbackCode.METADATA_COMPLETE
-import projekt.cloud.piece.pic.ui.comic.ComicViewModel.MetadataCallbackCode.METADATA_IO_EXCEPTION
-import projekt.cloud.piece.pic.ui.comic.ComicViewModel.MetadataCallbackCode.METADATA_EXCEPTION
-import projekt.cloud.piece.pic.ui.comic.ComicViewModel.MetadataCallbackCode.METADATA_ERROR
-import projekt.cloud.piece.pic.ui.comic.ComicViewModel.MetadataCallbackCode.METADATA_EMPTY_CONTENT
-import projekt.cloud.piece.pic.ui.comic.ComicViewModel.MetadataCallbackCode.METADATA_REJECTED
-import projekt.cloud.piece.pic.ui.comic.ComicViewModel.MetadataCallbackCode.METADATA_INVALID_STATE_CODE
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.EPISODES_COMPLETE
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.EPISODES_EMPTY_CONTENT
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.EPISODES_ERROR
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.EPISODES_EXCEPTION
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.EPISODES_INVALID_STATE_CODE
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.EPISODES_IO_EXCEPTION
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.EPISODES_REJECTED
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.METADATA_COMPLETE
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.METADATA_IO_EXCEPTION
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.METADATA_EXCEPTION
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.METADATA_ERROR
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.METADATA_EMPTY_CONTENT
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.METADATA_REJECTED
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.METADATA_INVALID_STATE_CODE
 import projekt.cloud.piece.pic.ui.comic.metadata.MetadataLayoutCompat.MetadataLayoutCompatUtil.getLayoutCompat
 import projekt.cloud.piece.pic.util.LayoutSizeMode
 
@@ -51,28 +58,35 @@ class Metadata: BaseCallbackFragment<FragmentMetadataBinding, ComicViewModel>() 
         layoutCompat.setupActionBar(this)
     }
     
+    override fun onSetupView(binding: FragmentMetadataBinding) {
+        layoutCompat.setupRecyclerView(viewModel.episodeList)
+    }
+    
     override fun onCallbackReceived(code: Int, message: String?, responseCode: Int?, errorCode: Int?, responseDetail: String?) {
         Log.i(TAG, "onCallbackReceived: code=$code message=$message responseCode=$responseCode errorCode=$errorCode responseDetail=$responseDetail")
         when (code) {
             METADATA_COMPLETE -> {
                 // Complete
             }
-            METADATA_IO_EXCEPTION -> {
+            EPISODES_COMPLETE -> {
+                layoutCompat.notifyUpdate()
+            }
+            METADATA_IO_EXCEPTION, EPISODES_IO_EXCEPTION -> {
                 layoutCompat.indefiniteSnack(getString(R.string.request_io_exception, message))
             }
-            METADATA_EXCEPTION -> {
+            METADATA_EXCEPTION, EPISODES_EXCEPTION -> {
                 layoutCompat.indefiniteSnack(getString(R.string.request_unknown_exception, message))
             }
-            METADATA_ERROR -> {
+            METADATA_ERROR, EPISODES_ERROR -> {
                 layoutCompat.indefiniteSnack(getString(R.string.response_error, responseCode, code, message, responseDetail))
             }
-            METADATA_EMPTY_CONTENT -> {
+            METADATA_EMPTY_CONTENT, EPISODES_EMPTY_CONTENT -> {
                 layoutCompat.indefiniteSnack(getString(R.string.response_empty))
             }
-            METADATA_REJECTED -> {
+            METADATA_REJECTED, EPISODES_REJECTED -> {
                 layoutCompat.indefiniteSnack(getString(R.string.response_rejected))
             }
-            METADATA_INVALID_STATE_CODE -> {
+            METADATA_INVALID_STATE_CODE, EPISODES_INVALID_STATE_CODE -> {
                 layoutCompat.indefiniteSnack(getString(R.string.request_unexpected_state, message))
             }
         }

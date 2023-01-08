@@ -121,10 +121,11 @@
                             android:id="@+id/recycler_view"
                             android:layout_width="@dimen/constraint_fill_parent"
                             android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            android:nestedScrollingEnabled="false" />
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
                         
                         <projekt.cloud.piece.pic.widget.InsetSpaceView
                             android:layout_width="@dimen/constraint_fill_parent"

@@ -49,7 +49,7 @@ class Comic: BaseCallbackFragment<FragmentComicBinding, ComicViewModel>() {
     }
 
     private fun startRequestComicMetadata(token: String, id: String) {
-        viewModel.scopedRequestComicMetadata(lifecycleScope, token, id)
+        viewModel.scopedRequestComicData(lifecycleScope, token, id)
     }
     
     override fun onCallbackReceived(code: Int, message: String?, responseCode: Int?, errorCode: Int?, responseDetail: String?) {

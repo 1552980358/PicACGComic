@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <data>
+        <import type="kotlin.jvm.functions.Function1" />
+        <import type="kotlin.Unit" />
+        <import type="projekt.cloud.piece.pic.api.comics.episodes.EpisodesResponseBody.Episode" />
+        <variable
+            name="episode"
+            type="Episode" />
+        <variable
+            name="onClick"
+            type="Function1&lt;Episode, Unit>" />
+    </data>
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:paddingHorizontal="@dimen/md_spec_spacing_hor_16"
+        android:paddingVertical="@dimen/md_spec_spacing_ver_8"
+        android:onClick="@{() -> onClick.invoke(episode)}">
+        
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/material_text_view_order"
+            android:layout_width="@dimen/md_spec_size_40"
+            android:layout_height="@dimen/md_spec_size_40"
+            android:gravity="center"
+            android:text="@{String.valueOf(episode.order)}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+        
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="@dimen/constraint_fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/md_spec_spacing_hor_16"
+            android:layout_marginEnd="@dimen/md_spec_spacing_hor_8"
+            app:layout_constraintStart_toEndOf="@id/material_text_view_order"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+            
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/material_text_view_title"
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{episode.title}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+    
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/material_text_view_update_date"
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{episode.updateDateStr}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                app:layout_constraintTop_toBottomOf="@id/material_text_view_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+            
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
