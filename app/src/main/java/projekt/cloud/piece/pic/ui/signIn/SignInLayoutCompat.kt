@@ -1,6 +1,7 @@
 package projekt.cloud.piece.pic.ui.signIn
 
 import android.content.Context
+import android.view.KeyEvent
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -90,6 +91,18 @@ abstract class SignInLayoutCompat(protected val binding: FragmentSignInBinding) 
                 context, CircularProgressIndicatorSpec(context, null)
             )
             callback?.invoke(username, password)
+        }
+    }
+    
+    fun setupEnterKeyListening() {
+        password.editText?.setOnKeyListener { _, keyCode, event ->
+            when {
+                keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN -> {
+                    onSignInButtonClick(password.context)
+                    true
+                }
+                else -> false
+            }
         }
     }
 

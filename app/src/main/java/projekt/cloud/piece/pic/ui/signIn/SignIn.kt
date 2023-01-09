@@ -55,6 +55,7 @@ class SignIn: BaseFragment<FragmentSignInBinding>() {
         layoutCompat.setCallback { username, password ->
             invokeSignIn(username, password)
         }
+        layoutCompat.setupEnterKeyListening()
     }
 
     private fun invokeSignIn(username: String, password: String) {
