@@ -3,6 +3,8 @@ package projekt.cloud.piece.pic.api.comics.metadata
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import projekt.cloud.piece.pic.api.ApiConstants.IGNORE_STRING
+import projekt.cloud.piece.pic.api.base.BaseDateBody
+import projekt.cloud.piece.pic.api.base.Date
 import projekt.cloud.piece.pic.api.image.Image
 
 @Serializable
@@ -38,9 +40,9 @@ data class ComicMetadataResponseBody(val code: Int, val message: String, private
         val episodeSize: Int,
         val finished: Boolean,
         @SerialName("updated_at")
-        val updateDate: String,
+        val updateDate: Date,
         @SerialName("created_at")
-        val createDate: String,
+        val createDate: Date,
         val allowDownload: Boolean,
         val allowComment: Boolean,
         val totalLikes: Int,
@@ -50,24 +52,12 @@ data class ComicMetadataResponseBody(val code: Int, val message: String, private
         val likesCount: Int,
         val commentsCount: Int,
         val isFavourite: Boolean,
-        val isLiked: Boolean) {
+        val isLiked: Boolean
+    ): BaseDateBody() {
         
-        companion object {
-            private const val DATE_DIVIDER = 'T'
-            private const val DATE_END = "Z"
-            private const val DATE_TIME_DIVIDER = ' '
-        }
-        
-        val createDateStr = createDate.dateStr
+        val createDateStr = createDate.str
     
-        val updateDateStr = updateDate.dateStr
-        
-        private val String.dateStr: String
-            get() = let { date ->
-                date.indexOf(DATE_DIVIDER).let { divider ->
-                    date.substring(0, divider) + DATE_TIME_DIVIDER + date.substring(divider + 1, date.indexOf(DATE_END))
-                }
-            }
+        val updateDateStr = updateDate.str
         
     }
     
