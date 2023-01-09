@@ -2,16 +2,14 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     
     <data>
         <import type="android.view.View" />
-        <import type="com.google.android.material.R" />
-        <import type="com.google.android.material.color.MaterialColors" />
         <import type="projekt.cloud.piece.pic.MainViewModel" />
         <import type="projekt.cloud.piece.pic.ui.comic.ComicViewModel" />
         <import type="projekt.cloud.piece.pic.ui.comic.metadata.MetadataLayoutCompat" />
-        <import type="projekt.cloud.piece.pic.util.ViewBindingUtil" />
         <variable
             name="mainViewModel"
             type="MainViewModel" />
@@ -35,120 +33,24 @@
             android:layout_height="match_parent"
             android:backgroundTint="?attr/colorSurface">
             
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraint_layout_chapter"
-                android:layout_width="360dp"
+            <include
+                android:id="@+id/metadata_chapters"
+                android:layout_width="@dimen/metadata_chapter_width"
                 android:layout_height="@dimen/constraint_fill_parent"
-                android:paddingTop="@{mainViewModel.systemInsets.top}"
-                android:paddingHorizontal="@dimen/md_spec_spacing_hor_16"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent">
-                
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraint_layout_chapter_header"
-                    android:layout_width="@dimen/constraint_fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/md_spec_spacing_ver_16"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
-                    
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/constraint_layout_order"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent">
-    
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/material_text_view_asc"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="@{() -> metadataLayoutCompat.changeOrder(false)}"
-                            android:textColor="@{MaterialColors.getColor(materialTextViewAsc, dscOrder ? R.attr.colorSecondary : R.attr.colorPrimary)}"
-    
-                            android:text="@string/metadata_chapter_asc"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" />
-    
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/material_text_view_dsc"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="@{() -> metadataLayoutCompat.changeOrder(true)}"
-                            android:text="@string/metadata_chapter_dsc"
-                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-                            android:textColor="@{MaterialColors.getColor(materialTextViewDsc, dscOrder ? R.attr.colorPrimary : R.attr.colorSecondary)}"
-                            android:layout_marginStart="@dimen/md_spec_spacing_hor_8"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/material_text_view_asc"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" />
-                        
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                    
-                    <com.google.android.material.textview.MaterialTextView
-                        android:layout_width="@dimen/constraint_fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/metadata_chapter_title"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                        android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/constraint_layout_order"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-                    
-                </androidx.constraintlayout.widget.ConstraintLayout>
-                
-                <androidx.core.widget.NestedScrollView
-                    android:layout_width="@dimen/constraint_fill_parent"
-                    android:layout_height="@dimen/constraint_fill_parent"
-                    android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
-                    app:layout_constraintTop_toBottomOf="@id/constraint_layout_chapter_header"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent">
-                    
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recycler_view"
-                            android:layout_width="@dimen/constraint_fill_parent"
-                            android:layout_height="wrap_content"
-                            android:nestedScrollingEnabled="false"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-                        
-                        <projekt.cloud.piece.pic.widget.InsetSpaceView
-                            android:layout_width="@dimen/constraint_fill_parent"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/recycler_view"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            inset_vertical="@{mainViewModel.systemInsets.bottom}" />
-                        
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                    
-                </androidx.core.widget.NestedScrollView>
-                
-                
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintBottom_toBottomOf="parent"
+                bind:mainViewModel="@{mainViewModel}"
+                bind:metadataLayoutCompat="@{metadataLayoutCompat}"
+                bind:dscOrder="@{dscOrder}"
+                layout="@layout/metadata_chapters" />
             
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="@dimen/constraint_fill_parent"
                 android:layout_height="@dimen/constraint_fill_parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/constraint_layout_chapter"
+                app:layout_constraintEnd_toStartOf="@id/metadata_chapters"
                 app:layout_constraintBottom_toBottomOf="parent">
     
                 <androidx.core.widget.NestedScrollView
@@ -340,306 +242,22 @@
             
                         </com.google.android.material.card.MaterialCardView>
             
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/material_card_view_creator"
+                        <include
+                            android:id="@+id/metadata_content"
                             android:layout_width="@dimen/constraint_fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
-                            android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
-                            android:onClick="@{() -> metadataLayoutCompat.triggerShowOrGone(constraintLayoutCreatorDetail, materialCheckBox)}"
-                            app:cardCornerRadius="@dimen/md_spec_card_radius_12"
                             app:layout_constraintTop_toBottomOf="@id/material_card_view_cover"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent">
-                
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-                    
-                                <androidx.constraintlayout.widget.ConstraintLayout
-                                    android:id="@+id/constraint_layout_creator"
-                                    android:layout_width="@dimen/constraint_fill_parent"
-                                    android:layout_height="wrap_content"
-                                    android:paddingHorizontal="@dimen/md_spec_spacing_hor_16"
-                                    android:paddingVertical="@dimen/md_spec_spacing_ver_8"
-                                    app:layout_constraintTop_toTopOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent">
-                        
-                                    <com.google.android.material.imageview.ShapeableImageView
-                                        android:id="@+id/shapeable_image_view_avatar"
-                                        android:layout_width="@dimen/md_spec_avatar_size"
-                                        android:layout_height="@dimen/md_spec_avatar_size"
-                                        app:layout_constraintTop_toTopOf="parent"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:shapeAppearance="@style/Widget.ShapeableImageView.Circle"
-                                        bitmap="@{comicViewModel.creatorAvatar}" />
-                        
-                                    <com.google.android.material.checkbox.MaterialCheckBox
-                                        android:id="@+id/material_check_box"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:button="@drawable/selector_state_expandable"
-                                        android:checked="@{constraintLayoutCreatorDetail.getVisibility() != View.GONE}"
-                                        android:onClick="@{() -> metadataLayoutCompat.triggerShowOrGone(constraintLayoutCreatorDetail, materialCheckBox)}"
-                                        app:layout_constraintTop_toTopOf="parent"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintBottom_toBottomOf="parent" />
-                        
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:layout_width="@dimen/constraint_fill_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="@dimen/md_spec_spacing_hor_16"
-                                        android:layout_marginEnd="@dimen/md_spec_spacing_hor_8"
-                                        app:layout_constraintTop_toTopOf="parent"
-                                        app:layout_constraintStart_toEndOf="@id/shapeable_image_view_avatar"
-                                        app:layout_constraintEnd_toStartOf="@id/material_check_box"
-                                        app:layout_constraintBottom_toBottomOf="parent">
-                            
-                                        <com.google.android.material.textview.MaterialTextView
-                                            android:id="@+id/material_text_view_creator_name"
-                                            android:layout_width="@dimen/constraint_fill_parent"
-                                            android:layout_height="wrap_content"
-                                            android:text="@{comicViewModel.creator.name}"
-                                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                                            app:layout_constraintTop_toTopOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintEnd_toEndOf="parent" />
-                            
-                                        <com.google.android.material.textview.MaterialTextView
-                                            android:layout_width="@dimen/constraint_fill_parent"
-                                            android:layout_height="wrap_content"
-                                            android:text="@{comicViewModel.creator.title}"
-                                            android:visibility="@{comicViewModel.creator.title == `` ? View.GONE : View.VISIBLE}"
-                                            app:layout_constraintTop_toBottomOf="@id/material_text_view_creator_name"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintBottom_toBottomOf="parent" />
-                        
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
-                    
-                                </androidx.constraintlayout.widget.ConstraintLayout>
-                    
-                                <androidx.constraintlayout.widget.ConstraintLayout
-                                    android:id="@+id/constraint_layout_creator_detail"
-                                    android:layout_width="@dimen/constraint_fill_parent"
-                                    android:layout_height="wrap_content"
-                                    android:paddingHorizontal="@dimen/md_spec_spacing_hor_16"
-                                    android:paddingBottom="@dimen/md_spec_spacing_ver_8"
-                                    android:visibility="gone"
-                                    app:layout_constraintTop_toBottomOf="@id/constraint_layout_creator"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintBottom_toBottomOf="parent">
-                        
-                                    <com.google.android.material.textview.MaterialTextView
-                                        android:id="@+id/material_text_view_creator_level"
-                                        android:layout_width="@dimen/constraint_fill_parent"
-                                        android:layout_height="wrap_content"
-                                        android:text="@{`Lv.` + comicViewModel.creator.level}"
-                                        app:layout_constraintTop_toTopOf="parent"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintEnd_toEndOf="parent" />
-                        
-                                    <com.google.android.material.textview.MaterialTextView
-                                        android:layout_width="@dimen/constraint_fill_parent"
-                                        android:layout_height="wrap_content"
-                                        android:text="@{comicViewModel.creator.slogan}"
-                                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                                        android:visibility="@{ViewBindingUtil.isNullOrBlank(comicViewModel.creator.slogan) ? View.GONE : View.VISIBLE}"
-                                        app:layout_constraintTop_toBottomOf="@id/material_text_view_creator_level"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintEnd_toEndOf="parent" />
-                    
-                                </androidx.constraintlayout.widget.ConstraintLayout>
-                
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-            
-                        </com.google.android.material.card.MaterialCardView>
-    
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/constraint_layout_contributor"
-                            android:layout_width="@dimen/constraint_fill_parent"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintTop_toBottomOf="@id/material_card_view_creator"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent">
-        
-                            <com.google.android.material.card.MaterialCardView
-                                android:layout_width="@dimen/constraint_fill_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
-                                android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
-                                android:visibility="@{ViewBindingUtil.isNullOrBlank(comicViewModel.comic.author) &amp;&amp; ViewBindingUtil.isNullOrBlank(comicViewModel.comic.chineseTeam) ? View.GONE : View.VISIBLE}"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent">
-            
-                                <androidx.appcompat.widget.LinearLayoutCompat
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical"
-                                    android:paddingHorizontal="@dimen/md_spec_spacing_hor_16"
-                                    android:paddingVertical="@dimen/md_spec_spacing_ver_8">
-                
-                                    <com.google.android.material.card.MaterialCardView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:foreground="?attr/selectableItemBackground"
-                                        android:visibility="@{ViewBindingUtil.isNullOrBlank(comicViewModel.comic.author) ? View.GONE : View.VISIBLE}">
-                    
-                                        <androidx.constraintlayout.widget.ConstraintLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content">
-                        
-                                            <androidx.appcompat.widget.AppCompatImageView
-                                                android:id="@+id/app_compat_image_view_author"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:src="@drawable/ic_round_person_24"
-                                                app:layout_constraintTop_toTopOf="parent"
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintBottom_toBottomOf="parent" />
-                        
-                                            <com.google.android.material.textview.MaterialTextView
-                                                android:layout_width="@dimen/constraint_fill_parent"
-                                                android:layout_height="wrap_content"
-                                                android:text="@{comicViewModel.comic.author}"
-                                                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                                                android:layout_marginStart="@dimen/md_spec_spacing_hor_16"
-                                                app:layout_constraintTop_toTopOf="parent"
-                                                app:layout_constraintStart_toEndOf="@id/app_compat_image_view_author"
-                                                app:layout_constraintEnd_toEndOf="parent"
-                                                app:layout_constraintBottom_toBottomOf="parent" />
-                    
-                                        </androidx.constraintlayout.widget.ConstraintLayout>
-                
-                                    </com.google.android.material.card.MaterialCardView>
-                
-                                    <com.google.android.material.card.MaterialCardView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
-                                        android:visibility="@{ViewBindingUtil.isNullOrBlank(comicViewModel.comic.chineseTeam) ? View.GONE : View.VISIBLE}">
-                    
-                                        <androidx.constraintlayout.widget.ConstraintLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content">
-                        
-                                            <androidx.appcompat.widget.AppCompatImageView
-                                                android:id="@+id/app_compat_image_view_translation"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:src="@drawable/ic_round_translate_24"
-                                                app:layout_constraintTop_toTopOf="parent"
-                                                app:layout_constraintStart_toStartOf="parent"
-                                                app:layout_constraintBottom_toBottomOf="parent" />
-                        
-                                            <com.google.android.material.textview.MaterialTextView
-                                                android:layout_width="@dimen/constraint_fill_parent"
-                                                android:layout_height="wrap_content"
-                                                android:text="@{comicViewModel.comic.chineseTeam}"
-                                                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                                                android:layout_marginStart="@dimen/md_spec_spacing_hor_16"
-                                                app:layout_constraintTop_toTopOf="parent"
-                                                app:layout_constraintStart_toEndOf="@id/app_compat_image_view_translation"
-                                                app:layout_constraintEnd_toEndOf="parent"
-                                                app:layout_constraintBottom_toBottomOf="parent" />
-                    
-                                        </androidx.constraintlayout.widget.ConstraintLayout>
-                
-                                    </com.google.android.material.card.MaterialCardView>
-            
-                                </androidx.appcompat.widget.LinearLayoutCompat>
-        
-                            </com.google.android.material.card.MaterialCardView>
-    
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-            
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/constraint_layout_metadata"
-                            android:layout_width="@dimen/constraint_fill_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
-                            android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
-                            app:layout_constraintTop_toBottomOf="@id/constraint_layout_contributor"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent">
-                
-                            <com.google.android.material.textview.MaterialTextView
-                                android:id="@+id/material_text_view_category"
-                                android:layout_width="@dimen/constraint_fill_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/metadata_category_title"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent" />
-                
-                            <com.google.android.material.chip.ChipGroup
-                                android:id="@+id/chip_group_category"
-                                android:layout_width="@dimen/constraint_fill_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
-                                app:layout_constraintTop_toBottomOf="@id/material_text_view_category"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent" />
-                
-                            <com.google.android.material.divider.MaterialDivider
-                                android:layout_width="@dimen/constraint_fill_parent"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintTop_toBottomOf="@id/chip_group_category"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent" />
-                
-                            <com.google.android.material.textview.MaterialTextView
-                                android:id="@+id/material_text_view_tag"
-                                android:layout_width="@dimen/constraint_fill_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
-                                android:text="@string/metadata_tag_title"
-                                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                                app:layout_constraintTop_toBottomOf="@id/chip_group_category"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent" />
-                
-                            <com.google.android.material.chip.ChipGroup
-                                android:id="@+id/chip_group_tag"
-                                android:layout_width="@dimen/constraint_fill_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
-                                app:layout_constraintTop_toBottomOf="@id/material_text_view_tag"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent" />
-                
-                            <com.google.android.material.divider.MaterialDivider
-                                android:layout_width="@dimen/constraint_fill_parent"
-                                android:layout_height="wrap_content"
-                                android:visibility="@{ViewBindingUtil.isNullOrBlank(comicViewModel.comic.description) ? View.GONE : View.VISIBLE}"
-                                app:layout_constraintTop_toBottomOf="@id/chip_group_tag"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent" />
-                
-                            <com.google.android.material.textview.MaterialTextView
-                                android:layout_width="@dimen/constraint_fill_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
-                                android:text="@{comicViewModel.comic.description}"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                                android:visibility="@{ViewBindingUtil.isNullOrBlank(comicViewModel.comic.description) ? View.GONE : View.VISIBLE}"
-                                app:layout_constraintTop_toBottomOf="@id/chip_group_tag"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent" />
-            
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+                            app:layout_constraintEnd_toEndOf="parent"
+                            bind:comicViewModel="@{comicViewModel}"
+                            bind:metadataLayoutCompat="@{metadataLayoutCompat}"
+                            layout="@layout/metadata_content" />
                         
                         <projekt.cloud.piece.pic.widget.InsetSpaceView
                             android:layout_width="@dimen/constraint_fill_parent"
                             android:layout_height="wrap_content"
                             inset_vertical="@{mainViewModel.systemInsets.bottom}"
-                            app:layout_constraintTop_toBottomOf="@id/constraint_layout_metadata"
+                            app:layout_constraintTop_toBottomOf="@id/metadata_content"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent" />

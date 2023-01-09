@@ -17,6 +17,7 @@ import projekt.cloud.piece.pic.base.BaseRecyclerViewAdapter.BaseRecyclerViewAdap
 import projekt.cloud.piece.pic.base.SnackLayoutCompat
 import projekt.cloud.piece.pic.databinding.ChipBinding
 import projekt.cloud.piece.pic.databinding.FragmentMetadataBinding
+import projekt.cloud.piece.pic.databinding.MetadataContentBinding
 import projekt.cloud.piece.pic.util.AdapterInterface
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
@@ -42,14 +43,17 @@ abstract class MetadataLayoutCompat(protected val binding: FragmentMetadataBindi
         binding.dscOrder = true
     }
     
+    private val metadataContent: MetadataContentBinding
+        get() = binding.metadataContent
+    
     private val category: ChipGroup
-        get() = binding.chipGroupCategory
+        get() = metadataContent.chipGroupCategory
     
     private val tag: ChipGroup
-        get() = binding.chipGroupTag
+        get() = metadataContent.chipGroupTag
     
     private val recyclerView: RecyclerView
-        get() = binding.recyclerView
+        get() = binding.metadataChapters.recyclerView
     
     open fun setupActionBar(fragment: Fragment) = Unit
     
@@ -94,7 +98,6 @@ abstract class MetadataLayoutCompat(protected val binding: FragmentMetadataBindi
     fun setupRecyclerView(episodeList: List<Episode>) {
         recyclerView.adapter = RecyclerViewAdapter(episodeList) {
         }
-        
     }
     
     override fun notifyClear() {
