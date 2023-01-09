@@ -68,7 +68,7 @@ class SignIn: BaseFragment<FragmentSignInBinding>() {
 
                     // Error
                     if (!response.isSuccessful) {
-                        layoutCompat.onSignInRequestCompleted(requireContext())
+                        layoutCompat.onSignInRequestCompleted()
                         val error = response.decodeErrorResponse()
                         if (error.error == SIGN_IN_ERROR_INVALID) {
                             return@ui layoutCompat.shortSnack(
@@ -86,7 +86,7 @@ class SignIn: BaseFragment<FragmentSignInBinding>() {
 
                     // Rejected
                     if (responseText.checkRejected()) {
-                        layoutCompat.onSignInRequestCompleted(requireContext())
+                        layoutCompat.onSignInRequestCompleted()
                         return@ui layoutCompat.shortSnack(getString(R.string.response_rejected))
                     }
 
@@ -101,7 +101,7 @@ class SignIn: BaseFragment<FragmentSignInBinding>() {
                     )
                 }
 
-                layoutCompat.onSignInRequestCompleted(requireContext())
+                layoutCompat.onSignInRequestCompleted()
                 when (httpRequest.state) {
                     STATE_IO_EXCEPTION -> {
                         layoutCompat.shortSnack(getString(R.string.request_io_exception, httpRequest.exceptionMessage))

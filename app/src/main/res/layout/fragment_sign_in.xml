@@ -2,12 +2,17 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    
     <data>
+        <import type="com.google.android.material.color.MaterialColors" />
+        <import type="com.google.android.material.R" />
         <import type="projekt.cloud.piece.pic.ui.signIn.SignInLayoutCompat" />
         <variable
             name="layoutCompat"
             type="SignInLayoutCompat" />
+        <variable
+            name="isSigningIn"
+            type="Boolean" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -114,14 +119,16 @@
                         android:textColor="?attr/colorPrimary"
                         app:layout_constraintTop_toBottomOf="@id/text_input_layout_password"
                         app:layout_constraintEnd_toEndOf="parent" />
-
+    
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/material_button_sign_in"
                         android:layout_width="@dimen/constraint_fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
-                        android:text="@string/sign_in_button"
+                        android:backgroundTint="@{MaterialColors.getColor(materialButtonSignIn, isSigningIn ? R.attr.colorSecondaryContainer : R.attr.colorPrimary)}"
                         android:onClick="@{(view) -> layoutCompat.onSignInButtonClick(view.context)}"
+                        android:text="@string/sign_in_button"
+                        android:textColor="@{MaterialColors.getColor(materialButtonSignIn, isSigningIn ? R.attr.colorOnSecondaryContainer : R.attr.colorOnPrimary)}"
                         app:layout_constraintTop_toBottomOf="@id/material_text_view_forgot"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

@@ -51,6 +51,7 @@ abstract class SignInLayoutCompat(protected val binding: FragmentSignInBinding) 
     init {
         @Suppress("LeakingThis")
         binding.layoutCompat = this
+        binding.isSigningIn = false
     }
 
     fun setCallback(callback: SignInButtonOnClickCallback) {
@@ -71,28 +72,6 @@ abstract class SignInLayoutCompat(protected val binding: FragmentSignInBinding) 
     }
 
     open fun setupActionBar(fragment: Fragment) = Unit
-
-    fun onSignInButtonClick(context: Context) {
-        val username = username.editText?.text?.toString()
-        val password = password.editText?.text?.toString()
-        if (!username.isNullOrBlank() && !password.isNullOrBlank()) {
-            context.theme.obtainStyledAttributes(
-                intArrayOf(
-                    com.google.android.material.R.attr.colorSecondaryContainer,
-                    com.google.android.material.R.attr.colorOnSecondaryContainer
-                )
-            ).use {
-                signIn.setBackgroundColor(it.getColor(0, 0))
-                @Suppress("ResourceType")
-                signIn.setTextColor(it.getColor(1, 0))
-            }
-            signIn.setText(R.string.sign_in_button_signing_in)
-            signIn.icon = IndeterminateDrawable.createCircularDrawable(
-                context, CircularProgressIndicatorSpec(context, null)
-            )
-            callback?.invoke(username, password)
-        }
-    }
     
     fun setupEnterKeyListening() {
         password.editText?.setOnKeyListener { _, keyCode, event ->
@@ -105,20 +84,24 @@ abstract class SignInLayoutCompat(protected val binding: FragmentSignInBinding) 
             }
         }
     }
+    
+    fun onSignInButtonClick(context: Context) {
+        val username = username.editText?.text?.toString()
+        val password = password.editText?.text?.toString()
+        if (!username.isNullOrBlank() && !password.isNullOrBlank()) {
+            binding.isSigningIn = true
+            signIn.setText(R.string.sign_in_button_signing_in)
+            signIn.icon = IndeterminateDrawable.createCircularDrawable(
+                context, CircularProgressIndicatorSpec(context, null)
+            )
+            callback?.invoke(username, password)
+        }
+    }
 
-    fun onSignInRequestCompleted(context: Context) {
+    fun onSignInRequestCompleted() {
         signIn.icon = null
         signIn.setText(R.string.sign_in_button)
-        context.theme.obtainStyledAttributes(
-            intArrayOf(
-                com.google.android.material.R.attr.colorPrimary,
-                com.google.android.material.R.attr.colorOnPrimary
-            )
-        ).use {
-            signIn.setBackgroundColor(it.getColor(0, 0))
-            @Suppress("ResourceType")
-            signIn.setTextColor(it.getColor(1, 0))
-        }
+        binding.isSigningIn = false
     }
 
     private class SignInLayoutCompatImpl(binding: FragmentSignInBinding): SignInLayoutCompat(binding) {
