@@ -7,6 +7,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.coroutineScope
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.checkbox.MaterialCheckBox
@@ -18,6 +19,7 @@ import projekt.cloud.piece.pic.base.SnackLayoutCompat
 import projekt.cloud.piece.pic.databinding.ChipBinding
 import projekt.cloud.piece.pic.databinding.FragmentMetadataBinding
 import projekt.cloud.piece.pic.databinding.MetadataContentBinding
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel
 import projekt.cloud.piece.pic.util.AdapterInterface
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
@@ -118,6 +120,12 @@ abstract class MetadataLayoutCompat(protected val binding: FragmentMetadataBindi
             onClick = onChipClick
             text = textStr
         }.root
+    }
+    
+    fun updateFavorite(comicViewModel: ComicViewModel, token: String, id: String) {
+        binding.lifecycleOwner?.lifecycle?.coroutineScope?.let {
+            comicViewModel.scopedUpdateFavourite(token, id, it)
+        }
     }
     
     private class MetadataLayoutCompatImpl(binding: FragmentMetadataBinding): MetadataLayoutCompat(binding) {

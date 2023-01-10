@@ -13,6 +13,7 @@
     <dimen name="md_spec_size_72">72dp</dimen>
     <dimen name="md_spec_size_96">96dp</dimen>
     <dimen name="md_spec_card_radius_12">12dp</dimen>
+    <dimen name="md_spec_icon_size">24dp</dimen>
     
     <dimen name="md_spec_avatar_size">40dp</dimen>
     

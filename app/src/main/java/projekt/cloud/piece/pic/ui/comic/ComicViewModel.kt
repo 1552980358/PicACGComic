@@ -15,6 +15,7 @@ import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCod
 import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.METADATA_REJECTED
 import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.METADATA_INVALID_STATE_CODE
 import projekt.cloud.piece.pic.api.comics.episodes.EpisodesResponseBody.Episode
+import projekt.cloud.piece.pic.api.comics.favourites.Favourite
 import projekt.cloud.piece.pic.api.comics.metadata.ComicMetadata
 import projekt.cloud.piece.pic.api.comics.metadata.ComicMetadataResponseBody.Comic
 import projekt.cloud.piece.pic.api.comics.metadata.ComicMetadataResponseBody.Creator
@@ -26,6 +27,13 @@ import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCod
 import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.EPISODES_INVALID_STATE_CODE
 import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.EPISODES_IO_EXCEPTION
 import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.EPISODES_REJECTED
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.FAVOURITE_COMPLETE
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.FAVOURITE_EMPTY_CONTENT
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.FAVOURITE_ERROR
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.FAVOURITE_EXCEPTION
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.FAVOURITE_INVALID_STATE_CODE
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.FAVOURITE_IO_EXCEPTION
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.FAVOURITE_REJECTED
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.HttpRequest.HttpRequestUtil.HttpRequestState.STATE_IO_EXCEPTION
 import projekt.cloud.piece.pic.util.HttpRequest.HttpRequestUtil.HttpRequestState.STATE_EXCEPTION
@@ -48,6 +56,14 @@ class ComicViewModel: BaseCallbackViewModel() {
         const val EPISODES_ERROR = -14
         const val EPISODES_EMPTY_CONTENT = -15
         const val EPISODES_REJECTED = -16
+    
+        const val FAVOURITE_COMPLETE = 20
+        const val FAVOURITE_IO_EXCEPTION = -21
+        const val FAVOURITE_EXCEPTION = -22
+        const val FAVOURITE_INVALID_STATE_CODE = -23
+        const val FAVOURITE_ERROR = -24
+        const val FAVOURITE_EMPTY_CONTENT = -25
+        const val FAVOURITE_REJECTED = -26
     }
     
     private companion object {
@@ -86,6 +102,10 @@ class ComicViewModel: BaseCallbackViewModel() {
     private val _creatorAvatar = MutableLiveData<Bitmap?>()
     val creatorAvatar: MutableLiveData<Bitmap?>
         get() = _creatorAvatar
+    
+    private val _isFavourite = MutableLiveData<Boolean>()
+    val isFavourite: LiveData<Boolean>
+        get() = _isFavourite
     
     val episodeList = mutableListOf<Episode>()
     
@@ -149,7 +169,8 @@ class ComicViewModel: BaseCallbackViewModel() {
         _comic.value = responseBody.comic
         _creator.value = responseBody.creator
         _creatorAvatar.value = responseBody.creator.avatar.obtainBitmap()
-    
+        _isFavourite.value = responseBody.comic.isFavourite
+        
         setCallback(METADATA_COMPLETE)
     
         return true
@@ -204,6 +225,49 @@ class ComicViewModel: BaseCallbackViewModel() {
         } while (page != pages)
         
         setCallback(EPISODES_COMPLETE)
+    }
+    
+    fun scopedUpdateFavourite(token: String, id: String, scope: CoroutineScope) {
+        scope.ui {
+            val favourite = Favourite(token, id).request()
+            if (!favourite.isComplete) {
+                return@ui when (favourite.state) {
+                    STATE_IO_EXCEPTION -> {
+                        setCallback(FAVOURITE_IO_EXCEPTION, favourite.message)
+                    }
+                    STATE_EXCEPTION -> {
+                        setCallback(FAVOURITE_EXCEPTION, favourite.message)
+                    }
+                    else -> {
+                        setCallback(FAVOURITE_INVALID_STATE_CODE, favourite.message)
+                    }
+                }
+            }
+            
+            if (favourite.isErrorResponse) {
+                return@ui favourite.errorResponse().let { errorResponseBody ->
+                    setCallback(
+                        FAVOURITE_ERROR,
+                        errorResponseBody.message,
+                        errorResponseBody.code,
+                        errorResponseBody.error,
+                        errorResponseBody.detail
+                    )
+                }
+            }
+    
+            if (favourite.isEmptyResponse) {
+                return@ui setCallback(FAVOURITE_EMPTY_CONTENT)
+            }
+    
+            if (favourite.isRejected()) {
+                return@ui setCallback(FAVOURITE_REJECTED)
+            }
+            
+            val favouriteResponseBody = favourite.responseBody()
+            _isFavourite.value = favouriteResponseBody.isFavourite
+            setCallback(FAVOURITE_COMPLETE)
+        }
     }
 
 }

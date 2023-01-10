@@ -57,6 +57,7 @@
     <string name="metadata_chapter_dsc">DSC</string>
     <string name="metadata_category_title">Category</string>
     <string name="metadata_tag_title">Tag</string>
+    <string name="metadata_favorite">Favorite</string>
     
     <string name="request_io_exception">Connection Exception: %s</string>
     <string name="request_unknown_exception">Unknown Exception: %s</string>
