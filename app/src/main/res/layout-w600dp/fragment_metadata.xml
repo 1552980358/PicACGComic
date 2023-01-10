@@ -86,6 +86,16 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintEnd_toEndOf="parent" />
                         
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/material_button_read"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
+                            android:layout_marginVertical="@dimen/md_spec_spacing_ver_8"
+                            android:onClick="@{() -> metadataLayoutCompat.startViewer(comicViewModel.comic.id, 1, comicViewModel.episodeList.size(), comicViewModel.episodeList[0].title)}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+                        
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="@dimen/constraint_fill_parent"
                             android:layout_height="@dimen/constraint_fill_parent"
@@ -94,7 +104,7 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toEndOf="@id/shapeable_image_view"
                             app:layout_constraintEnd_toStartOf="@id/app_compat_image_view_star"
-                            app:layout_constraintBottom_toBottomOf="parent">
+                            app:layout_constraintBottom_toTopOf="@id/material_button_read">
                             
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/constraint_layout_views"

@@ -106,36 +106,29 @@
                                     app:layout_constraintStart_toEndOf="@id/shapeable_image_view"
                                     app:layout_constraintEnd_toEndOf="parent" />
     
-                                <androidx.constraintlayout.widget.ConstraintLayout
-                                    android:id="@+id/constraint_layout_buttons"
-                                    android:layout_width="@dimen/constraint_fill_parent"
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/material_button_read"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
-                                    android:layout_marginVertical="@dimen/md_spec_spacing_ver_8"
-                                    app:layout_constraintStart_toEndOf="@id/shapeable_image_view"
+                                    android:layout_marginBottom="@dimen/md_spec_spacing_ver_8"
+                                    android:layout_marginEnd="@dimen/md_spec_spacing_hor_16"
+                                    android:onClick="@{() -> metadataLayoutCompat.startViewer(comicViewModel.comic.id, 1, comicViewModel.episodeList.size(), comicViewModel.episodeList[0].title)}"
+                                    android:text="@string/metadata_read"
+                                    app:icon="@drawable/ic_round_play_arrow_24"
                                     app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintBottom_toBottomOf="parent">
+                                    app:layout_constraintBottom_toBottomOf="parent" />
     
-                                    <com.google.android.material.divider.MaterialDivider
-                                        android:layout_width="@dimen/constraint_fill_parent"
-                                        android:layout_height="wrap_content"
-                                        app:layout_constraintTop_toTopOf="parent"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        tools:ignore="TooDeepLayout" />
-                                    
-                                    <com.google.android.material.button.MaterialButton
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
-                                        android:onClick="@{() -> metadataLayoutCompat.updateFavorite(comicViewModel, mainViewModel.account.token, comicViewModel.comic.id)}"
-                                        android:text="@string/metadata_favorite"
-                                        app:icon="@{comicViewModel.isFavourite ? @drawable/ic_round_star_24 : @drawable/ic_round_star_border_24}"
-                                        app:layout_constraintTop_toTopOf="parent"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        style="?attr/materialButtonOutlinedStyle" />
-    
-                                </androidx.constraintlayout.widget.ConstraintLayout>
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/material_button_star"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="@dimen/md_spec_spacing_hor_16"
+                                    android:layout_marginBottom="@dimen/md_spec_spacing_ver_8"
+                                    android:onClick="@{() -> metadataLayoutCompat.updateFavorite(comicViewModel, mainViewModel.account.token, comicViewModel.comic.id)}"
+                                    app:icon="@{comicViewModel.isFavourite ? @drawable/ic_round_star_24 : @drawable/ic_round_star_border_24}"
+                                    app:layout_constraintBottom_toTopOf="@id/material_button_read"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    style="?attr/materialIconButtonOutlinedStyle" />
     
                                 <androidx.constraintlayout.widget.ConstraintLayout
                                     android:layout_width="@dimen/constraint_fill_parent"
@@ -145,7 +138,7 @@
                                     app:layout_constraintTop_toBottomOf="@id/material_text_view_title"
                                     app:layout_constraintStart_toEndOf="@id/shapeable_image_view"
                                     app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintBottom_toTopOf="@id/constraint_layout_buttons">
+                                    app:layout_constraintBottom_toTopOf="@id/material_button_star">
         
                                     <androidx.constraintlayout.widget.ConstraintLayout
                                         android:id="@+id/constraint_layout_views"

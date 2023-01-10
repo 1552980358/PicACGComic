@@ -8,6 +8,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.coroutineScope
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.checkbox.MaterialCheckBox
@@ -19,6 +20,7 @@ import projekt.cloud.piece.pic.base.SnackLayoutCompat
 import projekt.cloud.piece.pic.databinding.ChipBinding
 import projekt.cloud.piece.pic.databinding.FragmentMetadataBinding
 import projekt.cloud.piece.pic.databinding.MetadataContentBinding
+import projekt.cloud.piece.pic.ui.comic.ComicDirections
 import projekt.cloud.piece.pic.ui.comic.ComicViewModel
 import projekt.cloud.piece.pic.util.AdapterInterface
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
@@ -56,6 +58,12 @@ abstract class MetadataLayoutCompat(protected val binding: FragmentMetadataBindi
     
     private val recyclerView: RecyclerView
         get() = binding.metadataChapters.recyclerView
+    
+    private lateinit var navController: NavController
+    
+    fun setNavController(navController: NavController) {
+        this.navController = navController
+    }
     
     open fun setupActionBar(fragment: Fragment) = Unit
     
@@ -126,6 +134,9 @@ abstract class MetadataLayoutCompat(protected val binding: FragmentMetadataBindi
         binding.lifecycleOwner?.lifecycle?.coroutineScope?.let {
             comicViewModel.scopedUpdateFavourite(token, id, it)
         }
+    }
+    
+    fun startViewer(id: String, order: Int, maxOrder: Int, title: String) {
     }
     
     private class MetadataLayoutCompatImpl(binding: FragmentMetadataBinding): MetadataLayoutCompat(binding) {

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import projekt.cloud.piece.pic.MainViewModel
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.base.BaseCallbackFragment
@@ -35,6 +36,9 @@ import projekt.cloud.piece.pic.util.LayoutSizeMode
 
 class Metadata: BaseCallbackFragment<FragmentMetadataBinding, ComicViewModel>() {
     
+    private val comic: Comic
+        get() = findParentAs()
+    
     private companion object {
         const val TAG = "Metadata"
     }
@@ -48,6 +52,7 @@ class Metadata: BaseCallbackFragment<FragmentMetadataBinding, ComicViewModel>() 
     
     override fun onSetupLayoutCompat(binding: FragmentMetadataBinding, layoutSizeMode: LayoutSizeMode) {
         layoutCompat = binding.getLayoutCompat(layoutSizeMode)
+        layoutCompat.setNavController(comic.findNavController())
     }
     
     override fun onBindData(binding: FragmentMetadataBinding) {
