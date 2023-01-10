@@ -35,7 +35,7 @@ data class ComicMetadataResponseBody(val code: Int, val message: String, private
         @SerialName("tags")
         val tagList: List<String>,
         @SerialName("pagesCount")
-        val pages: Int,
+        val images: Int,
         @SerialName("epsCount")
         val episodeSize: Int,
         val finished: Boolean,
