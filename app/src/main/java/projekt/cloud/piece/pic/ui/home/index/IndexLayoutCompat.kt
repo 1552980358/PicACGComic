@@ -3,11 +3,12 @@ package projekt.cloud.piece.pic.ui.home.index
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Rect
+import android.transition.TransitionManager
 import android.view.View
 import android.view.View.GONE
-import android.view.View.VISIBLE
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.widget.NestedScrollView
+import androidx.core.view.isVisible
 import androidx.databinding.ObservableArrayMap
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -17,10 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
-import androidx.transition.TransitionManager
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.progressindicator.BaseProgressIndicator
-import com.google.android.material.transition.MaterialFade
+import com.google.android.material.transition.platform.MaterialFadeThrough
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.collections.CollectionsResponseBody.Data.Collection.Comic
 import projekt.cloud.piece.pic.base.BaseRecyclerViewAdapter.BaseRecyclerViewAdapterUtil.adapterInterface
@@ -57,6 +57,12 @@ abstract class IndexLayoutCompat private constructor(
     protected val recyclerViewB: RecyclerView
         get() = binding.recyclerViewRecommendB
     
+    private val container: ConstraintLayout
+        get() = binding.constraintLayoutContainer
+    
+    private val content: ConstraintLayout
+        get() = binding.constraintLayoutContent
+    
     protected lateinit var navController: NavController
         private set
     
@@ -79,12 +85,17 @@ abstract class IndexLayoutCompat private constructor(
         recyclerViewB.adapter = RecyclerViewAdapter(comicListB, coverMap, onClick)
     }
     
-    open fun setupBeforeCompleteLoading(resources: Resources) {
+    fun setupBeforeCompleteLoading(resources: Resources) {
         progressIndicator.setVisibilityAfterHide(GONE)
+        TransitionManager.beginDelayedTransition(
+            container,
+            MaterialFadeThrough().setDuration(resources.getInteger(R.integer.animation_duration).toLong())
+        )
     }
     
     open fun completeLoading() {
         progressIndicator.hide()
+        content.isVisible = true
     }
     
     override fun notifyClear() {
@@ -103,9 +114,6 @@ abstract class IndexLayoutCompat private constructor(
         get() = coordinatorLayout
     
     private class IndexLayoutCompatImpl(binding: FragmentIndexBinding): IndexLayoutCompat(binding) {
-    
-        private val content: NestedScrollView
-            get() = binding.nestedScrollView!!
     
         override val progressIndicator: BaseProgressIndicator<*>
             get() = binding.linearProgressIndicator as BaseProgressIndicator<*>
@@ -145,17 +153,6 @@ abstract class IndexLayoutCompat private constructor(
                 }
             })
         }
-    
-        override fun setupBeforeCompleteLoading(resources: Resources) {
-            super.setupBeforeCompleteLoading(resources)
-            val animationDuration = resources.getInteger(R.integer.animation_duration).toLong()
-            TransitionManager.beginDelayedTransition(content, MaterialFade().apply { duration = animationDuration })
-        }
-    
-        override fun completeLoading() {
-            super.completeLoading()
-            content.visibility = VISIBLE
-        }
         
     }
     
@@ -164,9 +161,6 @@ abstract class IndexLayoutCompat private constructor(
         private companion object {
             const val GRID_SPAN = 2
         }
-        
-        private val content: NestedScrollView
-            get() = binding.nestedScrollView!!
         
         override val progressIndicator: BaseProgressIndicator<*>
             get() = binding.circularProgressIndicator as BaseProgressIndicator<*>
@@ -196,26 +190,10 @@ abstract class IndexLayoutCompat private constructor(
                 }
             })
         }
-    
-        override fun setupBeforeCompleteLoading(resources: Resources) {
-            super.setupBeforeCompleteLoading(resources)
-            val animationDuration = resources.getInteger(R.integer.animation_duration).toLong()
-            TransitionManager.beginDelayedTransition(content, MaterialFade().apply { duration = animationDuration })
-        }
-    
-        override fun completeLoading() {
-            super.completeLoading()
-            content.visibility = VISIBLE
-        }
         
     }
     
     private class IndexLayoutCompatW1240dpImpl(binding: FragmentIndexBinding): IndexLayoutCompat(binding) {
-        
-        private val contentLeft: NestedScrollView
-            get() = binding.nestedScrollViewLeft!!
-        private val contentRight: NestedScrollView
-            get() = binding.nestedScrollViewRight!!
         
         override val progressIndicator: BaseProgressIndicator<*>
             get() = binding.circularProgressIndicator as BaseProgressIndicator<*>
@@ -265,19 +243,6 @@ abstract class IndexLayoutCompat private constructor(
                     }
                 }
             })
-        }
-        
-        override fun setupBeforeCompleteLoading(resources: Resources) {
-            super.setupBeforeCompleteLoading(resources)
-            val animationDuration = resources.getInteger(R.integer.animation_duration).toLong()
-            TransitionManager.beginDelayedTransition(contentLeft, MaterialFade().apply { duration = animationDuration })
-            TransitionManager.beginDelayedTransition(contentRight, MaterialFade().apply { duration = animationDuration })
-        }
-    
-        override fun completeLoading() {
-            super.completeLoading()
-            contentLeft.visibility = VISIBLE
-            contentRight.visibility = VISIBLE
         }
         
     }
