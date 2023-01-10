@@ -54,7 +54,6 @@ class Index: BaseCallbackFragment<FragmentIndexBinding, IndexViewModel>() {
                 else -> mainViewModel.performSignIn(requireActivity())
             }
         }
-        layoutCompat.setupBeforeCompleteLoading(resources)
     }
     
     private fun obtainCollection(token: String) {

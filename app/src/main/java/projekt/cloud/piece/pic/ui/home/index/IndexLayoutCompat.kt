@@ -85,15 +85,12 @@ abstract class IndexLayoutCompat private constructor(
         recyclerViewB.adapter = RecyclerViewAdapter(comicListB, coverMap, onClick)
     }
     
-    fun setupBeforeCompleteLoading(resources: Resources) {
+    open fun completeLoading() {
         progressIndicator.setVisibilityAfterHide(GONE)
         TransitionManager.beginDelayedTransition(
             container,
-            MaterialFadeThrough().setDuration(resources.getInteger(R.integer.animation_duration).toLong())
+            MaterialFadeThrough().setDuration(container.resources.getInteger(R.integer.animation_duration).toLong())
         )
-    }
-    
-    open fun completeLoading() {
         progressIndicator.hide()
         content.isVisible = true
     }
