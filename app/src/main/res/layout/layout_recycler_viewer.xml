@@ -1,18 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/app_compat_image_view"
-        android:layout_width="@dimen/constraint_fill_parent"
+    <data>
+        <import type="android.view.View" />
+        <import type="androidx.fragment.app.Fragment" />
+        <import type="projekt.cloud.piece.pic.api.comics.episode.EpisodeResponseBody.EpisodeImage" />
+        <import type="projekt.cloud.piece.pic.ui.viewer.RecyclerViewAdapter.RecyclerViewHolder" />
+        <variable
+            name="itemOrder"
+            type="Integer" />
+        <variable
+            name="itemListSize"
+            type="Integer" />
+        <variable
+            name="isLoading"
+            type="Boolean" />
+        <variable
+            name="isError"
+            type="Boolean" />
+        <variable
+            name="recyclerViewHolder"
+            type="RecyclerViewHolder" />
+        <variable
+            name="fragment"
+            type="Fragment" />
+        <variable
+            name="episodeImage"
+            type="EpisodeImage" />
+    </data>
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:onClick="@{() -> recyclerViewHolder.onClick(fragment, episodeImage)}">
+        
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/app_compat_image_view"
+            android:layout_width="@dimen/constraint_fill_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+        
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="@dimen/constraint_fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/md_spec_spacing_ver_8"
+            android:visibility="@{isLoading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+            
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/circular_progress_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="@{isLoading}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+            
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{isError ? View.GONE : View.VISIBLE}"
+                android:text="@{String.valueOf(itemOrder) + ` / ` + String.valueOf(itemListSize)}"
+                app:layout_constraintTop_toBottomOf="@id/circular_progress_indicator"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+    
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{isError ? View.VISIBLE : View.GONE}"
+                android:text="@string/viewer_image_load_error"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/circular_progress_indicator"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
