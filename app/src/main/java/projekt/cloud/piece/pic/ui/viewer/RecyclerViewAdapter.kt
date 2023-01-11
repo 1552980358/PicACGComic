@@ -34,6 +34,7 @@ class RecyclerViewAdapter(
         fun onBind(fragment: Fragment, episodeImage: EpisodeImage, itemOrder: Int, itemListSize: Int) {
             binding.fragment = fragment
             binding.itemOrder = itemOrder
+            binding.episodeImage = episodeImage
             binding.itemListSize = itemListSize
             loadImage(fragment, episodeImage)
         }
