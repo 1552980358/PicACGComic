@@ -28,7 +28,7 @@ data class ComicMetadataResponseBody(val code: Int, val message: String, private
         val title: String,
         val description: String = IGNORE_STRING,
         val thumb: Image,
-        val author: String,
+        val author: String = IGNORE_STRING,
         val chineseTeam: String = IGNORE_STRING,
         @SerialName("categories")
         val categoryList: List<String>,
