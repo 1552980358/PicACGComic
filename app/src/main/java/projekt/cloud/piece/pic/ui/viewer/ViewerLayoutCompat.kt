@@ -160,7 +160,9 @@ abstract class ViewerLayoutCompat private constructor(
         if (next.isVisible) {
             next.hide(onChangedCallback)
         }
-        recyclerView.smoothScrollToPosition(0)
+        // recyclerView.smoothScrollToPosition(0)
+        notifyClear()
+        notifyUpdate()
     }
     
     fun moveToBack(token: String, viewerViewModel: ViewerViewModel) {
