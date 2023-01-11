@@ -137,6 +137,7 @@ abstract class MetadataLayoutCompat(protected val binding: FragmentMetadataBindi
     }
     
     fun startViewer(id: String, order: Int, maxOrder: Int, title: String) {
+        navController.navigate(ComicDirections.toViewer(id, order, maxOrder, title))
     }
     
     private class MetadataLayoutCompatImpl(binding: FragmentMetadataBinding): MetadataLayoutCompat(binding) {

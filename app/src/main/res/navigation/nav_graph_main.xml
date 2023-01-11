@@ -26,6 +26,27 @@
     
     <fragment
         android:id="@+id/comic"
-        android:name="projekt.cloud.piece.pic.ui.comic.Comic" />
+        android:name="projekt.cloud.piece.pic.ui.comic.Comic" >
+        <action
+            android:id="@+id/to_viewer"
+            app:destination="@id/viewer">
+            <argument
+                android:name="id"
+                app:argType="string" />
+            <argument
+                android:name="order"
+                app:argType="integer" />
+            <argument
+                android:name="max_order"
+                app:argType="integer" />
+            <argument
+                android:name="title"
+                app:argType="string" />
+        </action>
+    </fragment>
+    
+    <fragment
+        android:id="@+id/viewer"
+        android:name="projekt.cloud.piece.pic.ui.viewer.Viewer" />
 
 </navigation>
