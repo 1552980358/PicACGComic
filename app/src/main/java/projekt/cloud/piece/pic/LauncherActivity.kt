@@ -18,8 +18,8 @@ import projekt.cloud.piece.pic.api.auth.SignIn.signIn
 import projekt.cloud.piece.pic.databinding.ActivityLauncherBinding
 import projekt.cloud.piece.pic.storage.Account
 import projekt.cloud.piece.pic.storage.Account.AccountUtil.getAccount
-import projekt.cloud.piece.pic.util.ActivityUtil.defaultSharedPreference
 import projekt.cloud.piece.pic.util.ActivityUtil.startActivity
+import projekt.cloud.piece.pic.util.ContextUtil.defaultSharedPreference
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.LayoutSizeMode
