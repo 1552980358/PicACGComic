@@ -20,6 +20,10 @@ data class Image(val originalName: String, private val path: String, private val
             else -> fileServer
         }
     
+    fun getUrl(): String {
+        return domain + STATIC_IMAGE_CONNECTOR + path
+    }
+    
     suspend fun obtainBitmap(): Bitmap? {
         return withContext(io) {
             getRequest(domain, STATIC_IMAGE_CONNECTOR + path).let { httpRequest ->
