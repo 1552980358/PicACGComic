@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import projekt.cloud.piece.pic.util.ActivityUtil.defaultSharedPreference
+import projekt.cloud.piece.pic.util.ContextUtil.defaultSharedPreference
 
 object FragmentUtil {
 
@@ -13,6 +13,6 @@ object FragmentUtil {
     }
     
     val Fragment.defaultSharedPreference: SharedPreferences
-        get() = requireActivity().defaultSharedPreference
+        get() = requireContext().defaultSharedPreference
 
 }
