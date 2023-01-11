@@ -5,6 +5,7 @@
     <data>
         <import type="androidx.databinding.ObservableArrayMap" />
         <import type="projekt.cloud.piece.pic.api.collections.CollectionsResponseBody.Data.Collection.Comic" />
+        <import type="projekt.cloud.piece.pic.util.ViewBindingUtil" />
         <import type="android.graphics.Bitmap" />
         <import type="kotlin.jvm.functions.Function1" />
         <import type="kotlin.Unit" />
@@ -70,6 +71,7 @@
                     android:maxLines="1"
                     android:text="@{comic.author}"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                    android:visibility="@{ViewBindingUtil.goneIfBlank(comic.author)}"
                     app:layout_constraintTop_toBottomOf="@id/material_text_view_title"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />

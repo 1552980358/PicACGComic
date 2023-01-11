@@ -1,9 +1,14 @@
 package projekt.cloud.piece.pic.util
 
+import android.view.View.GONE
+import android.view.View.VISIBLE
+
 object ViewBindingUtil {
     
     @JvmStatic
-    fun isNullOrBlank(string: String?) =
-        string.isNullOrBlank()
+    fun goneIfBlank(string: String?) = when {
+        string.isNullOrBlank() -> GONE
+        else -> VISIBLE
+    }
     
 }

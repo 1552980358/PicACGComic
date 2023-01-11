@@ -130,7 +130,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{comicViewModel.creator.slogan}"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:visibility="@{ViewBindingUtil.isNullOrBlank(comicViewModel.creator.slogan) ? View.GONE : View.VISIBLE}"
+                        android:visibility="@{ViewBindingUtil.goneIfBlank(comicViewModel.creator.slogan)}"
                         app:layout_constraintTop_toBottomOf="@id/material_text_view_creator_level"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
@@ -162,7 +162,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:foreground="?attr/selectableItemBackground"
-                    android:visibility="@{ViewBindingUtil.isNullOrBlank(comicViewModel.comic.author) ? View.GONE : View.VISIBLE}">
+                    android:visibility="@{ViewBindingUtil.goneIfBlank(comicViewModel.comic.author)}">
                 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -198,7 +198,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:foreground="?attr/selectableItemBackground"
-                    android:visibility="@{ViewBindingUtil.isNullOrBlank(comicViewModel.comic.chineseTeam) ? View.GONE : View.VISIBLE}">
+                    android:visibility="@{ViewBindingUtil.goneIfBlank(comicViewModel.comic.chineseTeam)}">
                 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -365,7 +365,7 @@
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="@dimen/constraint_fill_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{ViewBindingUtil.isNullOrBlank(comicViewModel.comic.description) ? View.GONE : View.VISIBLE}"
+                android:visibility="@{ViewBindingUtil.goneIfBlank(comicViewModel.comic.description)}"
                 app:layout_constraintTop_toBottomOf="@id/chip_group_tag"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -376,7 +376,7 @@
                 android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
                 android:text="@{comicViewModel.comic.description}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                android:visibility="@{ViewBindingUtil.isNullOrBlank(comicViewModel.comic.description) ? View.GONE : View.VISIBLE}"
+                android:visibility="@{ViewBindingUtil.goneIfBlank(comicViewModel.comic.description)}"
                 app:layout_constraintTop_toBottomOf="@id/chip_group_tag"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
