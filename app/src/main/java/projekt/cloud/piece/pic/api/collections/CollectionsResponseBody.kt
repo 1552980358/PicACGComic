@@ -2,6 +2,7 @@ package projekt.cloud.piece.pic.api.collections
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import projekt.cloud.piece.pic.api.ApiConstants.IGNORE_STRING
 import projekt.cloud.piece.pic.api.image.Image
 
 @Serializable
@@ -22,7 +23,7 @@ data class CollectionsResponseBody(val code: Int, val message: String, private v
             data class Comic(
                 @SerialName("_id") val id: String,
                 val title: String,
-                val author: String,
+                val author: String = IGNORE_STRING,
                 @SerialName("thumb")
                 val cover: Image,
                 @SerialName("categories")
