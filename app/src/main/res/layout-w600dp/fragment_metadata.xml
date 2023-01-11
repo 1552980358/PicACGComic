@@ -93,6 +93,8 @@
                             android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
                             android:layout_marginVertical="@dimen/md_spec_spacing_ver_8"
                             android:onClick="@{() -> metadataLayoutCompat.startViewer(comicViewModel.comic.id, 1, comicViewModel.episodeList.size(), comicViewModel.episodeList[0].title)}"
+                            android:text="@string/metadata_read"
+                            app:icon="@drawable/ic_round_play_arrow_24"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent" />
                         
