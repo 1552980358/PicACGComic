@@ -2,9 +2,7 @@ package projekt.cloud.piece.pic.util
 
 import android.app.Activity
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.preference.PreferenceManager
 
 object ActivityUtil {
     
@@ -19,9 +17,5 @@ object ActivityUtil {
     fun <T: Activity> Activity.startActivity(activityClass: Class<T>) {
         startActivity(Intent(this, activityClass))
     }
-    
-    @JvmStatic
-    val Activity.defaultSharedPreference: SharedPreferences
-        get() = PreferenceManager.getDefaultSharedPreferences(this)
     
 }
