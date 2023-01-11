@@ -37,27 +37,25 @@ class RecyclerViewAdapter(
             binding.onClick = onClick
             binding.isLoading = true
             
-            val requestListener = object: RequestListener<Drawable> {
-                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                    loadImage(comic.cover, fragment, this)
-                    return false
-                }
-    
-                override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                    circularProgressIndicator.hide()
-                    circularProgressIndicator.isIndeterminate = false
-                    binding.isLoading = false
-                    return false
-                }
-            }
-            
-            loadImage(comic.cover, fragment, requestListener)
+            loadImage(comic.cover, fragment)
         }
         
-        private fun loadImage(cover: Image, fragment: Fragment, requestListener: RequestListener<Drawable>) {
+        private fun loadImage(cover: Image, fragment: Fragment) {
             Glide.with(fragment)
                 .load(cover.getUrl())
-                .addListener(requestListener)
+                .addListener(object: RequestListener<Drawable> {
+                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                        loadImage(cover, fragment)
+                        return false
+                    }
+    
+                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                        circularProgressIndicator.hide()
+                        circularProgressIndicator.isIndeterminate = false
+                        binding.isLoading = false
+                        return false
+                    }
+                })
                 .into(shapeableImageView)
         }
         
