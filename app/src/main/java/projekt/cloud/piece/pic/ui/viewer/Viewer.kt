@@ -24,6 +24,7 @@ class Viewer: BaseCallbackFragment<FragmentViewerBinding, ViewerViewModel>() {
     
     override fun onBindData(binding: FragmentViewerBinding) {
         binding.mainViewModel = mainViewModel
+        binding.viewerViewModel = viewModel
         
         val argument = requireArguments()
         val id = argument.getString(getString(R.string.viewer_arg_id))
@@ -34,7 +35,7 @@ class Viewer: BaseCallbackFragment<FragmentViewerBinding, ViewerViewModel>() {
                 viewModel.setId(id)
                 viewModel.setTitle(argument.getString(getString(R.string.viewer_arg_title)))
                 viewModel.setOrder(order)
-                viewModel.setMaxOrder(argument.getInt(getString(R.string.viewer_arg_max_order)))
+                viewModel.setLastOrder(argument.getInt(getString(R.string.viewer_arg_last_order)))
                 mainViewModel.account.observe(viewLifecycleOwner) {
                     when {
                         it.isSignedIn -> {
@@ -59,7 +60,7 @@ class Viewer: BaseCallbackFragment<FragmentViewerBinding, ViewerViewModel>() {
     }
     
     override fun onSetupView(binding: FragmentViewerBinding) {
-        layoutCompat.setupRecyclerView(this, viewModel.episodeImageList)
+        layoutCompat.setupRecyclerView(this, viewModel.orderValue, viewModel.lastOrderValue, viewModel.episodeImageList)
     }
     
     private fun startRequestComicImages(token: String, id: String, order: Int) {

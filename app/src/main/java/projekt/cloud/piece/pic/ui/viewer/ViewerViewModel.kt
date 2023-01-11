@@ -2,6 +2,7 @@ package projekt.cloud.piece.pic.ui.viewer
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import projekt.cloud.piece.pic.api.base.BaseApiRequest.Companion.request
 import projekt.cloud.piece.pic.api.comics.episode.Episode
@@ -43,13 +44,17 @@ class ViewerViewModel: BaseCallbackViewModel() {
     fun setOrder(order: Int) {
         _order.value = order
     }
+    val orderValue: Int
+        get() = _order.value!!
     
-    private val _maxOrder = MutableLiveData<Int>()
-    val maxOrder: LiveData<Int>
-        get() = _maxOrder
-    fun setMaxOrder(maxOrder: Int) {
-        _maxOrder.value = maxOrder
+    private val _lastOrder = MutableLiveData<Int>()
+    val lastOrder: LiveData<Int>
+        get() = _lastOrder
+    fun setLastOrder(maxOrder: Int) {
+        _lastOrder.value = maxOrder
     }
+    val lastOrderValue: Int
+        get() = lastOrder.value!!
     
     val episodeImageList = arrayListOf<EpisodeImage>()
     
@@ -107,6 +112,11 @@ class ViewerViewModel: BaseCallbackViewModel() {
             episodeImageList.sortBy { it.media.originalName }
             setCallback(VIEWER_COMPLETE)
         }
+    }
+    
+    fun scopedRequestComicImages(token: String, order: Int, lifecycleScope: CoroutineScope = viewModelScope) {
+        setOrder(order)
+        scopedRequestComicImages(token, id.value!!, order, lifecycleScope)
     }
     
 }

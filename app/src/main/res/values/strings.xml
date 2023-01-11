@@ -60,6 +60,8 @@
     <string name="metadata_read">Read</string>
     
     <string name="viewer_image_load_error">Image Load Error.\nClick to retry</string>
+    <string name="viewer_fab_next">Next</string>
+    <string name="viewer_fab_back">Back</string>
     
     <string name="request_io_exception">Connection Exception: %s</string>
     <string name="request_unknown_exception">Unknown Exception: %s</string>

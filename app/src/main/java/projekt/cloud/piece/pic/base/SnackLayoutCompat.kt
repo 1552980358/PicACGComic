@@ -1,12 +1,13 @@
 package projekt.cloud.piece.pic.base
 
 import android.view.View
+import androidx.databinding.BaseObservable
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
 import com.google.android.material.snackbar.Snackbar
 
-abstract class SnackLayoutCompat {
+abstract class SnackLayoutCompat: BaseObservable() {
     
     private var _snackBar: Snackbar? = null
     

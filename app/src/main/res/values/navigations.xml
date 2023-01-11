@@ -7,7 +7,7 @@
     
     <string name="viewer_arg_id" translatable="false">id</string>
     <string name="viewer_arg_order" translatable="false">order</string>
-    <string name="viewer_arg_max_order" translatable="false">max_order</string>
+    <string name="viewer_arg_last_order" translatable="false">last_order</string>
     <string name="viewer_arg_title" translatable="false">title</string>
 
 </resources>

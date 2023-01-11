@@ -37,7 +37,7 @@
                 android:name="order"
                 app:argType="integer" />
             <argument
-                android:name="max_order"
+                android:name="last_order"
                 app:argType="integer" />
             <argument
                 android:name="title"

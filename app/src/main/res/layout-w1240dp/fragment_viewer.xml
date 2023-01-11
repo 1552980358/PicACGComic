@@ -5,9 +5,17 @@
     
     <data>
         <import type="projekt.cloud.piece.pic.MainViewModel" />
+        <import type="projekt.cloud.piece.pic.ui.viewer.ViewerLayoutCompat" />
+        <import type="projekt.cloud.piece.pic.ui.viewer.ViewerViewModel" />
         <variable
             name="mainViewModel"
             type="MainViewModel" />
+        <variable
+            name="viewerViewModel"
+            type="ViewerViewModel" />
+        <variable
+            name="layoutCompat"
+            type="ViewerLayoutCompat" />
     </data>
     
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -40,12 +48,64 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingHorizontal="@{layoutCompat.recyclerPadding}"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             app:layout_constraintTop_toBottomOf="@id/linear_progress_indicator"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        
+            <projekt.cloud.piece.pic.widget.InsetSpaceView
+                android:id="@+id/inset_space_view_bottom"
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                inset_vertical="@{mainViewModel.systemInsets.bottom}" />
+        
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/extended_floating_action_button_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> layoutCompat.moveToNext(mainViewModel.account.token, viewerViewModel)}"
+                android:text="@string/viewer_fab_next"
+                android:layout_marginEnd="@dimen/md_spec_spacing_hor_16"
+                android:layout_marginBottom="@dimen/md_spec_spacing_ver_16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/inset_space_view_bottom"
+                app:icon="@drawable/ic_round_navigate_next_24" />
+        
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/extended_floating_action_button_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{() -> layoutCompat.moveToBack(mainViewModel.account.token, viewerViewModel)}"
+                android:text="@string/viewer_fab_back"
+                android:layout_marginStart="@dimen/md_spec_spacing_hor_16"
+                android:layout_marginBottom="@dimen/md_spec_spacing_ver_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/inset_space_view_bottom"
+                app:icon="@drawable/ic_round_navigate_next_24" />
+        
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floating_action_button_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/md_spec_spacing_hor_16"
+                android:layout_marginBottom="@dimen/md_spec_spacing_ver_16"
+                android:importantForAccessibility="no"
+                android:onClick="@{() -> layoutCompat.moveToTop()}"
+                android:src="@drawable/ic_round_arrow_up_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/extended_floating_action_button_next" />
+    
+        </androidx.constraintlayout.widget.ConstraintLayout>
     
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
