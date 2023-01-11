@@ -40,7 +40,8 @@ abstract class ViewerLayoutCompat private constructor(
             MEDIUM -> ViewerLayoutCompatW600dpImpl(this)
             EXPANDED -> ViewerLayoutCompatW1240dpImpl(this)
         }
-        
+    
+        private const val RECYCLER_VIEW_W600dp_DEFAULT_PADDING = 0
         private const val RECYCLER_VIEW_W1240dp_DEFAULT_PADDING = 240
         private const val FIRST_ORDER = 1
         
@@ -182,7 +183,18 @@ abstract class ViewerLayoutCompat private constructor(
     
     private class ViewerLayoutCompatImpl(binding: FragmentViewerBinding): ViewerLayoutCompat(binding)
     
-    private class ViewerLayoutCompatW600dpImpl(binding: FragmentViewerBinding): ViewerLayoutCompat(binding)
+    private class ViewerLayoutCompatW600dpImpl(binding: FragmentViewerBinding): ViewerLayoutCompat(binding) {
+        
+        init {
+            val context = binding.coordinatorLayout.context
+            recyclerPadding = context.dpToPx(
+                context.defaultSharedPreference.getInt(
+                    context.getString(R.string.viewer_recycler_view_padding), RECYCLER_VIEW_W600dp_DEFAULT_PADDING
+                )
+            )
+        }
+        
+    }
     
     private class ViewerLayoutCompatW1240dpImpl(binding: FragmentViewerBinding): ViewerLayoutCompat(binding) {
         
