@@ -3,6 +3,7 @@ package projekt.cloud.piece.pic.ui.viewer
 import android.transition.TransitionManager
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.databinding.Bindable
 import androidx.fragment.app.Fragment
@@ -12,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton.OnChangedCallback
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton.OnVisibilityChangedListener
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.transition.platform.MaterialFadeThrough
 import projekt.cloud.piece.pic.R
@@ -80,16 +83,28 @@ abstract class ViewerLayoutCompat private constructor(
     var recyclerPadding = 0
         protected set
     
+    private val onChangedCallback = object: OnChangedCallback() {
+        override fun onHidden(extendedFab: ExtendedFloatingActionButton) {
+            extendedFab.isGone = true
+        }
+    }
+    
+    private val onVisibilityChangedListener = object: OnVisibilityChangedListener() {
+        override fun onHidden(fab: FloatingActionButton) {
+            fab.isGone = true
+        }
+    }
+    
     init {
         @Suppress("LeakingThis")
         binding.layoutCompat = this
-        next.hide()
-        top.hide()
+        next.hide(onChangedCallback)
+        top.hide(onVisibilityChangedListener)
     }
     
     fun setupRecyclerView(fragment: Fragment, order: Int, lastOrder: Int, episodeImageList: List<EpisodeImage>) {
         if (order == FIRST_ORDER) {
-            back.hide()
+            back.hide(onChangedCallback)
         }
         recyclerView.adapter = RecyclerViewAdapter(episodeImageList, fragment)
         val recyclerViewLayoutManager  = recyclerView.layoutManager as LinearLayoutManager
@@ -117,13 +132,13 @@ abstract class ViewerLayoutCompat private constructor(
                     }
                     else -> {
                         if (back.isShown) {
-                            back.hide()
+                            back.hide(onChangedCallback)
                         }
                         if (next.isShown) {
-                            next.hide()
+                            next.hide(onChangedCallback)
                         }
                         if (top.isShown) {
-                            top.hide()
+                            top.hide(onVisibilityChangedListener)
                         }
                         recyclerViewLayoutManager.findLastVisibleItemPosition()
                     }
@@ -140,10 +155,10 @@ abstract class ViewerLayoutCompat private constructor(
     
     fun moveToTop() {
         if (top.isVisible) {
-            top.hide()
+            top.hide(onVisibilityChangedListener)
         }
         if (next.isVisible) {
-            next.hide()
+            next.hide(onChangedCallback)
         }
         recyclerView.smoothScrollToPosition(0)
     }
