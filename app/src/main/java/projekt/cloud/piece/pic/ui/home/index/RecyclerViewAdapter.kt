@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -16,6 +17,7 @@ import projekt.cloud.piece.pic.api.image.Image
 import projekt.cloud.piece.pic.base.BaseRecyclerViewAdapter
 import projekt.cloud.piece.pic.base.BaseRecyclerViewHolder
 import projekt.cloud.piece.pic.databinding.LayoutRecyclerIndexBinding
+import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 
 class RecyclerViewAdapter(
     itemList: List<Comic>,
@@ -45,7 +47,9 @@ class RecyclerViewAdapter(
                 .load(cover.getUrl())
                 .addListener(object: RequestListener<Drawable> {
                     override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                        loadImage(cover, fragment)
+                        fragment.lifecycleScope.ui {
+                            loadImage(cover, fragment)
+                        }
                         return false
                     }
     
