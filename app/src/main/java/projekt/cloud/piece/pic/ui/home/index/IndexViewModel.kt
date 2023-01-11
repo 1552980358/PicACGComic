@@ -1,7 +1,5 @@
 package projekt.cloud.piece.pic.ui.home.index
 
-import android.graphics.Bitmap
-import androidx.databinding.ObservableArrayMap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
@@ -25,8 +23,6 @@ class IndexViewModel: BaseCallbackViewModel() {
         const val COLLECTIONS_EMPTY_CONTENT = -5
         const val COLLECTIONS_REJECTED = -6
     }
-    
-    val coverMap = ObservableArrayMap<String, Bitmap?>()
     
     private val _collectionTitleA = MutableLiveData<String?>(null)
     val collectionTitleA: LiveData<String?>
@@ -78,7 +74,6 @@ class IndexViewModel: BaseCallbackViewModel() {
             if (collections.isRejected()) {
                 return@ui setCallback(COLLECTIONS_REJECTED)
             }
-            coverMap.clear()
             
             val collectionResponseBody = collections.responseBody()
             var collection = collectionResponseBody[0]
@@ -89,12 +84,6 @@ class IndexViewModel: BaseCallbackViewModel() {
             _collectionTitleB.value = collection.title
             comicListB.addAll(collection.comicList)
             
-            comicListA.forEach { comic ->
-                coverMap[comic.id] = comic.cover.obtainBitmap()
-            }
-            comicListB.forEach { comic ->
-                coverMap[comic.id] = comic.cover.obtainBitmap()
-            }
             isCollectionsObtainComplete = true
             setCallback(COLLECTIONS_COMPLETE)
         }

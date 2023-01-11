@@ -1,15 +1,15 @@
 package projekt.cloud.piece.pic.ui.home.index
 
 import android.content.res.Resources
-import android.graphics.Bitmap
 import android.graphics.Rect
 import android.transition.TransitionManager
 import android.view.View
 import android.view.View.GONE
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.graphics.drawable.toBitmapOrNull
 import androidx.core.view.isVisible
-import androidx.databinding.ObservableArrayMap
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -72,17 +72,15 @@ abstract class IndexLayoutCompat private constructor(
         this.navController = navController
     }
     
-    open fun setupRecyclerViews(resources: Resources,
-                           comicListA: List<Comic>, comicListB: List<Comic>,
-                           coverMap: ObservableArrayMap<String, Bitmap?>) {
-        val onClick: (Comic) -> Unit = {
+    open fun setupRecyclerViews(resources: Resources, comicListA: List<Comic>, comicListB: List<Comic>, fragment: Fragment) {
+        val onClick: (Comic, AppCompatImageView) -> Unit = { comic, appCompatImageView ->
             navController.navigate(
-                HomeDirections.toComic(it.id, it.title, coverMap[it.id]?.toNavArg())
+                HomeDirections.toComic(comic.id, comic.title, appCompatImageView.drawable?.toBitmapOrNull()?.toNavArg())
             )
         }
         
-        recyclerViewA.adapter = RecyclerViewAdapter(comicListA, coverMap, onClick)
-        recyclerViewB.adapter = RecyclerViewAdapter(comicListB, coverMap, onClick)
+        recyclerViewA.adapter = RecyclerViewAdapter(comicListA, fragment, onClick)
+        recyclerViewB.adapter = RecyclerViewAdapter(comicListB, fragment, onClick)
     }
     
     open fun completeLoading() {
@@ -131,8 +129,8 @@ abstract class IndexLayoutCompat private constructor(
             }
         }
     
-        override fun setupRecyclerViews(resources: Resources, comicListA: List<Comic>, comicListB: List<Comic>, coverMap: ObservableArrayMap<String, Bitmap?>) {
-            super.setupRecyclerViews(resources, comicListA, comicListB, coverMap)
+        override fun setupRecyclerViews(resources: Resources, comicListA: List<Comic>, comicListB: List<Comic>, fragment: Fragment) {
+            super.setupRecyclerViews(resources, comicListA, comicListB, fragment)
     
             val recyclerViewListSpacingVertical = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_ver_8)
             recyclerViewA.addItemDecoration(object: ItemDecoration() {
@@ -162,8 +160,8 @@ abstract class IndexLayoutCompat private constructor(
         override val progressIndicator: BaseProgressIndicator<*>
             get() = binding.circularProgressIndicator as BaseProgressIndicator<*>
     
-        override fun setupRecyclerViews(resources: Resources, comicListA: List<Comic>, comicListB: List<Comic>, coverMap: ObservableArrayMap<String, Bitmap?>) {
-            super.setupRecyclerViews(resources, comicListA, comicListB, coverMap)
+        override fun setupRecyclerViews(resources: Resources, comicListA: List<Comic>, comicListB: List<Comic>, fragment: Fragment) {
+            super.setupRecyclerViews(resources, comicListA, comicListB, fragment)
             
             (recyclerViewA.layoutManager as GridLayoutManager).spanCount = GRID_SPAN
             (recyclerViewB.layoutManager as GridLayoutManager).spanCount = GRID_SPAN
@@ -195,8 +193,8 @@ abstract class IndexLayoutCompat private constructor(
         override val progressIndicator: BaseProgressIndicator<*>
             get() = binding.circularProgressIndicator as BaseProgressIndicator<*>
     
-        override fun setupRecyclerViews(resources: Resources, comicListA: List<Comic>, comicListB: List<Comic>, coverMap: ObservableArrayMap<String, Bitmap?>) {
-            super.setupRecyclerViews(resources, comicListA, comicListB, coverMap)
+        override fun setupRecyclerViews(resources: Resources, comicListA: List<Comic>, comicListB: List<Comic>, fragment: Fragment) {
+            super.setupRecyclerViews(resources, comicListA, comicListB, fragment)
             (recyclerViewA.layoutManager as? LinearLayoutManager)?.orientation = HORIZONTAL
             (recyclerViewB.layoutManager as? LinearLayoutManager)?.orientation = HORIZONTAL
             
