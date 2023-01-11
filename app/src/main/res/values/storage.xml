@@ -5,6 +5,7 @@
     
     <string name="account" translatable="false">account</string>
     
-    <string name="viewer_recycler_view_padding" translatable="false">viewer_recycler_view_padding</string>
-    
+    <string name="viewer_padding_w600dp" translatable="false">viewer_padding_w600dp</string>
+    <string name="viewer_padding_w1240dp" translatable="false">viewer_padding_w1240dp</string>
+
 </resources>

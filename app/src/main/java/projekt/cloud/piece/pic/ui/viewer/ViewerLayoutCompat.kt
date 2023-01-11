@@ -189,7 +189,7 @@ abstract class ViewerLayoutCompat private constructor(
             val context = binding.coordinatorLayout.context
             recyclerPadding = context.dpToPx(
                 context.defaultSharedPreference.getInt(
-                    context.getString(R.string.viewer_recycler_view_padding), RECYCLER_VIEW_W600dp_DEFAULT_PADDING
+                    context.getString(R.string.viewer_padding_w600dp), RECYCLER_VIEW_W600dp_DEFAULT_PADDING
                 )
             )
         }
@@ -202,7 +202,7 @@ abstract class ViewerLayoutCompat private constructor(
             val context = binding.coordinatorLayout.context
             recyclerPadding = context.dpToPx(
                 context.defaultSharedPreference.getInt(
-                    context.getString(R.string.viewer_recycler_view_padding), RECYCLER_VIEW_W1240dp_DEFAULT_PADDING
+                    context.getString(R.string.viewer_padding_w1240dp), RECYCLER_VIEW_W1240dp_DEFAULT_PADDING
                 )
             )
         }
