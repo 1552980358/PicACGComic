@@ -8,6 +8,7 @@ import projekt.cloud.piece.pic.MainViewModel
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.base.BaseCallbackFragment
 import projekt.cloud.piece.pic.databinding.FragmentIndexBinding
+import projekt.cloud.piece.pic.ui.home.Home
 import projekt.cloud.piece.pic.ui.home.index.IndexLayoutCompat.IndexLayoutCompatUtil.getLayoutCompat
 import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.INDEX_COMPLETE
 import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.INDEX_EMPTY_CONTENT
@@ -24,16 +25,16 @@ class Index: BaseCallbackFragment<FragmentIndexBinding, IndexViewModel>() {
         private const val TAG = "Index"
     }
 
+    private val home: Home
+        get() = findParentAs()
+    
     private lateinit var layoutCompat: IndexLayoutCompat
     
     private val mainViewModel: MainViewModel by activityViewModels()
     
     override fun onSetupLayoutCompat(binding: FragmentIndexBinding, layoutSizeMode: LayoutSizeMode) {
         layoutCompat = binding.getLayoutCompat(layoutSizeMode)
-        layoutCompat.setNavController(
-            requireParentFragment().requireParentFragment()
-                .findNavController()
-        )
+        layoutCompat.setNavController(home.findNavController())
     }
     
     override fun onBindData(binding: FragmentIndexBinding) {
