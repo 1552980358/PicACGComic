@@ -20,11 +20,16 @@ class Header private constructor() {
         private var _header = Header()
 
         @JvmStatic
-        fun getHeader(path: String, query: String = "", requestMethod: HttpRequestMethod, token: String = ""): Map<String, String> {
+        fun getHeader(path: String, query: String, requestMethod: HttpRequestMethod, token: String = ""): Map<String, String> {
             _header.updateMetadata(path, query, requestMethod)
             return _header.headers(token)
         }
-
+    
+        @JvmStatic
+        fun getHeader(path: String, requestMethod: HttpRequestMethod, token: String = ""): Map<String, String> {
+            return getHeader(path, "", requestMethod, token)
+        }
+        
     }
 
     private lateinit var path: String
