@@ -157,7 +157,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
-                                    android:text="@{viewModel.collectionTitleB}"
+                                    android:text="@string/index_random"
                                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintStart_toStartOf="parent" />
