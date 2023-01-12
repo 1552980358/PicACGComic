@@ -42,7 +42,7 @@ class MainViewModel: ViewModel() {
         account.signing(null)
         viewModelScope.ui {
             val signIn = SignIn(account.username, account.password).request()
-            if (!signIn.isComplete || !signIn.isErrorResponse || !signIn.isEmptyResponse || !signIn.isRejected()) {
+            if (!signIn.isComplete || signIn.isErrorResponse || signIn.isEmptyResponse || signIn.isRejected()) {
                 return@ui returnToLauncher(activity)
             }
             account.signing(signIn.responseBody().token)
