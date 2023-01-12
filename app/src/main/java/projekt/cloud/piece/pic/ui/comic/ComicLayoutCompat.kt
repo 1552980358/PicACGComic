@@ -70,7 +70,6 @@ abstract class ComicLayoutCompat(protected val binding: FragmentComicBinding) {
             }
             headerView?.fragment = fragment
             headerView?.layoutCompat = this
-            headerView?.mainViewModel = binding.mainViewModel
         }
     }
     
@@ -84,7 +83,6 @@ abstract class ComicLayoutCompat(protected val binding: FragmentComicBinding) {
             val headerView = NavHeaderComicBinding.bind(navigationView.getHeaderView(0))
             headerView.fragment = fragment
             headerView.layoutCompat = this
-            headerView.mainViewModel = binding.mainViewModel
         }
         
     }

@@ -23,6 +23,7 @@
                 android:id="@+id/navigation_rail_view"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/constraint_fill_parent"
+                android:fitsSystemWindows="true"
                 app:labelVisibilityMode="selected"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

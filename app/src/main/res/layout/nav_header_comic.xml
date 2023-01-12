@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     
     <data>
-        <import type="projekt.cloud.piece.pic.MainViewModel" />
         <import type="projekt.cloud.piece.pic.ui.comic.ComicLayoutCompat" />
         <import type="androidx.fragment.app.Fragment" />
         <variable
@@ -14,16 +13,11 @@
         <variable
             name="fragment"
             type="Fragment" />
-        <variable
-            name="mainViewModel"
-            type="MainViewModel" />
     </data>
     
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@{mainViewModel.systemInsets.top}"
-        android:paddingHorizontal="@dimen/md_spec_spacing_hor_16"
         tools:showIn="@layout/fragment_comic"
         tools:ignore="MissingDefaultResource">
         
