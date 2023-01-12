@@ -23,7 +23,11 @@
 ## Current Development Stepping
 1) ~~Sign In~~ - `Done`
 2) ~~Collections~~ - `Done`
-3) Random - `In Progress`
+3) ~~~Random~~~ - `Done`
+4) Search - `In Progress`
+5) Category - `In Progress`
+6) Comment - `Planned`
+7) Download - `Planned`
 
 ## Build
 
