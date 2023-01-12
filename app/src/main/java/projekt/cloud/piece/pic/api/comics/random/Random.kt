@@ -11,7 +11,7 @@ import projekt.cloud.piece.pic.util.HttpRequest.HttpRequestUtil.HttpRequestMetho
 class Random(private val token: String): BaseStringApiRequest<RandomResponseBody>() {
 
     private companion object {
-        const val API_RANDOM_PATH = "comic/random"
+        const val API_RANDOM_PATH = "comics/random"
     }
     
     override suspend fun responseBody(): RandomResponseBody {

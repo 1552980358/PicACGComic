@@ -14,11 +14,14 @@ data class RandomResponseBody(val code: Int, val message: String, private val da
         get() = data.comicList
     
     @Serializable
-    data class Data(val comicList: List<Comic>)
+    data class Data(
+        @SerialName("comics")
+        val comicList: List<Comic>
+    )
     
     @Serializable
     data class Comic(
-        @SerialName("id")
+        @SerialName("_id")
         val id: String,
         val title: String,
         val author: String = IGNORE_STRING,
@@ -34,6 +37,9 @@ data class RandomResponseBody(val code: Int, val message: String, private val da
         val finished: Boolean) {
         
         private companion object
+        
+        val categoryStr: String
+            get() = categoryList.joinToString(separator = " ") { it }
         
     }
     

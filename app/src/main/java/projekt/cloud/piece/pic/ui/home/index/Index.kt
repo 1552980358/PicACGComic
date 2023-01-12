@@ -9,13 +9,13 @@ import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.base.BaseCallbackFragment
 import projekt.cloud.piece.pic.databinding.FragmentIndexBinding
 import projekt.cloud.piece.pic.ui.home.index.IndexLayoutCompat.IndexLayoutCompatUtil.getLayoutCompat
-import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.COLLECTIONS_COMPLETE
-import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.COLLECTIONS_EMPTY_CONTENT
-import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.COLLECTIONS_ERROR
-import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.COLLECTIONS_EXCEPTION
-import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.COLLECTIONS_INVALID_STATE_CODE
-import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.COLLECTIONS_IO_EXCEPTION
-import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.COLLECTIONS_REJECTED
+import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.INDEX_COMPLETE
+import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.INDEX_EMPTY_CONTENT
+import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.INDEX_ERROR
+import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.INDEX_EXCEPTION
+import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.INDEX_INVALID_STATE_CODE
+import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.INDEX_IO_EXCEPTION
+import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.INDEX_REJECTED
 import projekt.cloud.piece.pic.util.LayoutSizeMode
 
 class Index: BaseCallbackFragment<FragmentIndexBinding, IndexViewModel>() {
@@ -47,6 +47,7 @@ class Index: BaseCallbackFragment<FragmentIndexBinding, IndexViewModel>() {
     
     override fun onSetupView(binding: FragmentIndexBinding) {
         layoutCompat.setupCollections(resources, viewModel.comicListA, viewModel.comicListB, this)
+        layoutCompat.setupRandom(resources, viewModel.comicListRandom, this)
         mainViewModel.account.observe(viewLifecycleOwner) {
             Log.i(TAG, "account: $it ${it.isSignedIn}")
             when {
@@ -58,34 +59,34 @@ class Index: BaseCallbackFragment<FragmentIndexBinding, IndexViewModel>() {
     
     private fun obtainCollection(token: String) {
         if (!viewModel.isCollectionsObtainComplete) {
-            viewModel.scopedObtainCollections(lifecycleScope, token)
+            viewModel.scopedObtainComics(lifecycleScope, token)
         }
     }
     
     override fun onCallbackReceived(code: Int, message: String?, responseCode: Int?, errorCode: Int?, responseDetail: String?) {
         Log.i(TAG, "onCallbackReceived: code=$code message=$message responseCode=$responseCode errorCode=$errorCode responseDetail=$responseDetail")
         when (code) {
-            COLLECTIONS_COMPLETE -> {
+            INDEX_COMPLETE -> {
                 // Complete
                 layoutCompat.notifyUpdate()
                 layoutCompat.completeLoading()
             }
-            COLLECTIONS_IO_EXCEPTION -> {
+            INDEX_IO_EXCEPTION -> {
                 layoutCompat.indefiniteSnack(getString(R.string.request_io_exception, message))
             }
-            COLLECTIONS_EXCEPTION -> {
+            INDEX_EXCEPTION -> {
                 layoutCompat.indefiniteSnack(getString(R.string.request_unknown_exception, message))
             }
-            COLLECTIONS_ERROR -> {
+            INDEX_ERROR -> {
                 layoutCompat.indefiniteSnack(getString(R.string.response_error, responseCode, code, message, responseDetail))
             }
-            COLLECTIONS_EMPTY_CONTENT -> {
+            INDEX_EMPTY_CONTENT -> {
                 layoutCompat.indefiniteSnack(getString(R.string.response_empty))
             }
-            COLLECTIONS_REJECTED -> {
+            INDEX_REJECTED -> {
                 layoutCompat.indefiniteSnack(getString(R.string.response_rejected))
             }
-            COLLECTIONS_INVALID_STATE_CODE -> {
+            INDEX_INVALID_STATE_CODE -> {
                 layoutCompat.indefiniteSnack(getString(R.string.request_unexpected_state, message))
             }
         }

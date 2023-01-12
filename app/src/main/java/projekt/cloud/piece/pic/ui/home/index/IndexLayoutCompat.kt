@@ -23,6 +23,7 @@ import com.google.android.material.progressindicator.BaseProgressIndicator
 import com.google.android.material.transition.platform.MaterialFadeThrough
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.collections.CollectionsResponseBody
+import projekt.cloud.piece.pic.api.comics.random.RandomResponseBody
 import projekt.cloud.piece.pic.base.BaseRecyclerViewAdapter.BaseRecyclerViewAdapterUtil.adapterInterface
 import projekt.cloud.piece.pic.base.SnackLayoutCompat
 import projekt.cloud.piece.pic.databinding.FragmentIndexBinding
@@ -56,6 +57,8 @@ abstract class IndexLayoutCompat private constructor(
         get() = binding.recyclerViewRecommendA
     protected val recyclerViewB: RecyclerView
         get() = binding.recyclerViewRecommendB
+    protected val random: RecyclerView
+        get() = binding.recyclerViewRandom
     
     private val container: ConstraintLayout
         get() = binding.constraintLayoutContainer
@@ -86,6 +89,10 @@ abstract class IndexLayoutCompat private constructor(
         recyclerViewB.adapter = CollectionsRecyclerViewAdapter(comicListB, fragment, onClick)
     }
     
+    open fun setupRandom(resources: Resources, comicList: List<RandomResponseBody.Comic>, fragment: Fragment) {
+        random.adapter = RandomRecyclerViewAdapter(comicList, fragment, onClick)
+    }
+    
     open fun completeLoading() {
         progressIndicator.setVisibilityAfterHide(GONE)
         TransitionManager.beginDelayedTransition(
@@ -99,11 +106,13 @@ abstract class IndexLayoutCompat private constructor(
     override fun notifyClear() {
         recyclerViewA.adapterInterface.notifyClear()
         recyclerViewB.adapterInterface.notifyClear()
+        random.adapterInterface.notifyClear()
     }
     
     override fun notifyUpdate() {
         recyclerViewA.adapterInterface.notifyUpdate()
         recyclerViewB.adapterInterface.notifyUpdate()
+        random.adapterInterface.notifyUpdate()
     }
     
     open fun setupActionBar(fragment: Fragment) = Unit
@@ -136,20 +145,29 @@ abstract class IndexLayoutCompat private constructor(
             super.setupCollections(resources, comicListA, comicListB, fragment)
     
             val recyclerViewListSpacingVertical = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_ver_8)
-            recyclerViewA.addItemDecoration(object: ItemDecoration() {
+            val itemDecoration = object: ItemDecoration() {
                 override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                     super.getItemOffsets(outRect, view, parent, state)
                     outRect.top = recyclerViewListSpacingVertical
                     outRect.bottom = recyclerViewListSpacingVertical
                 }
-            })
-            recyclerViewB.addItemDecoration(object: ItemDecoration() {
-                override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-                    super.getItemOffsets(outRect, view, parent, state)
-                    outRect.top = recyclerViewListSpacingVertical
-                    outRect.bottom = recyclerViewListSpacingVertical
+            }
+            recyclerViewA.addItemDecoration(itemDecoration)
+            recyclerViewB.addItemDecoration(itemDecoration)
+        }
+    
+        override fun setupRandom(resources: Resources, comicList: List<RandomResponseBody.Comic>, fragment: Fragment) {
+            super.setupRandom(resources, comicList, fragment)
+            val recyclerViewListSpacingVertical = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_ver_8)
+            random.addItemDecoration(
+                object: ItemDecoration() {
+                    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                        super.getItemOffsets(outRect, view, parent, state)
+                        outRect.top = recyclerViewListSpacingVertical
+                        outRect.bottom = recyclerViewListSpacingVertical
+                    }
                 }
-            })
+            )
         }
         
     }
@@ -174,27 +192,42 @@ abstract class IndexLayoutCompat private constructor(
     
             val recyclerViewListSpacingVertical = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_ver_8)
             val recyclerViewListSpacingHorizontal = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_hor_8)
-            recyclerViewA.addItemDecoration(object: ItemDecoration() {
+            val itemDecoration = object: ItemDecoration() {
                 override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                     super.getItemOffsets(outRect, view, parent, state)
                     outRect.top = recyclerViewListSpacingVertical
                     outRect.bottom = recyclerViewListSpacingVertical
                     outRect.right = recyclerViewListSpacingHorizontal
                 }
-            })
-            recyclerViewB.addItemDecoration(object: ItemDecoration() {
-                override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-                    super.getItemOffsets(outRect, view, parent, state)
-                    outRect.top = recyclerViewListSpacingVertical
-                    outRect.bottom = recyclerViewListSpacingVertical
-                    outRect.right = recyclerViewListSpacingHorizontal
+            }
+            recyclerViewA.addItemDecoration(itemDecoration)
+            recyclerViewB.addItemDecoration(itemDecoration)
+        }
+    
+        override fun setupRandom(resources: Resources, comicList: List<RandomResponseBody.Comic>, fragment: Fragment) {
+            super.setupRandom(resources, comicList, fragment)
+            (random.layoutManager as GridLayoutManager).spanCount = GRID_SPAN
+            val recyclerViewListSpacingVertical = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_ver_8)
+            val recyclerViewListSpacingHorizontal = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_hor_8)
+            random.addItemDecoration(
+                object: ItemDecoration() {
+                    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                        super.getItemOffsets(outRect, view, parent, state)
+                        outRect.top = recyclerViewListSpacingVertical
+                        outRect.bottom = recyclerViewListSpacingVertical
+                        outRect.right = recyclerViewListSpacingHorizontal
+                    }
                 }
-            })
+            )
         }
         
     }
     
     private class IndexLayoutCompatW1240dpImpl(binding: FragmentIndexBinding): IndexLayoutCompat(binding) {
+        
+        private companion object {
+            const val GRID_SPAN = 2
+        }
         
         override val progressIndicator: BaseProgressIndicator<*>
             get() = binding.circularProgressIndicator as BaseProgressIndicator<*>
@@ -209,44 +242,80 @@ abstract class IndexLayoutCompat private constructor(
             
             val recyclerViewListSpacingHorizontalEdge = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_hor_16)
             val recyclerViewListSpacingHorizontal = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_hor_8)
-            recyclerViewA.addItemDecoration(object: ItemDecoration() {
-                override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-                    super.getItemOffsets(outRect, view, parent, state)
-                    when (parent.getChildAdapterPosition(view)) {
-                        0 -> {
-                            outRect.left = recyclerViewListSpacingHorizontalEdge
-                            outRect.right = recyclerViewListSpacingHorizontal
-                        }
-                        comicListA.lastIndex -> {
-                            outRect.left = recyclerViewListSpacingHorizontal
-                            outRect.right = recyclerViewListSpacingHorizontalEdge
-                        }
-                        else -> {
-                            outRect.left = recyclerViewListSpacingHorizontal
-                            outRect.right = recyclerViewListSpacingHorizontal
-                        }
-                    }
-                }
-            })
-            recyclerViewB.addItemDecoration(object: ItemDecoration() {
-                override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-                    super.getItemOffsets(outRect, view, parent, state)
-                    when (parent.getChildAdapterPosition(view)) {
-                        0 -> {
-                            outRect.left = recyclerViewListSpacingHorizontalEdge
-                            outRect.right = recyclerViewListSpacingHorizontal
-                        }
-                        comicListB.lastIndex -> {
-                            outRect.left = recyclerViewListSpacingHorizontal
-                            outRect.right = recyclerViewListSpacingHorizontalEdge
-                        }
-                        else -> {
-                            outRect.left = recyclerViewListSpacingHorizontal
-                            outRect.right = recyclerViewListSpacingHorizontal
+            recyclerViewA.addItemDecoration(
+                object: ItemDecoration() {
+                    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                        super.getItemOffsets(outRect, view, parent, state)
+                        when (parent.getChildAdapterPosition(view)) {
+                            0 -> {
+                                outRect.left = recyclerViewListSpacingHorizontalEdge
+                                outRect.right = recyclerViewListSpacingHorizontal
+                            }
+                            comicListA.lastIndex -> {
+                                outRect.left = recyclerViewListSpacingHorizontal
+                                outRect.right = recyclerViewListSpacingHorizontalEdge
+                            }
+                            else -> {
+                                outRect.left = recyclerViewListSpacingHorizontal
+                                outRect.right = recyclerViewListSpacingHorizontal
+                            }
                         }
                     }
                 }
-            })
+            )
+            recyclerViewB.addItemDecoration(
+                object: ItemDecoration() {
+                    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                        super.getItemOffsets(outRect, view, parent, state)
+                        when (parent.getChildAdapterPosition(view)) {
+                            0 -> {
+                                outRect.left = recyclerViewListSpacingHorizontalEdge
+                                outRect.right = recyclerViewListSpacingHorizontal
+                            }
+                            comicListB.lastIndex -> {
+                                outRect.left = recyclerViewListSpacingHorizontal
+                                outRect.right = recyclerViewListSpacingHorizontalEdge
+                            }
+                            else -> {
+                                outRect.left = recyclerViewListSpacingHorizontal
+                                outRect.right = recyclerViewListSpacingHorizontal
+                            }
+                        }
+                    }
+                }
+            )
+        }
+    
+        override fun setupRandom(resources: Resources, comicList: List<RandomResponseBody.Comic>, fragment: Fragment) {
+            super.setupRandom(resources, comicList, fragment)
+            with(random.layoutManager as GridLayoutManager) {
+                orientation = HORIZONTAL
+                spanCount = GRID_SPAN
+            }
+            val recyclerViewListSpacingHorizontalEdge = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_hor_16)
+            val recyclerViewListSpacingHorizontal = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_hor_8)
+            
+            random.addItemDecoration(
+                object: ItemDecoration() {
+                    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                        super.getItemOffsets(outRect, view, parent, state)
+                        when (parent.getChildAdapterPosition(view)) {
+                            0 -> {
+                                outRect.left = recyclerViewListSpacingHorizontalEdge
+                                outRect.right = recyclerViewListSpacingHorizontal
+                            }
+                            comicList.lastIndex -> {
+                                outRect.left = recyclerViewListSpacingHorizontal
+                                outRect.right = recyclerViewListSpacingHorizontalEdge
+                            }
+                            else -> {
+                                outRect.left = recyclerViewListSpacingHorizontal
+                                outRect.right = recyclerViewListSpacingHorizontal
+                            }
+                        }
+                    }
+                }
+            )
         }
         
     }
