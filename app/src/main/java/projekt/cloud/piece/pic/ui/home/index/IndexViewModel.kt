@@ -6,7 +6,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import projekt.cloud.piece.pic.api.base.BaseApiRequest.Companion.request
 import projekt.cloud.piece.pic.api.collections.Collections
-import projekt.cloud.piece.pic.api.collections.CollectionsResponseBody.Data.Collection.Comic
+import projekt.cloud.piece.pic.api.collections.CollectionsResponseBody
 import projekt.cloud.piece.pic.base.BaseCallbackViewModel
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.HttpRequest.HttpRequestUtil.HttpRequestState.STATE_IO_EXCEPTION
@@ -28,8 +28,8 @@ class IndexViewModel: BaseCallbackViewModel() {
     val collectionTitleA: LiveData<String?>
         get() = _collectionTitleA
     
-    val comicListA = arrayListOf<Comic>()
-    val comicListB = arrayListOf<Comic>()
+    val comicListA = arrayListOf<CollectionsResponseBody.Comic>()
+    val comicListB = arrayListOf<CollectionsResponseBody.Comic>()
     
     private val _collectionTitleB = MutableLiveData<String?>(null)
     val collectionTitleB: LiveData<String?>

@@ -7,7 +7,7 @@
         <import type="kotlin.jvm.functions.Function2" />
         <import type="kotlin.Unit" />
         <import type="com.google.android.material.imageview.ShapeableImageView" />
-        <import type="projekt.cloud.piece.pic.api.collections.CollectionsResponseBody.Data.Collection.Comic" />
+        <import type="projekt.cloud.piece.pic.api.collections.CollectionsResponseBody.Comic" />
         <import type="projekt.cloud.piece.pic.util.ViewBindingUtil" />
         <variable
             name="comic"

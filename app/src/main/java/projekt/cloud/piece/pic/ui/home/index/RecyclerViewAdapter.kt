@@ -12,7 +12,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.progressindicator.CircularProgressIndicator
-import projekt.cloud.piece.pic.api.collections.CollectionsResponseBody.Data.Collection.Comic
+import projekt.cloud.piece.pic.api.collections.CollectionsResponseBody.Comic
 import projekt.cloud.piece.pic.api.image.Image
 import projekt.cloud.piece.pic.base.BaseRecyclerViewAdapter
 import projekt.cloud.piece.pic.base.BaseRecyclerViewHolder
