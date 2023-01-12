@@ -292,27 +292,42 @@ abstract class IndexLayoutCompat private constructor(
                 orientation = HORIZONTAL
                 spanCount = GRID_SPAN
             }
+            
             val recyclerViewListSpacingHorizontalEdge = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_hor_16)
             val recyclerViewListSpacingHorizontal = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_hor_8)
+            val recyclerViewListSpacingBottom = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_ver_8)
             
             random.addItemDecoration(
                 object: ItemDecoration() {
                     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                         super.getItemOffsets(outRect, view, parent, state)
-                        when (parent.getChildAdapterPosition(view)) {
-                            0 -> {
-                                outRect.left = recyclerViewListSpacingHorizontalEdge
-                                outRect.right = recyclerViewListSpacingHorizontal
+                        
+                        val isEven = (comicList.size % 2) == 0
+                        val left: Int
+                        val right: Int
+                        
+                        val index = parent.indexOfChild(view)
+                        when {
+                            index in (0 until 2) -> {
+                                left = recyclerViewListSpacingHorizontalEdge
+                                right = recyclerViewListSpacingHorizontal
                             }
-                            comicList.lastIndex -> {
-                                outRect.left = recyclerViewListSpacingHorizontal
-                                outRect.right = recyclerViewListSpacingHorizontalEdge
+                            index == comicList.lastIndex -> {
+                                left = recyclerViewListSpacingHorizontal
+                                right = recyclerViewListSpacingHorizontalEdge
+                            }
+                            index == comicList.lastIndex - 1 && isEven -> {
+                                left = recyclerViewListSpacingHorizontal
+                                right = recyclerViewListSpacingHorizontalEdge
                             }
                             else -> {
-                                outRect.left = recyclerViewListSpacingHorizontal
-                                outRect.right = recyclerViewListSpacingHorizontal
+                                left = recyclerViewListSpacingHorizontal
+                                right = recyclerViewListSpacingHorizontal
                             }
                         }
+                        outRect.left = left
+                        outRect.right = right
+                        outRect.bottom = recyclerViewListSpacingBottom
                     }
                 }
             )

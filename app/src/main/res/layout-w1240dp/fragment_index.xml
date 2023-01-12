@@ -17,8 +17,7 @@
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorSurface"
-        android:paddingTop="@{mainViewModel.systemInsets.top}">
+        android:background="?attr/colorSurface">
     
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_layout_container"
@@ -46,30 +45,38 @@
         
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/md_spec_spacing_ver_8"
-                        android:paddingHorizontal="@dimen/md_spec_spacing_hor_16">
+                        android:layout_height="wrap_content">
+                        
+                        <projekt.cloud.piece.pic.widget.InsetSpaceView
+                            android:id="@+id/inset_space_view_left_top"
+                            android:layout_width="@dimen/constraint_fill_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            inset_vertical="@{mainViewModel.systemInsets.top}" />
             
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/material_card_view_recommend_upper"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
+                            app:layout_constraintTop_toBottomOf="@id/inset_space_view_left_top"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent">
                 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingVertical="@dimen/md_spec_spacing_ver_16">
+                                android:layout_height="wrap_content">
                     
                                 <com.google.android.material.textview.MaterialTextView
                                     android:id="@+id/material_text_view_recommend_upper"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
+                                    android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
                                     android:text="@{viewModel.collectionTitleA}"
                                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                                    android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintStart_toStartOf="parent" />
                     
@@ -77,7 +84,7 @@
                                     android:id="@+id/recycler_view_recommend_a"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/md_spec_spacing_hor_16"
+                                    android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
                                     app:layout_constraintTop_toBottomOf="@id/material_text_view_recommend_upper"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +99,8 @@
                             android:id="@+id/material_card_view_recommend_bottom"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/md_spec_spacing_ver_16"
+                            android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
+                            android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
                             app:layout_constraintTop_toBottomOf="@id/material_card_view_recommend_upper"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent">
@@ -100,7 +108,7 @@
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingVertical="@dimen/md_spec_spacing_ver_16">
+                                android:paddingVertical="@dimen/md_spec_spacing_ver_8">
                     
                                 <com.google.android.material.textview.MaterialTextView
                                     android:id="@+id/material_text_view_recommend_bottom"
@@ -116,7 +124,7 @@
                                     android:id="@+id/recycler_view_recommend_b"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/md_spec_spacing_ver_16"
+                                    android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
                                     app:layout_constraintTop_toBottomOf="@id/material_text_view_recommend_bottom"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
@@ -148,44 +156,60 @@
                     app:layout_constraintStart_toEndOf="@id/nested_scroll_view_left"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent">
-    
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/material_card_view_random"
+                    
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent">
-        
-                        <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_height="wrap_content">
+    
+                        <projekt.cloud.piece.pic.widget.InsetSpaceView
+                            android:id="@+id/inset_space_view_right_top"
+                            android:layout_width="@dimen/constraint_fill_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            inset_vertical="@{mainViewModel.systemInsets.top}" />
+    
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/material_card_view_random"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingVertical="@dimen/md_spec_spacing_ver_16">
-            
-                            <com.google.android.material.textview.MaterialTextView
-                                android:id="@+id/material_text_view_random"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@{viewModel.collectionTitleA}"
-                                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-                                android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintStart_toStartOf="parent" />
-            
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/recycler_view_random"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/md_spec_spacing_hor_16"
-                                app:layout_constraintTop_toBottomOf="@id/material_text_view_random"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+                            android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
+                            app:layout_constraintTop_toBottomOf="@id/inset_space_view_right_top"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent">
         
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+            
+                                <com.google.android.material.textview.MaterialTextView
+                                    android:id="@+id/material_text_view_random"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
+                                    android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
+                                    android:text="@{viewModel.collectionTitleA}"
+                                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent" />
+            
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/recycler_view_random"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
+                                    app:layout_constraintTop_toBottomOf="@id/material_text_view_random"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+        
+                            </androidx.constraintlayout.widget.ConstraintLayout>
     
-                    </com.google.android.material.card.MaterialCardView>
+                        </com.google.android.material.card.MaterialCardView>
+                        
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                     
                 </androidx.core.widget.NestedScrollView>
                 
