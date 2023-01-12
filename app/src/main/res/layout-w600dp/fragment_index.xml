@@ -45,44 +45,55 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingTop="@dimen/md_spec_spacing_ver_8"
                         android:paddingHorizontal="@dimen/md_spec_spacing_hor_16"
-                        android:paddingBottom="@dimen/md_spec_spacing_ver_16">
+                        android:paddingBottom="@dimen/md_spec_spacing_ver_8">
+    
+                        <projekt.cloud.piece.pic.widget.InsetSpaceView
+                            android:id="@+id/inset_space_view_top"
+                            android:layout_width="@dimen/constraint_fill_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            inset_vertical="@{mainViewModel.systemInsets.bottom}" />
             
                         <com.google.android.material.card.MaterialCardView
                             android:id="@+id/material_card_view_recommend_upper"
                             android:layout_width="@dimen/constraint_fill_parent"
                             android:layout_height="wrap_content"
-                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/inset_space_view_top"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent">
                 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingVertical="@dimen/md_spec_spacing_ver_16"
                                 android:paddingHorizontal="@dimen/md_spec_spacing_hor_16">
                     
                                 <com.google.android.material.textview.MaterialTextView
                                     android:id="@+id/material_text_view_recommend_upper"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
                                     android:text="@{viewModel.collectionTitleA}"
                                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintStart_toStartOf="parent" />
-                    
+    
                                 <androidx.recyclerview.widget.RecyclerView
                                     android:id="@+id/recycler_view_recommend_a"
                                     android:layout_width="@dimen/constraint_fill_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
                                     android:nestedScrollingEnabled="false"
                                     app:layout_constraintTop_toBottomOf="@id/material_text_view_recommend_upper"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
-                
+                                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                                    app:layout_constraintHorizontal_bias="0.548"
+                                    app:layout_constraintVertical_bias="0.0" />
+
                             </androidx.constraintlayout.widget.ConstraintLayout>
             
                         </com.google.android.material.card.MaterialCardView>
@@ -91,7 +102,7 @@
                             android:id="@+id/material_card_view_recommend_bottom"
                             android:layout_width="@dimen/constraint_fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/md_spec_spacing_ver_16"
+                            android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
                             app:layout_constraintTop_toBottomOf="@id/material_card_view_recommend_upper"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent">
@@ -99,13 +110,13 @@
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingVertical="@dimen/md_spec_spacing_ver_16"
                                 android:paddingHorizontal="@dimen/md_spec_spacing_hor_16">
                     
                                 <com.google.android.material.textview.MaterialTextView
                                     android:id="@+id/material_text_view_recommend_bottom"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
                                     android:text="@{viewModel.collectionTitleB}"
                                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                                     app:layout_constraintTop_toTopOf="parent"
@@ -115,6 +126,7 @@
                                     android:id="@+id/recycler_view_recommend_b"
                                     android:layout_width="@dimen/constraint_fill_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
                                     android:nestedScrollingEnabled="false"
                                     app:layout_constraintTop_toBottomOf="@id/material_text_view_recommend_bottom"
                                     app:layout_constraintStart_toStartOf="parent"
@@ -130,7 +142,7 @@
                             android:id="@+id/material_card_view_random"
                             android:layout_width="@dimen/constraint_fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/md_spec_spacing_ver_16"
+                            android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
                             app:layout_constraintTop_toBottomOf="@id/material_card_view_recommend_bottom"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent">
@@ -138,13 +150,13 @@
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:paddingVertical="@dimen/md_spec_spacing_ver_16"
                                 android:paddingHorizontal="@dimen/md_spec_spacing_hor_16">
             
                                 <com.google.android.material.textview.MaterialTextView
                                     android:id="@+id/material_text_view_random"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
                                     android:text="@{viewModel.collectionTitleB}"
                                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                                     app:layout_constraintTop_toTopOf="parent"
@@ -154,6 +166,7 @@
                                     android:id="@+id/recycler_view_random"
                                     android:layout_width="@dimen/constraint_fill_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
                                     android:nestedScrollingEnabled="false"
                                     app:layout_constraintTop_toBottomOf="@id/material_text_view_random"
                                     app:layout_constraintStart_toStartOf="parent"

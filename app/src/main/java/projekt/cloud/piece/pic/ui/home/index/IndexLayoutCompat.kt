@@ -163,7 +163,6 @@ abstract class IndexLayoutCompat private constructor(
                 object: ItemDecoration() {
                     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                         super.getItemOffsets(outRect, view, parent, state)
-                        outRect.top = recyclerViewListSpacingVertical
                         outRect.bottom = recyclerViewListSpacingVertical
                     }
                 }
@@ -195,7 +194,6 @@ abstract class IndexLayoutCompat private constructor(
             val itemDecoration = object: ItemDecoration() {
                 override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                     super.getItemOffsets(outRect, view, parent, state)
-                    outRect.top = recyclerViewListSpacingVertical
                     outRect.bottom = recyclerViewListSpacingVertical
                     outRect.right = recyclerViewListSpacingHorizontal
                 }
@@ -213,7 +211,6 @@ abstract class IndexLayoutCompat private constructor(
                 object: ItemDecoration() {
                     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                         super.getItemOffsets(outRect, view, parent, state)
-                        outRect.top = recyclerViewListSpacingVertical
                         outRect.bottom = recyclerViewListSpacingVertical
                         outRect.right = recyclerViewListSpacingHorizontal
                     }
