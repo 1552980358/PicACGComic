@@ -63,8 +63,12 @@ class HttpRequest private constructor(
             HttpRequest(domain, path, query, headers, method, requestBody).request()
 
         @JvmStatic
-        fun getRequest(domain: String, path: String, query: String = "", headers: Map<String, String> = mapOf()) =
+        fun getRequest(domain: String, path: String, query: String, headers: Map<String, String> = mapOf()) =
             newRequest(domain, path, query, headers.toHeaders(), GET, null)
+    
+        @JvmStatic
+        fun getRequest(domain: String, path: String, headers: Map<String, String> = mapOf()) =
+            getRequest(domain, path, "", headers)
 
         @JvmStatic
         fun postJsonRequest(domain: String, path: String, headers: Map<String, String> = mapOf(), postBody: String) =
