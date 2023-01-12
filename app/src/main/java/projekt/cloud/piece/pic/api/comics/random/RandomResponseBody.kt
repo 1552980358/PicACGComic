@@ -8,6 +8,8 @@ import projekt.cloud.piece.pic.api.image.Image
 @Serializable
 data class RandomResponseBody(val code: Int, val message: String, private val data: Data) {
 
+    private companion object
+    
     val comicList: List<Comic>
         get() = data.comicList
     
@@ -29,7 +31,10 @@ data class RandomResponseBody(val code: Int, val message: String, private val da
         @SerialName("pagesCount")
         val imageCount: Int,
         val epsCount: Int,
-        val finished: Boolean
-    )
+        val finished: Boolean) {
+        
+        private companion object
+        
+    }
     
 }
