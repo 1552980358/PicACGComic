@@ -46,7 +46,7 @@ class Index: BaseCallbackFragment<FragmentIndexBinding, IndexViewModel>() {
     }
     
     override fun onSetupView(binding: FragmentIndexBinding) {
-        layoutCompat.setupRecyclerViews(resources, viewModel.comicListA, viewModel.comicListB, this)
+        layoutCompat.setupCollections(resources, viewModel.comicListA, viewModel.comicListB, this)
         mainViewModel.account.observe(viewLifecycleOwner) {
             Log.i(TAG, "account: $it ${it.isSignedIn}")
             when {

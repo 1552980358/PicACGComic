@@ -4,7 +4,7 @@
     
     <data>
         <import type="android.view.View" />
-        <import type="kotlin.jvm.functions.Function2" />
+        <import type="kotlin.jvm.functions.Function3" />
         <import type="kotlin.Unit" />
         <import type="com.google.android.material.imageview.ShapeableImageView" />
         <import type="projekt.cloud.piece.pic.api.collections.CollectionsResponseBody.Comic" />
@@ -14,7 +14,7 @@
             type="Comic" />
         <variable
             name="onClick"
-            type="Function2&lt;Comic, ShapeableImageView, Unit>" />
+            type="Function3&lt;String, String, ShapeableImageView, Unit>" />
         <variable
             name="isLoading"
             type="Boolean" />
@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/md_spec_size_96"
         android:foreground="?attr/selectableItemBackground"
-        android:onClick="@{() -> onClick.invoke(comic, shapeableImageView)}">
+        android:onClick="@{() -> onClick.invoke(comic.id, comic.title, shapeableImageView)}">
         
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

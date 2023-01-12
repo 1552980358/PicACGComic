@@ -22,7 +22,7 @@ import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 class RecyclerViewAdapter(
     itemList: List<Comic>,
     private val fragment: Fragment,
-    private val onClick: (Comic, AppCompatImageView) -> Unit
+    private val onClick: (String, String, AppCompatImageView) -> Unit
 ): BaseRecyclerViewAdapter<RecyclerViewAdapter.RecyclerViewHolder, Comic>(itemList) {
     
     class RecyclerViewHolder(parent: ViewGroup):
@@ -34,7 +34,7 @@ class RecyclerViewAdapter(
         private val circularProgressIndicator: CircularProgressIndicator
             get() = binding.circularProgressIndicator
         
-        fun onBind(comic: Comic, fragment: Fragment, onClick: (Comic, AppCompatImageView) -> Unit) {
+        fun onBind(comic: Comic, fragment: Fragment, onClick: (String, String, AppCompatImageView) -> Unit) {
             binding.comic = comic
             binding.onClick = onClick
             binding.isLoading = true
