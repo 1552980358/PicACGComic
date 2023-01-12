@@ -23,7 +23,7 @@ class Random(private val token: String): BaseStringApiRequest<RandomResponseBody
             HttpRequest.getRequest(
                 PICA_COMIC_API_DOMAIN,
                 API_RANDOM_PATH,
-                headers = Header.getHeader(API_RANDOM_PATH, requestMethod = GET, token = token)
+                Header.getHeader(API_RANDOM_PATH, GET, token)
             )
         }
     }

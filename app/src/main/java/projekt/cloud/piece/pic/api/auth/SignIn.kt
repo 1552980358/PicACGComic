@@ -44,7 +44,7 @@ object SignIn {
             postJsonRequest(
                 PICA_COMIC_API_DOMAIN,
                 SIGN_IN_API,
-                Header.getHeader(SIGN_IN_API, requestMethod = POST),
+                Header.getHeader(SIGN_IN_API, POST),
                 SignInRequestBody(username, password).encodeJson()
             )
         }

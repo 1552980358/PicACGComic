@@ -19,9 +19,7 @@ class Collections(private val token: String): BaseStringApiRequest<CollectionsRe
             HttpRequest.getRequest(
                 PICA_COMIC_API_DOMAIN,
                 API_COLLECTIONS,
-                headers = Header.getHeader(
-                    API_COLLECTIONS, requestMethod = GET, token = token
-                )
+                Header.getHeader(API_COLLECTIONS, GET, token)
             )
         }
     }

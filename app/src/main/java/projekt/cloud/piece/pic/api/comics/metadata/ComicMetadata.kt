@@ -24,9 +24,7 @@ class ComicMetadata(private val token: String, private val id: String): BaseStri
             HttpRequest.getRequest(
                 PICA_COMIC_API_DOMAIN,
                 path,
-                headers = Header.getHeader(
-                    path, requestMethod = GET, token = token
-                )
+                Header.getHeader(path, GET, token)
             )
         }
     }

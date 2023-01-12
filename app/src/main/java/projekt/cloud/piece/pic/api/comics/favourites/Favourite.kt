@@ -26,7 +26,7 @@ class Favourite(private val token: String, val id: String): BaseStringApiRequest
             HttpRequest.postJsonRequest(
                 PICA_COMIC_API_DOMAIN,
                 path,
-                Header.getHeader(path, requestMethod = POST, token = token),
+                Header.getHeader(path, POST, token),
                 API_FAVOURITE_BODY
             )
         }
