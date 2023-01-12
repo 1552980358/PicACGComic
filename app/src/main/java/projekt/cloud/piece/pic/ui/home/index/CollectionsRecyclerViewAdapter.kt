@@ -19,11 +19,11 @@ import projekt.cloud.piece.pic.base.BaseRecyclerViewHolder
 import projekt.cloud.piece.pic.databinding.LayoutRecyclerIndexBinding
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 
-class RecyclerViewAdapter(
+class CollectionsRecyclerViewAdapter(
     itemList: List<Comic>,
     private val fragment: Fragment,
     private val onClick: (String, String, AppCompatImageView) -> Unit
-): BaseRecyclerViewAdapter<RecyclerViewAdapter.RecyclerViewHolder, Comic>(itemList) {
+): BaseRecyclerViewAdapter<CollectionsRecyclerViewAdapter.RecyclerViewHolder, Comic>(itemList) {
     
     class RecyclerViewHolder(parent: ViewGroup):
         BaseRecyclerViewHolder<(LayoutRecyclerIndexBinding)>(parent, LayoutRecyclerIndexBinding::class.java) {
@@ -35,7 +35,10 @@ class RecyclerViewAdapter(
             get() = binding.circularProgressIndicator
         
         fun onBind(comic: Comic, fragment: Fragment, onClick: (String, String, AppCompatImageView) -> Unit) {
-            binding.comic = comic
+            binding.id = comic.id
+            binding.title = comic.title
+            binding.author = comic.author
+            binding.categoryStr = comic.categoryStr
             binding.onClick = onClick
             binding.isLoading = true
             

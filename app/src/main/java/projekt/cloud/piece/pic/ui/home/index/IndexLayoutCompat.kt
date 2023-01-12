@@ -82,8 +82,8 @@ abstract class IndexLayoutCompat private constructor(
                               comicListA: List<CollectionsResponseBody.Comic>,
                               comicListB: List<CollectionsResponseBody.Comic>,
                               fragment: Fragment) {
-        recyclerViewA.adapter = RecyclerViewAdapter(comicListA, fragment, onClick)
-        recyclerViewB.adapter = RecyclerViewAdapter(comicListB, fragment, onClick)
+        recyclerViewA.adapter = CollectionsRecyclerViewAdapter(comicListA, fragment, onClick)
+        recyclerViewB.adapter = CollectionsRecyclerViewAdapter(comicListB, fragment, onClick)
     }
     
     open fun completeLoading() {

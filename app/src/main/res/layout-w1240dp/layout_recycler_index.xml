@@ -7,11 +7,19 @@
         <import type="kotlin.jvm.functions.Function3" />
         <import type="kotlin.Unit" />
         <import type="com.google.android.material.imageview.ShapeableImageView" />
-        <import type="projekt.cloud.piece.pic.api.collections.CollectionsResponseBody.Comic" />
         <import type="projekt.cloud.piece.pic.util.ViewBindingUtil" />
         <variable
-            name="comic"
-            type="Comic" />
+            name="id"
+            type="String" />
+        <variable
+            name="title"
+            type="String" />
+        <variable
+            name="author"
+            type="String" />
+        <variable
+            name="categoryStr"
+            type="String" />
         <variable
             name="onClick"
             type="Function3&lt;String, String, ShapeableImageView, Unit>" />
@@ -24,7 +32,7 @@
         android:layout_width="@dimen/index_recycler_cover_size_width"
         android:layout_height="wrap_content"
         android:foreground="?attr/selectableItemBackground"
-        android:onClick="@{() -> onClick.invoke(comic.id, comic.title, shapeableImageView)}">
+        android:onClick="@{() -> onClick.invoke(id, title, shapeableImageView)}">
         
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -70,7 +78,7 @@
                 android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="@{comic.title}"
+                android:text="@{title}"
                 android:textColor="?attr/colorOnSurfaceVariant"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                 app:layout_constraintTop_toBottomOf="@id/constraint_layout_image"
@@ -83,8 +91,9 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{comic.author}"
+                android:text="@{author}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                android:visibility="@{ViewBindingUtil.goneIfBlank(author)}"
                 app:layout_constraintTop_toBottomOf="@id/material_text_view_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -94,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{comic.categoryStr}"
+                android:text="@{categoryStr}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 app:layout_constraintTop_toBottomOf="@id/material_text_view_author"
                 app:layout_constraintStart_toStartOf="parent"
