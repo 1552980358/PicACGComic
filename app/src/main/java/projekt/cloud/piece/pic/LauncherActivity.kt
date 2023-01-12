@@ -86,7 +86,7 @@ class LauncherActivity: AppCompatActivity() {
             val account = getAccount() ?: return@ui startDestinationAtSigning()
             
             val signIn = SignIn(account.username, account.password).request()
-            if (!signIn.isComplete || !signIn.isErrorResponse || !signIn.isEmptyResponse || !signIn.isRejected()) {
+            if (!signIn.isComplete || signIn.isErrorResponse || signIn.isEmptyResponse || signIn.isRejected()) {
                 return@ui startDestinationAtSigning()
             }
             completeAuthSignIn(account.username, account.password, signIn.responseBody().token)
