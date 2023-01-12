@@ -7,11 +7,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.platform.MaterialSharedAxis
 import kotlinx.coroutines.Job
 import projekt.cloud.piece.pic.R
-import projekt.cloud.piece.pic.api.ErrorResponse.checkRejected
-import projekt.cloud.piece.pic.api.ErrorResponse.decodeErrorResponse
-import projekt.cloud.piece.pic.api.auth.SignIn.SIGN_IN_ERROR_INVALID
-import projekt.cloud.piece.pic.api.auth.SignIn.decodeSignInResponse
-import projekt.cloud.piece.pic.api.auth.SignIn.signIn
+import projekt.cloud.piece.pic.api.auth.SignIn
+import projekt.cloud.piece.pic.api.base.BaseApiRequest.Companion.request
 import projekt.cloud.piece.pic.base.BaseFragment
 import projekt.cloud.piece.pic.databinding.FragmentSignInBinding
 import projekt.cloud.piece.pic.ui.signIn.SignInLayoutCompat.SignInLayoutCompatUtil.getLayoutCompat
@@ -61,58 +58,61 @@ class SignIn: BaseFragment<FragmentSignInBinding>() {
     private fun invokeSignIn(username: String, password: String) {
         if (job?.isActive != true) {
             job = lifecycleScope.ui {
-                val httpRequest = signIn(username, password)
-
-                if (httpRequest.isComplete) {
-                    val response = httpRequest.response
-
-                    // Error
-                    if (!response.isSuccessful) {
-                        layoutCompat.onSignInRequestCompleted()
-                        val error = response.decodeErrorResponse()
-                        if (error.error == SIGN_IN_ERROR_INVALID) {
-                            return@ui layoutCompat.shortSnack(
-                                getString(R.string.sign_in_invalid_field)
+                val signIn = SignIn(username, password).request()
+                
+                if (!signIn.isComplete) {
+                    layoutCompat.onSignInRequestCompleted()
+                    return@ui when (signIn.state) {
+                        STATE_IO_EXCEPTION -> {
+                            layoutCompat.shortSnack(getString(R.string.request_io_exception, signIn.message))
+                        }
+                        STATE_EXCEPTION -> {
+                            layoutCompat.shortSnack(getString(R.string.request_unknown_exception, signIn.message))
+                        }
+                        else -> {
+                            layoutCompat.shortSnack(getString(R.string.request_unexpected_state, signIn.message))
+                        }
+                    }
+                }
+                
+                if (signIn.isErrorResponse) {
+                    val errorResponseBody = signIn.errorResponse()
+                    layoutCompat.onSignInRequestCompleted()
+                    return@ui when {
+                        signIn.isInvalid(errorResponseBody) -> {
+                            layoutCompat.shortSnack(getString(R.string.sign_in_invalid_field))
+                        }
+                        else -> {
+                            layoutCompat.shortSnack(
+                                getString(
+                                    R.string.response_error,
+                                    errorResponseBody.code,
+                                    errorResponseBody.error,
+                                    errorResponseBody.message,
+                                    errorResponseBody.detail
+                                )
                             )
                         }
-                        return@ui layoutCompat.shortSnack(
-                            getString(
-                                R.string.response_error, error.code, error.error, error.message, error.detail
-                            )
-                        )
                     }
-
-                    val responseText = response.body.string()
-
-                    // Rejected
-                    if (responseText.checkRejected()) {
-                        layoutCompat.onSignInRequestCompleted()
-                        return@ui layoutCompat.shortSnack(getString(R.string.response_rejected))
-                    }
-
-                    // Complete Auth signing in
-                    return@ui setFragmentResult(
-                        getString(R.string.auth_sign_in_result),
-                        bundleOf(
-                            getString(R.string.auth_sign_in_result_username) to username,
-                            getString(R.string.auth_sign_in_result_password) to password,
-                            getString(R.string.auth_sign_in_result_token) to responseText.decodeSignInResponse().token,
-                        )
+                }
+                
+                if (signIn.isEmptyResponse) {
+                    layoutCompat.shortSnack(getString(R.string.response_empty))
+                }
+                
+                if (signIn.isRejected()) {
+                    layoutCompat.onSignInRequestCompleted()
+                    return@ui layoutCompat.shortSnack(getString(R.string.response_rejected))
+                }
+    
+                setFragmentResult(
+                    getString(R.string.auth_sign_in_result),
+                    bundleOf(
+                        getString(R.string.auth_sign_in_result_username) to username,
+                        getString(R.string.auth_sign_in_result_password) to password,
+                        getString(R.string.auth_sign_in_result_token) to signIn.responseBody().token,
                     )
-                }
-
-                layoutCompat.onSignInRequestCompleted()
-                when (httpRequest.state) {
-                    STATE_IO_EXCEPTION -> {
-                        layoutCompat.shortSnack(getString(R.string.request_io_exception, httpRequest.exceptionMessage))
-                    }
-                    STATE_EXCEPTION -> {
-                        layoutCompat.shortSnack(getString(R.string.request_unknown_exception, httpRequest.exceptionMessage))
-                    }
-                    else -> {
-                        layoutCompat.shortSnack(getString(R.string.request_unexpected_state, httpRequest.state.name))
-                    }
-                }
+                )
             }
         }
     }

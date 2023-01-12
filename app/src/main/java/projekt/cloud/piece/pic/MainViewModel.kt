@@ -9,9 +9,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import projekt.cloud.piece.pic.api.ErrorResponse.checkRejected
-import projekt.cloud.piece.pic.api.auth.SignIn.decodeSignInResponse
-import projekt.cloud.piece.pic.api.auth.SignIn.signIn
+import projekt.cloud.piece.pic.api.auth.SignIn
+import projekt.cloud.piece.pic.api.base.BaseApiRequest.Companion.request
 import projekt.cloud.piece.pic.storage.Account
 import projekt.cloud.piece.pic.util.ActivityUtil.startActivity
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
@@ -42,18 +41,11 @@ class MainViewModel: ViewModel() {
         val account = account.value ?: return returnToLauncher(activity)
         account.signing(null)
         viewModelScope.ui {
-            val httpRequest = signIn(account.username, account.password)
-            if (!httpRequest.isComplete) {
+            val signIn = SignIn(account.username, account.password).request()
+            if (!signIn.isComplete || !signIn.isErrorResponse || !signIn.isEmptyResponse || !signIn.isRejected()) {
                 return@ui returnToLauncher(activity)
             }
-            if (!httpRequest.response.isSuccessful) {
-                return@ui returnToLauncher(activity)
-            }
-            val body = httpRequest.response.body.string()
-            if (body.checkRejected()) {
-                return@ui returnToLauncher(activity)
-            }
-            account.signing(body.decodeSignInResponse().token)
+            account.signing(signIn.responseBody().token)
             _account.value = account
         }
     }

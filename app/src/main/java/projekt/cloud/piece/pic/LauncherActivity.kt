@@ -12,9 +12,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.withContext
-import projekt.cloud.piece.pic.api.ErrorResponse.checkRejected
-import projekt.cloud.piece.pic.api.auth.SignIn.decodeSignInResponse
-import projekt.cloud.piece.pic.api.auth.SignIn.signIn
+import projekt.cloud.piece.pic.api.auth.SignIn
+import projekt.cloud.piece.pic.api.base.BaseApiRequest.Companion.request
 import projekt.cloud.piece.pic.databinding.ActivityLauncherBinding
 import projekt.cloud.piece.pic.storage.Account
 import projekt.cloud.piece.pic.storage.Account.AccountUtil.getAccount
@@ -85,18 +84,12 @@ class LauncherActivity: AppCompatActivity() {
                 return@ui startDestinationByDefault()
             }
             val account = getAccount() ?: return@ui startDestinationAtSigning()
-            val httpRequest = signIn(account.username, account.password)
-            if (!httpRequest.isComplete) {
+            
+            val signIn = SignIn(account.username, account.password).request()
+            if (!signIn.isComplete || !signIn.isErrorResponse || !signIn.isEmptyResponse || !signIn.isRejected()) {
                 return@ui startDestinationAtSigning()
             }
-            if (!httpRequest.response.isSuccessful) {
-                return@ui startDestinationAtSigning()
-            }
-            val body = httpRequest.response.body.string()
-            if (body.checkRejected()) {
-                return@ui startDestinationAtSigning()
-            }
-            completeAuthSignIn(account.username, account.password, body.decodeSignInResponse().token)
+            completeAuthSignIn(account.username, account.password, signIn.responseBody().token)
         }
         
     }
