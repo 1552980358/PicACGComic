@@ -1,7 +1,9 @@
 package projekt.cloud.piece.pic.base
 
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import java.lang.reflect.ParameterizedType
 import kotlin.math.abs
 import projekt.cloud.piece.pic.util.AdapterInterface
 
@@ -15,7 +17,19 @@ abstract class BaseRecyclerViewAdapter<VH: ViewHolder, T>(protected val itemList
         
     }
     
+    @Suppress("UNCHECKED_CAST")
+    private val viewHolderClass =
+        ((this::class.java.genericSuperclass as ParameterizedType)
+            .actualTypeArguments.first() as Class<VH>)
+    
+    private val viewHolderClassConstructor =
+        viewHolderClass.getDeclaredConstructor(ViewGroup::class.java)
+    
     protected var itemListSize = itemList.size
+    
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
+        return viewHolderClassConstructor.newInstance(parent)
+    }
     
     override fun getItemCount() = itemListSize
     
