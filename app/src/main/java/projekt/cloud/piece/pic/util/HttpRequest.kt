@@ -69,10 +69,14 @@ class HttpRequest private constructor(
         @JvmStatic
         fun getRequest(domain: String, path: String, headers: Map<String, String> = mapOf()) =
             getRequest(domain, path, "", headers)
-
+    
+        @JvmStatic
+        fun postJsonRequest(domain: String, path: String, query: String, headers: Map<String, String> = mapOf(), postBody: String) =
+            newRequest(domain, path, query, headers.toHeaders(), POST, postBody.toRequestBody(postJsonBodyType))
+        
         @JvmStatic
         fun postJsonRequest(domain: String, path: String, headers: Map<String, String> = mapOf(), postBody: String) =
-            newRequest(domain, path, "", headers.toHeaders(), POST, postBody.toRequestBody(postJsonBodyType))
+            postJsonRequest(domain, path, "", headers, postBody)
 
     }
 
