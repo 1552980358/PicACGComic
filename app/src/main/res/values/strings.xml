@@ -54,6 +54,8 @@
     
     <string name="index_random">Random</string>
     
+    <string name="search_result_count">Total %s results found.</string>
+    
     <string name="metadata_chapter_title">Chapter</string>
     <string name="metadata_chapter_asc">ASC</string>
     <string name="metadata_chapter_dsc">DSC</string>
