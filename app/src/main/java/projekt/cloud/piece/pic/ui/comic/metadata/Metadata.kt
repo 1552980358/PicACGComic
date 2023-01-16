@@ -6,7 +6,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle.State.CREATED
+import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -106,7 +106,7 @@ class Metadata: BaseCallbackFragment<FragmentMetadataBinding, ComicViewModel>() 
                 }
             },
             this,
-            CREATED
+            STARTED
         )
         viewModel.isLiked.observe(viewLifecycleOwner) {
             requireActivity().invalidateOptionsMenu()
