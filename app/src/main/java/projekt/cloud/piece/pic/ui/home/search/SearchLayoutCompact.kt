@@ -55,13 +55,13 @@ open class SearchLayoutCompact private constructor(protected val binding: Fragme
         fragment.setSupportActionBar(searchBar)
         searchView.editText
             .setOnEditorActionListener { textView, _, _ ->
+                searchView.hide()
                 textView.text?.toString()?.let {  text ->
                     if (text.isNotBlank()) {
                         notifyClear()
                         beginSearch(text, fragment, mainViewModel, searchViewModel)
                     }
                 }
-                searchView.hide()
                 false
             }
     }
