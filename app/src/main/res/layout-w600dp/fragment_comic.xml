@@ -19,6 +19,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         
+            <!-- By unknown reason, set `app:headerLayout="@layout/nav_header_comic"` will cause cast exception,
+                 which the layout should be added by method `NavigationRailView.addHeaderView()`  -->
+            <!-- Caused by: java.lang.ClassCastException: com.google.android.material.floatingactionbutton.FloatingActionButton cannot be cast to androidx.fragment.app.FragmentContainerView -->
             <com.google.android.material.navigationrail.NavigationRailView
                 android:id="@+id/navigation_rail_view"
                 android:layout_width="wrap_content"
@@ -28,7 +31,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:headerLayout="@layout/nav_header_comic"
                 app:menu="@menu/nav_comic"
                 app:menuGravity="center" />
         

@@ -1,7 +1,12 @@
 package projekt.cloud.piece.pic.ui.comic.metadata
 
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle.State.CREATED
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -67,6 +72,45 @@ class Metadata: BaseCallbackFragment<FragmentMetadataBinding, ComicViewModel>() 
     
     override fun onSetupActionBar(binding: FragmentMetadataBinding) {
         layoutCompat.setupActionBar(this)
+        requireActivity().addMenuProvider(
+            object: MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menu.clear()
+                    menuInflater.inflate(R.menu.menu_metadata, menu)
+                    val likes = menu.getItem(0)
+                    if (likes.itemId == R.id.likes) {
+                        likes.setIcon(
+                            when (viewModel.isLiked.value) {
+                                true -> {
+                                    R.drawable.ic_round_favorite_24
+                                }
+                                else -> {
+                                    R.drawable.ic_round_favorite_border_24
+                                }
+                            }
+                        )
+                    }
+                }
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    if (menuItem.itemId == R.id.likes) {
+                        mainViewModel.account.value?.let { account ->
+                            if (account.isSignedIn) {
+                                viewModel.id.value?.let { id ->
+                                    viewModel.scopedUpdateLiked(account.token, id, lifecycleScope)
+                                }
+                            }
+                        }
+                        return true
+                    }
+                    return false
+                }
+            },
+            this,
+            CREATED
+        )
+        viewModel.isLiked.observe(viewLifecycleOwner) {
+            requireActivity().invalidateOptionsMenu()
+        }
     }
     
     override fun onSetupView(binding: FragmentMetadataBinding) {

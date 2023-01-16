@@ -46,6 +46,7 @@ class Comic: BaseCallbackFragment<FragmentComicBinding, ComicViewModel>() {
         layoutCompat = binding.getLayoutCompat(layoutSizeMode)
         layoutCompat.setNavController(findNavController())
         layoutCompat.setupNavigation(this)
+        layoutCompat.setupHeader(viewModel, mainViewModel, viewLifecycleOwner)
     }
 
     private fun startRequestComicMetadata(token: String, id: String) {

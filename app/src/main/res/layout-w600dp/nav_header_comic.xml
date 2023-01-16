@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="MissingDefaultResource">
+    
+    <data>
+        <import type="projekt.cloud.piece.pic.MainViewModel" />
+        <import type="projekt.cloud.piece.pic.ui.comic.ComicLayoutCompat" />
+        <import type="projekt.cloud.piece.pic.ui.comic.ComicViewModel" />
+        <import type="androidx.fragment.app.Fragment" />
+        <variable
+            name="layoutCompat"
+            type="ComicLayoutCompat" />
+        <variable
+            name="mainViewModel"
+            type="MainViewModel" />
+        <variable
+            name="comicViewModel"
+            type="ComicViewModel" />
+        <variable
+            name="fragment"
+            type="Fragment" />
+    </data>
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:showIn="@layout/fragment_comic"
+        tools:ignore="MissingDefaultResource">
+        
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/app_compat_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
+            android:onClick="@{() -> layoutCompat.onBackward(fragment)}"
+            android:src="@drawable/ic_round_arrow_back_24"
+            android:tint="?attr/colorOnSurfaceVariant"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_action_button_likes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/md_spec_spacing_ver_8"
+            android:onClick="@{() -> layoutCompat.onLikesClicked(mainViewModel.account.token, fragment, comicViewModel, comicViewModel.id)}"
+            android:src="@{comicViewModel.isLiked ? @drawable/ic_round_favorite_24 : @drawable/ic_round_favorite_border_24}"
+            app:elevation="0dp"
+            app:layout_constraintTop_toBottomOf="@id/app_compat_image_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="ContentDescription"
+            style="?floatingActionButtonSmallStyle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

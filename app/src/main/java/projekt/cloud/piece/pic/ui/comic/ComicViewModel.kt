@@ -16,6 +16,7 @@ import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCod
 import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.METADATA_INVALID_STATE_CODE
 import projekt.cloud.piece.pic.api.comics.episodes.EpisodesResponseBody.Episode
 import projekt.cloud.piece.pic.api.comics.favourites.Favourite
+import projekt.cloud.piece.pic.api.comics.like.Like
 import projekt.cloud.piece.pic.api.comics.metadata.ComicMetadata
 import projekt.cloud.piece.pic.api.comics.metadata.ComicMetadataResponseBody.Comic
 import projekt.cloud.piece.pic.api.comics.metadata.ComicMetadataResponseBody.Creator
@@ -34,6 +35,13 @@ import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCod
 import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.FAVOURITE_INVALID_STATE_CODE
 import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.FAVOURITE_IO_EXCEPTION
 import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.FAVOURITE_REJECTED
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.LIKE_COMPLETE
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.LIKE_EMPTY_CONTENT
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.LIKE_ERROR
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.LIKE_EXCEPTION
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.LIKE_INVALID_STATE_CODE
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.LIKE_IO_EXCEPTION
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.LIKE_REJECTED
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.HttpRequest.HttpRequestUtil.HttpRequestState.STATE_IO_EXCEPTION
 import projekt.cloud.piece.pic.util.HttpRequest.HttpRequestUtil.HttpRequestState.STATE_EXCEPTION
@@ -48,7 +56,7 @@ class ComicViewModel: BaseCallbackViewModel() {
         const val METADATA_ERROR = -4
         const val METADATA_EMPTY_CONTENT = -5
         const val METADATA_REJECTED = -6
-    
+        
         const val EPISODES_COMPLETE = 10
         const val EPISODES_IO_EXCEPTION = -11
         const val EPISODES_EXCEPTION = -12
@@ -56,7 +64,7 @@ class ComicViewModel: BaseCallbackViewModel() {
         const val EPISODES_ERROR = -14
         const val EPISODES_EMPTY_CONTENT = -15
         const val EPISODES_REJECTED = -16
-    
+        
         const val FAVOURITE_COMPLETE = 20
         const val FAVOURITE_IO_EXCEPTION = -21
         const val FAVOURITE_EXCEPTION = -22
@@ -64,6 +72,14 @@ class ComicViewModel: BaseCallbackViewModel() {
         const val FAVOURITE_ERROR = -24
         const val FAVOURITE_EMPTY_CONTENT = -25
         const val FAVOURITE_REJECTED = -26
+    
+        const val LIKE_COMPLETE = 30
+        const val LIKE_IO_EXCEPTION = -31
+        const val LIKE_EXCEPTION = -32
+        const val LIKE_INVALID_STATE_CODE = -33
+        const val LIKE_ERROR = -34
+        const val LIKE_EMPTY_CONTENT = -35
+        const val LIKE_REJECTED = -36
     }
     
     private companion object {
@@ -106,6 +122,10 @@ class ComicViewModel: BaseCallbackViewModel() {
     private val _isFavourite = MutableLiveData<Boolean>()
     val isFavourite: LiveData<Boolean>
         get() = _isFavourite
+    
+    private val _isLiked = MutableLiveData<Boolean>()
+    val isLiked: LiveData<Boolean>
+        get() = _isLiked
     
     val episodeList = mutableListOf<Episode>()
     
@@ -154,25 +174,26 @@ class ComicViewModel: BaseCallbackViewModel() {
             }
             return false
         }
-    
+        
         if (metadata.isEmptyResponse) {
             setCallback(METADATA_EMPTY_CONTENT)
             return false
         }
-    
+        
         if (metadata.isRejected()) {
             setCallback(METADATA_REJECTED)
             return false
         }
-    
+        
         val responseBody = metadata.responseBody()
         _comic.value = responseBody.comic
         _creator.value = responseBody.creator
         _creatorAvatar.value = responseBody.creator.avatar.obtainBitmap()
         _isFavourite.value = responseBody.comic.isFavourite
+        _isLiked.value = responseBody.comic.isLiked
         
         setCallback(METADATA_COMPLETE)
-    
+        
         return true
     }
     
@@ -255,11 +276,11 @@ class ComicViewModel: BaseCallbackViewModel() {
                     )
                 }
             }
-    
+            
             if (favourite.isEmptyResponse) {
                 return@ui setCallback(FAVOURITE_EMPTY_CONTENT)
             }
-    
+            
             if (favourite.isRejected()) {
                 return@ui setCallback(FAVOURITE_REJECTED)
             }
@@ -269,5 +290,49 @@ class ComicViewModel: BaseCallbackViewModel() {
             setCallback(FAVOURITE_COMPLETE)
         }
     }
-
+    
+    fun scopedUpdateLiked(token: String, id: String, scope: CoroutineScope) {
+        scope.ui {
+            val like = Like(token, id).request()
+    
+            if (!like.isComplete) {
+                return@ui when (like.state) {
+                    STATE_IO_EXCEPTION -> {
+                        setCallback(LIKE_IO_EXCEPTION, like.message)
+                    }
+                    STATE_EXCEPTION -> {
+                        setCallback(LIKE_EXCEPTION, like.message)
+                    }
+                    else -> {
+                        setCallback(LIKE_INVALID_STATE_CODE, like.message)
+                    }
+                }
+            }
+    
+            if (like.isErrorResponse) {
+                return@ui like.errorResponse().let { errorResponseBody ->
+                    setCallback(
+                        LIKE_ERROR,
+                        errorResponseBody.message,
+                        errorResponseBody.code,
+                        errorResponseBody.error,
+                        errorResponseBody.detail
+                    )
+                }
+            }
+    
+            if (like.isEmptyResponse) {
+                return@ui setCallback(LIKE_EMPTY_CONTENT)
+            }
+    
+            if (like.isRejected()) {
+                return@ui setCallback(LIKE_REJECTED)
+            }
+            
+            val likeResponseBody = like.responseBody()
+            _isLiked.value = likeResponseBody.isLiked
+            setCallback(LIKE_COMPLETE)
+        }
+    }
+    
 }
