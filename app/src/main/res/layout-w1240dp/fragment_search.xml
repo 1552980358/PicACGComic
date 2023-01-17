@@ -37,6 +37,7 @@
                     android:layout_width="@dimen/constraint_fill_parent"
                     android:layout_height="wrap_content"
                     android:text="@{searchViewModel.keyword}"
+                    app:menu="@menu/menu_search"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintWidth_min="@dimen/widget_search_bar_min_width"

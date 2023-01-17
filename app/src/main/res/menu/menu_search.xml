@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <item
+        android:title="@string/search_menu_sort"
+        android:icon="@drawable/ic_round_sort_24"
+        app:showAsAction="always">
+        <menu>
+            <group
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/sort_new"
+                    android:title="@string/search_menu_sort_new" />
+                <item
+                    android:id="@+id/sort_old"
+                    android:title="@string/search_menu_sort_old" />
+                <item
+                    android:id="@+id/sort_likes"
+                    android:title="@string/search_menu_sort_likes" />
+                <item
+                    android:id="@+id/sort_views"
+                    android:title="@string/search_menu_sort_views" />
+            </group>
+        </menu>
+    </item>
+
+</menu>

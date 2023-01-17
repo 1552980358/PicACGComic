@@ -55,6 +55,11 @@
     <string name="index_random">Random</string>
     
     <string name="search_result_count">Total %s results found.</string>
+    <string name="search_menu_sort">Sorting</string>
+    <string name="search_menu_sort_new">New to Old</string>
+    <string name="search_menu_sort_old">Old to New</string>
+    <string name="search_menu_sort_likes">Likes</string>
+    <string name="search_menu_sort_views">Views</string>
     
     <string name="comic_likes">Likes</string>
     

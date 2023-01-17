@@ -26,7 +26,8 @@ class SearchViewModel: BaseCallbackViewModel() {
         const val SEARCH_REJECTED = -6
     }
 
-    private var sort = NEW_TO_OLD
+    var sort = NEW_TO_OLD
+        private set
     
     private val _keyword = MutableLiveData<String>()
     val keyword: LiveData<String>

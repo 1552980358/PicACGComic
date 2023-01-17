@@ -1,10 +1,15 @@
 package projekt.cloud.piece.pic.ui.home.search
 
 import android.graphics.Rect
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.core.graphics.drawable.toBitmapOrNull
+import androidx.core.view.MenuProvider
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,6 +20,11 @@ import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 import projekt.cloud.piece.pic.MainViewModel
 import projekt.cloud.piece.pic.R
+import projekt.cloud.piece.pic.api.Sort
+import projekt.cloud.piece.pic.api.Sort.MORE_LIKES
+import projekt.cloud.piece.pic.api.Sort.MORE_VIEWS
+import projekt.cloud.piece.pic.api.Sort.NEW_TO_OLD
+import projekt.cloud.piece.pic.api.Sort.OLD_TO_NEW
 import projekt.cloud.piece.pic.api.comics.search.AdvancedSearchResponseBody.Comic
 import projekt.cloud.piece.pic.base.BaseRecyclerViewAdapter.BaseRecyclerViewAdapterUtil.adapterInterface
 import projekt.cloud.piece.pic.databinding.FragmentSearchBinding
@@ -64,6 +74,53 @@ open class SearchLayoutCompact private constructor(protected val binding: Fragme
                 }
                 false
             }
+        fragment.requireActivity().addMenuProvider(
+            object: MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menu.clear()
+                    menuInflater.inflate(R.menu.menu_search, menu)
+                    
+                    menu.findItem(
+                        when (searchViewModel.sort) {
+                            NEW_TO_OLD -> R.id.sort_new
+                            OLD_TO_NEW -> R.id.sort_old
+                            MORE_LIKES -> R.id.sort_likes
+                            MORE_VIEWS -> R.id.sort_views
+                        }
+                    ).isChecked = true
+                }
+    
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    var sort: Sort? = null
+                    when (menuItem.itemId) {
+                        R.id.sort_new -> {
+                            sort = NEW_TO_OLD
+                        }
+                        R.id.sort_old -> {
+                            sort = OLD_TO_NEW
+                        }
+                        R.id.sort_likes -> {
+                            sort = MORE_LIKES
+                        }
+                        R.id.sort_views -> {
+                            sort = MORE_VIEWS
+                        }
+                    }
+                    if (sort != null) {
+                        menuItem.isChecked = true
+                        mainViewModel.account.value?.let { account ->
+                            if (account.isSignedIn) {
+                                notifyClear()
+                                searchViewModel.updateSort(account.token, sort, fragment.lifecycleScope)
+                            }
+                        }
+                    }
+                    return sort == null
+                }
+            },
+            fragment,
+            STARTED
+        )
     }
     
     private fun beginSearch(text: String, fragment: Fragment, mainViewModel: MainViewModel, searchViewModel: SearchViewModel) {
