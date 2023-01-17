@@ -3,11 +3,10 @@ package projekt.cloud.piece.pic.widget
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View.MeasureSpec.UNSPECIFIED
-import com.google.android.material.imageview.ShapeableImageView
 import kotlin.math.min
 import projekt.cloud.piece.pic.R
 
-class FixRatioImageView(context: Context, attributeSet: AttributeSet): ShapeableImageView(context, attributeSet) {
+class FixRatioImageView(context: Context, attributeSet: AttributeSet): GlideShapeableImageView(context, attributeSet) {
     
     private var ratioX: Int
     private var ratioY: Int
