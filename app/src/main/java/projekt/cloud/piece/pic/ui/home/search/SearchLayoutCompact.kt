@@ -20,7 +20,6 @@ import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 import projekt.cloud.piece.pic.MainViewModel
 import projekt.cloud.piece.pic.R
-import projekt.cloud.piece.pic.api.Sort
 import projekt.cloud.piece.pic.api.Sort.MORE_LIKES
 import projekt.cloud.piece.pic.api.Sort.MORE_VIEWS
 import projekt.cloud.piece.pic.api.Sort.NEW_TO_OLD
@@ -91,20 +90,12 @@ open class SearchLayoutCompact private constructor(protected val binding: Fragme
                 }
     
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                    var sort: Sort? = null
-                    when (menuItem.itemId) {
-                        R.id.sort_new -> {
-                            sort = NEW_TO_OLD
-                        }
-                        R.id.sort_old -> {
-                            sort = OLD_TO_NEW
-                        }
-                        R.id.sort_likes -> {
-                            sort = MORE_LIKES
-                        }
-                        R.id.sort_views -> {
-                            sort = MORE_VIEWS
-                        }
+                    val sort = when (menuItem.itemId) {
+                        R.id.sort_new -> NEW_TO_OLD
+                        R.id.sort_old -> OLD_TO_NEW
+                        R.id.sort_likes -> MORE_LIKES
+                        R.id.sort_views -> MORE_VIEWS
+                        else -> null
                     }
                     if (sort != null) {
                         menuItem.isChecked = true
