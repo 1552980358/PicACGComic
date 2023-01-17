@@ -37,7 +37,7 @@ class FixRatioImageView(context: Context, attributeSet: AttributeSet): GlideShap
         var finalHeight: Int
         when {
             widthMeasureMode == UNSPECIFIED -> {
-                finalHeight = MeasureSpec.getSize(heightMeasureMode)
+                finalHeight = MeasureSpec.getSize(heightMeasureSpec)
                 finalWidth = finalHeight * ratioX / ratioY
             }
             heightMeasureMode == UNSPECIFIED -> {
@@ -46,7 +46,7 @@ class FixRatioImageView(context: Context, attributeSet: AttributeSet): GlideShap
             }
             else -> {
                 val maxWidth = MeasureSpec.getSize(widthMeasureSpec)
-                val maxHeight = MeasureSpec.getSize(heightMeasureMode)
+                val maxHeight = MeasureSpec.getSize(heightMeasureSpec)
                 when {
                     ratioX == ratioY -> {
                         val length = min(maxWidth, maxHeight)
