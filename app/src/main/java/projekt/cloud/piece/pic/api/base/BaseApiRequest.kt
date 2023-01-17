@@ -6,7 +6,7 @@ import projekt.cloud.piece.pic.util.HttpRequest.HttpRequestUtil.HttpRequestState
 
 abstract class BaseApiRequest {
     
-    companion object {
+    companion object BaseApiRequestUtil {
         @JvmStatic
         suspend fun <R: BaseApiRequest> R.request() = apply {
             requestInternal()

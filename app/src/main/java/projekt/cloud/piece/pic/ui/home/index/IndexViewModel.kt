@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import projekt.cloud.piece.pic.api.base.BaseApiRequest.Companion.request
+import projekt.cloud.piece.pic.api.base.BaseApiRequest.BaseApiRequestUtil.request
 import projekt.cloud.piece.pic.api.collections.Collections
 import projekt.cloud.piece.pic.api.collections.CollectionsResponseBody
 import projekt.cloud.piece.pic.api.comics.random.Random

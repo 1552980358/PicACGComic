@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
-import projekt.cloud.piece.pic.api.base.BaseApiRequest.Companion.request
+import projekt.cloud.piece.pic.api.base.BaseApiRequest.BaseApiRequestUtil.request
 import projekt.cloud.piece.pic.api.comics.episodes.Episodes
 import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.METADATA_COMPLETE
 import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.METADATA_IO_EXCEPTION

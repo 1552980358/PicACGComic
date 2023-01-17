@@ -13,7 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.withContext
 import projekt.cloud.piece.pic.api.auth.SignIn
-import projekt.cloud.piece.pic.api.base.BaseApiRequest.Companion.request
+import projekt.cloud.piece.pic.api.base.BaseApiRequest.BaseApiRequestUtil.request
 import projekt.cloud.piece.pic.databinding.ActivityLauncherBinding
 import projekt.cloud.piece.pic.storage.Account
 import projekt.cloud.piece.pic.storage.Account.AccountUtil.getAccount

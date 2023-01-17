@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
-import projekt.cloud.piece.pic.api.base.BaseApiRequest.Companion.request
+import projekt.cloud.piece.pic.api.base.BaseApiRequest.BaseApiRequestUtil.request
 import projekt.cloud.piece.pic.api.comics.episode.Episode
 import projekt.cloud.piece.pic.api.comics.episode.EpisodeResponseBody.EpisodeImage
 import projekt.cloud.piece.pic.base.BaseCallbackViewModel

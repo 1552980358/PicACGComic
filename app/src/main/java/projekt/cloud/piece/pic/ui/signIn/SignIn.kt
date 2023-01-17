@@ -8,7 +8,7 @@ import com.google.android.material.transition.platform.MaterialSharedAxis
 import kotlinx.coroutines.Job
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.auth.SignIn
-import projekt.cloud.piece.pic.api.base.BaseApiRequest.Companion.request
+import projekt.cloud.piece.pic.api.base.BaseApiRequest.BaseApiRequestUtil.request
 import projekt.cloud.piece.pic.base.BaseFragment
 import projekt.cloud.piece.pic.databinding.FragmentSignInBinding
 import projekt.cloud.piece.pic.ui.signIn.SignInLayoutCompat.SignInLayoutCompatUtil.getLayoutCompat

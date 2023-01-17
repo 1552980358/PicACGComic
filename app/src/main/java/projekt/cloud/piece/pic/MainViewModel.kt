@@ -10,7 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import projekt.cloud.piece.pic.api.auth.SignIn
-import projekt.cloud.piece.pic.api.base.BaseApiRequest.Companion.request
+import projekt.cloud.piece.pic.api.base.BaseApiRequest.BaseApiRequestUtil.request
 import projekt.cloud.piece.pic.storage.Account
 import projekt.cloud.piece.pic.util.ActivityUtil.startActivity
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui

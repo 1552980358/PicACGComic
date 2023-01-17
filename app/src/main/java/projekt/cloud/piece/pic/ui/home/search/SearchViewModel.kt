@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
 import projekt.cloud.piece.pic.api.Sort
 import projekt.cloud.piece.pic.api.Sort.NEW_TO_OLD
-import projekt.cloud.piece.pic.api.base.BaseApiRequest.Companion.request
+import projekt.cloud.piece.pic.api.base.BaseApiRequest.BaseApiRequestUtil.request
 import projekt.cloud.piece.pic.api.comics.search.AdvancedSearch
 import projekt.cloud.piece.pic.api.comics.search.AdvancedSearchResponseBody.Comic
 import projekt.cloud.piece.pic.base.BaseCallbackViewModel
