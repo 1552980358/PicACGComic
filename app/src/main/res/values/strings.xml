@@ -13,6 +13,7 @@
     <string name="nav_home_search">Search</string>
     <string name="nav_home_account">Account</string>
     <string name="nav_home_stars">Stars</string>
+    <string name="nav_home_categories">Categories</string>
     
     <string name="nav_comic_metadata">Comic</string>
     

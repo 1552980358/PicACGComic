@@ -12,5 +12,9 @@
     <fragment
         android:id="@+id/search"
         android:name="projekt.cloud.piece.pic.ui.home.search.Search" />
+    
+    <fragment
+        android:id="@+id/categories"
+        android:name="projekt.cloud.piece.pic.ui.home.categories.Categories" />
 
 </navigation>

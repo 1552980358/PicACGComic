@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <data>
+        <import type="kotlin.jvm.functions.Function1" />
+        <import type="kotlin.Unit" />
+        <variable
+            name="title"
+            type="String" />
+        <variable
+            name="url"
+            type="String" />
+        <variable
+            name="onClick"
+            type="Function1&lt;String, Unit>" />
+    </data>
+    
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?attr/selectableItemBackground"
+        android:onClick="@{() -> onClick.invoke(title)}">
+    
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        
+            <projekt.cloud.piece.pic.widget.FixRatioImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                app:imageUrl="@{url}"
+                app:ratio_x="1"
+                app:ratio_y="1" />
+            
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{title}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+            
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        
+    </com.google.android.material.card.MaterialCardView>
+</layout>

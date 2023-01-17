@@ -9,6 +9,12 @@
         android:title="@string/nav_home_index"
         android:icon="@drawable/ic_round_home_24"
         android:checkable="true" />
+    
+    <item
+        android:id="@+id/categories"
+        android:title="@string/nav_home_categories"
+        android:icon="@drawable/ic_round_grid_24"
+        android:checkable="true" />
 
     <item
         android:id="@+id/search"
