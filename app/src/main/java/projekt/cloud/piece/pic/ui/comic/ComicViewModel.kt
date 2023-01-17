@@ -20,6 +20,7 @@ import projekt.cloud.piece.pic.api.comics.like.Like
 import projekt.cloud.piece.pic.api.comics.metadata.ComicMetadata
 import projekt.cloud.piece.pic.api.comics.metadata.ComicMetadataResponseBody.Comic
 import projekt.cloud.piece.pic.api.comics.metadata.ComicMetadataResponseBody.Creator
+import projekt.cloud.piece.pic.api.image.Image
 import projekt.cloud.piece.pic.base.BaseCallbackViewModel
 import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.EPISODES_COMPLETE
 import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.EPISODES_EMPTY_CONTENT
@@ -115,8 +116,8 @@ class ComicViewModel: BaseCallbackViewModel() {
     val creator: LiveData<Creator?>
         get() = _creator
     
-    private val _creatorAvatar = MutableLiveData<Bitmap?>()
-    val creatorAvatar: MutableLiveData<Bitmap?>
+    private val _creatorAvatar = MutableLiveData<Image?>(null)
+    val creatorAvatar: LiveData<Image?>
         get() = _creatorAvatar
     
     private val _isFavourite = MutableLiveData<Boolean>()
@@ -188,7 +189,7 @@ class ComicViewModel: BaseCallbackViewModel() {
         val responseBody = metadata.responseBody()
         _comic.value = responseBody.comic
         _creator.value = responseBody.creator
-        _creatorAvatar.value = responseBody.creator.avatar.obtainBitmap()
+        _creatorAvatar.value = responseBody.creator.avatar
         _isFavourite.value = responseBody.comic.isFavourite
         _isLiked.value = responseBody.comic.isLiked
         

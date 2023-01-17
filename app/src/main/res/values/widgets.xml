@@ -7,4 +7,9 @@
     </declare-styleable>
     <integer name="fix_ratio_image_view_ratio_default">0</integer>
     
+    <declare-styleable name="GlideShapeableImageView">
+        <attr name="imageUrl" format="string" />
+        <attr name="defaultImage" format="reference" />
+    </declare-styleable>
+    
 </resources>

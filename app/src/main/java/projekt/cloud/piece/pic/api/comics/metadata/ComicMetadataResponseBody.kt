@@ -75,7 +75,7 @@ data class ComicMetadataResponseBody(val code: Int, val message: String, private
         @SerialName("characters")
         val characterList: List<String>,
         val role: String,
-        val avatar: Image
+        val avatar: Image? = null
     )
     
 }
