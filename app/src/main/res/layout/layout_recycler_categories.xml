@@ -9,9 +9,6 @@
             name="title"
             type="String" />
         <variable
-            name="url"
-            type="String" />
-        <variable
             name="onClick"
             type="Function1&lt;String, Unit>" />
     </data>
@@ -22,27 +19,34 @@
         android:foreground="?attr/selectableItemBackground"
         android:onClick="@{() -> onClick.invoke(title)}">
     
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-        
+            android:layout_height="wrap_content">
+    
             <projekt.cloud.piece.pic.widget.FixRatioImageView
+                android:id="@+id/fix_ratio_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scaleType="fitXY"
-                app:imageUrl="@{url}"
+                app:shapeAppearance="@style/Widget.ShapeableImageView.RoundCorners.Full"
                 app:ratio_x="1"
-                app:ratio_y="1" />
-            
+                app:ratio_y="1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+    
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@{title}"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                app:layout_constraintTop_toBottomOf="@id/fix_ratio_image_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
             
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.constraintlayout.widget.ConstraintLayout>
         
     </com.google.android.material.card.MaterialCardView>
 </layout>

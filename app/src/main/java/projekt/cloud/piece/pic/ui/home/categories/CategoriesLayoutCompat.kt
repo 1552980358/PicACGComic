@@ -51,9 +51,9 @@ abstract class CategoriesLayoutCompat private constructor(
     
     open fun setupActionBar(fragment: Fragment, drawerHostFragment: Fragment) = Unit
     
-    open fun setupRecyclerView(categoryList: List<Category>, resources: Resources) {
+    open fun setupRecyclerView(categoryList: List<Category>, fragment: Fragment, resources: Resources) {
         (recyclerView.layoutManager as GridLayoutManager).spanCount = recyclerViewGrid
-        recyclerView.adapter = RecyclerViewAdapter(categoryList) { title -> }
+        recyclerView.adapter = RecyclerViewAdapter(categoryList, fragment) { title -> }
     }
     
     override fun notifyClear() = Unit
@@ -84,20 +84,16 @@ abstract class CategoriesLayoutCompat private constructor(
             }
         }
     
-        override fun setupRecyclerView(categoryList: List<Category>, resources: Resources) {
-            super.setupRecyclerView(categoryList, resources)
-            
+        override fun setupRecyclerView(categoryList: List<Category>, fragment: Fragment, resources: Resources) {
+            super.setupRecyclerView(categoryList, fragment, resources)
             val verticalMargin = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_ver_8)
             val horizontalMarginInner = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_hor_8)
-            
             recyclerView.addItemDecoration(
                 object: ItemDecoration() {
                     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: State) {
                         super.getItemOffsets(outRect, view, parent, state)
                         outRect.bottom = verticalMargin
-                        if ((view.layoutParams as GridLayoutManager.LayoutParams).spanIndex == 0) {
-                            outRect.right = horizontalMarginInner
-                        }
+                        outRect.right = horizontalMarginInner
                     }
                 }
             )
@@ -114,20 +110,16 @@ abstract class CategoriesLayoutCompat private constructor(
         override val recyclerViewGrid: Int
             get() = GRID_SPAN
     
-        override fun setupRecyclerView(categoryList: List<Category>, resources: Resources) {
-            super.setupRecyclerView(categoryList, resources)
-        
+        override fun setupRecyclerView(categoryList: List<Category>, fragment: Fragment, resources: Resources) {
+            super.setupRecyclerView(categoryList, fragment, resources)
             val verticalMargin = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_ver_8)
             val horizontalMarginInner = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_hor_8)
-        
             recyclerView.addItemDecoration(
                 object: ItemDecoration() {
                     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: State) {
                         super.getItemOffsets(outRect, view, parent, state)
                         outRect.bottom = verticalMargin
-                        if ((view.layoutParams as GridLayoutManager.LayoutParams).spanIndex in (0 until GRID_SPAN - 1)) {
-                            outRect.right = horizontalMarginInner
-                        }
+                        outRect.right = horizontalMarginInner
                     }
                 }
             )
@@ -144,20 +136,16 @@ abstract class CategoriesLayoutCompat private constructor(
         override val recyclerViewGrid: Int
             get() = GRID_SPAN
         
-        override fun setupRecyclerView(categoryList: List<Category>, resources: Resources) {
-            super.setupRecyclerView(categoryList, resources)
-        
+        override fun setupRecyclerView(categoryList: List<Category>, fragment: Fragment, resources: Resources) {
+            super.setupRecyclerView(categoryList, fragment, resources)
             val verticalMargin = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_ver_8)
             val horizontalMarginInner = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_hor_8)
-        
             recyclerView.addItemDecoration(
                 object: ItemDecoration() {
                     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: State) {
                         super.getItemOffsets(outRect, view, parent, state)
                         outRect.bottom = verticalMargin
-                        if ((view.layoutParams as GridLayoutManager.LayoutParams).spanIndex in (0 until GRID_SPAN - 1)) {
-                            outRect.right = horizontalMarginInner
-                        }
+                        outRect.right = horizontalMarginInner
                     }
                 }
             )

@@ -48,7 +48,7 @@ class Categories: BaseCallbackFragment<FragmentCategoriesBinding, CategoriesView
     }
     
     override fun onSetupView(binding: FragmentCategoriesBinding) {
-        layoutCompat.setupRecyclerView(viewModel.categoryList, resources)
+        layoutCompat.setupRecyclerView(viewModel.categoryList, this, resources)
     }
     
     override fun onSetupActionBar(binding: FragmentCategoriesBinding) {
