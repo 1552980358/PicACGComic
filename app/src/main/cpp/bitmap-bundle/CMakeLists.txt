@@ -18,14 +18,14 @@ list(
 )
 
 add_library(
-        bitmap-bundle-lib
+        bitmap-bundle
         SHARED
         ${BITMAP-BUNDLE-SRC-H}
         ${BITMAP-BUNDLE-SRC-CPP}
 )
 
 target_link_libraries(
-        bitmap-bundle-lib
+        bitmap-bundle
         jnigraphics
         ${log-lib}
 )

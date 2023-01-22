@@ -13,7 +13,7 @@ class BitmapBundle: Serializable, AutoCloseable {
     
     companion object {
         
-        private const val BITMAP_BUNDLE_LIB = "bitmap-bundle-lib"
+        private const val BITMAP_BUNDLE_LIB = "bitmap-bundle"
         
         init {
             System.loadLibrary(BITMAP_BUNDLE_LIB)
