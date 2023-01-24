@@ -9,6 +9,15 @@ import projekt.cloud.piece.pic.api.image.Image
 @Serializable
 data class ComicsResponseBody(val code: Int, val message: String, private val data: Data) {
     
+    private val comics: Comics
+        get() = data.comics
+    
+    val pages: Int
+        get() = comics.pages
+    
+    val comicList: List<Comic>
+        get() = comics.comicList
+    
     @Serializable
     data class Data(val comics: Comics)
     
