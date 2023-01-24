@@ -1,5 +1,7 @@
 package projekt.cloud.piece.pic.api.comics
 
+import java.net.URLEncoder
+import java.nio.charset.Charset
 import kotlinx.coroutines.withContext
 import projekt.cloud.piece.pic.api.ApiConstants.PICA_COMIC_API_DOMAIN
 import projekt.cloud.piece.pic.api.Header
@@ -26,8 +28,9 @@ class Comics private constructor(
         this(token, category, page.toString(), sort.string)
     
     override suspend fun requestApi(): HttpRequest {
+        @Suppress("BlockingMethodInNonBlockingContext")
         val query = mapOf(
-            API_COMICS_QUERY_CATEGORY to category,
+            API_COMICS_QUERY_CATEGORY to URLEncoder.encode(category, Charset.defaultCharset().displayName()),
             API_COMICS_QUERY_PAGE to page,
             API_COMICS_QUERY_SORT to sort
         ).asQueryStr
