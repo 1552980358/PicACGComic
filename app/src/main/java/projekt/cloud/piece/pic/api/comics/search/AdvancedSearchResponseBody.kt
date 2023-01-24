@@ -64,7 +64,7 @@ data class AdvancedSearchResponseBody(val code: Int, val message: String, privat
         private companion object
         
         val categories: String
-            get() = categoryList.joinToString(separator = " ") { it }
+            get() = categoryList.joinToString(separator = " ")
         
         val createDateStr = createDate.str
         val updateDateStr = updateDate.str
