@@ -7,7 +7,7 @@ import projekt.cloud.piece.pic.api.ApiConstants.IGNORE_STRING
 import projekt.cloud.piece.pic.api.image.Image
 
 @Serializable
-data class ComicsResponseBody(val code: Int, val message: Int, private val data: Data) {
+data class ComicsResponseBody(val code: Int, val message: String, private val data: Data) {
     
     @Serializable
     data class Data(val comics: Comics)
