@@ -17,6 +17,7 @@ import projekt.cloud.piece.pic.ui.home.categories.CategoriesViewModel.Categories
 import projekt.cloud.piece.pic.ui.home.categories.CategoriesViewModel.CategoriesViewModelUtil.CATEGORIES_INVALID_STATE_CODE
 import projekt.cloud.piece.pic.ui.home.categories.CategoriesViewModel.CategoriesViewModelUtil.CATEGORIES_IO_EXCEPTION
 import projekt.cloud.piece.pic.ui.home.categories.CategoriesViewModel.CategoriesViewModelUtil.CATEGORIES_REJECTED
+import projekt.cloud.piece.pic.util.FragmentUtil.findParentAs
 import projekt.cloud.piece.pic.util.LayoutSizeMode
 
 class Categories: BaseCallbackFragment<FragmentCategoriesBinding, CategoriesViewModel>() {
@@ -25,21 +26,15 @@ class Categories: BaseCallbackFragment<FragmentCategoriesBinding, CategoriesView
         const val TAG = "Categories"
     }
     
-    private val home: Home
-        get() = findParentAs()
+    private lateinit var layoutCompat: CategoriesLayoutCompat
     
     private val mainViewModel: MainViewModel by activityViewModels()
     
-    private lateinit var layoutCompat: CategoriesLayoutCompat
+    private val home: Home
+        get() = findParentAs()
     
     override fun onBindData(binding: FragmentCategoriesBinding) {
         binding.mainViewModel = mainViewModel
-        mainViewModel.account.observe(viewLifecycleOwner) {
-            when {
-                it.isSignedIn -> viewModel.scopedObtainCategories(it.token, lifecycleScope)
-                else -> mainViewModel.performSignIn(requireActivity())
-            }
-        }
     }
     
     override fun onSetupLayoutCompat(binding: FragmentCategoriesBinding, layoutSizeMode: LayoutSizeMode) {
@@ -49,6 +44,12 @@ class Categories: BaseCallbackFragment<FragmentCategoriesBinding, CategoriesView
     
     override fun onSetupView(binding: FragmentCategoriesBinding) {
         layoutCompat.setupRecyclerView(viewModel.categoryList, this, resources)
+        mainViewModel.account.observe(viewLifecycleOwner) {
+            when {
+                it.isSignedIn -> viewModel.scopedObtainCategories(it.token, lifecycleScope)
+                else -> mainViewModel.performSignIn(requireActivity())
+            }
+        }
     }
     
     override fun onSetupActionBar(binding: FragmentCategoriesBinding) {

@@ -2,12 +2,38 @@
 <navigation
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph"
+    android:id="@+id/nav_graph_main"
     app:startDestination="@id/home">
 
     <fragment
         android:id="@+id/home"
         android:name="projekt.cloud.piece.pic.ui.home.Home">
+        <action
+            android:id="@+id/to_comic"
+            app:destination="@id/comic">
+            <argument
+                android:name="id"
+                app:argType="string" />
+            <argument
+                android:name="title"
+                app:argType="string" />
+            <argument
+                android:name="cover"
+                app:argType="projekt.cloud.piece.pic.util.BitmapBundle"
+                app:nullable="true" />
+        </action>
+        <action
+            android:id="@+id/to_category"
+            app:destination="@id/category">
+            <argument
+                android:name="title"
+                app:argType="string" />
+        </action>
+    </fragment>
+    
+    <fragment
+        android:id="@+id/category"
+        android:name="projekt.cloud.piece.pic.ui.category.Category">
         <action
             android:id="@+id/to_comic"
             app:destination="@id/comic">

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <data>
+        <import type="kotlin.jvm.functions.Function3" />
+        <import type="kotlin.Unit" />
+        <import type="androidx.appcompat.widget.AppCompatImageView" />
+        
+        <variable
+            name="id"
+            type="String" />
+        <variable
+            name="title"
+            type="String" />
+        <variable
+            name="author"
+            type="String" />
+        <variable
+            name="categories"
+            type="String" />
+        <variable
+            name="likes"
+            type="Integer" />
+        <variable
+            name="onClick"
+            type="Function3&lt;String, String, AppCompatImageView, Unit>" />
+    </data>
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:onClick="@{() -> onClick.invoke(id, title, shapeableImageView)}"
+        android:paddingHorizontal="@dimen/md_spec_spacing_hor_16"
+        android:paddingVertical="@dimen/md_spec_spacing_ver_8">
+        
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/shapeable_image_view"
+            android:layout_width="@dimen/search_recycler_cover_size_width"
+            android:layout_height="@dimen/search_recycler_cover_size_height"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+        
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="@dimen/constraint_fill_parent"
+            android:layout_height="@dimen/constraint_fill_parent"
+            android:layout_marginStart="@dimen/md_spec_spacing_hor_16"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/shapeable_image_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+            
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/material_text_view_title"
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:minLines="2"
+                android:text="@{title}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+            
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="@dimen/constraint_fill_parent"
+                app:layout_constraintTop_toBottomOf="@id/material_text_view_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+                
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="@dimen/constraint_fill_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{author}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/material_text_view_categories" />
+                
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/material_text_view_categories"
+                    android:layout_width="@dimen/constraint_fill_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{categories}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/constraint_layout_likes" />
+                
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraint_layout_likes"
+                    android:layout_width="@dimen/constraint_fill_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+                    
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/app_compat_image_view_likes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_round_favorite_24"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+                    
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="@dimen/constraint_fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/md_spec_spacing_hor_8"
+                        android:text="@{String.valueOf(likes)}"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/app_compat_image_view_likes"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+                
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph_categories"
+    app:startDestination="@id/empty">
+    
+    <fragment
+        android:id="@+id/empty"
+        android:name="projekt.cloud.piece.pic.ui.empty.Empty">
+        <action
+            android:id="@+id/to_category"
+            app:destination="@id/category">
+            <argument
+                android:name="title"
+                app:argType="string" />
+        </action>
+    </fragment>
+    
+    <fragment
+        android:id="@+id/category"
+        android:name="projekt.cloud.piece.pic.ui.category.Category" >
+        <action
+            android:id="@+id/to_category"
+            app:destination="@id/category">
+            <argument
+                android:name="title"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+</navigation>

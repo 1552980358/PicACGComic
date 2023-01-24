@@ -5,7 +5,9 @@ import android.graphics.Rect
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
@@ -16,6 +18,9 @@ import projekt.cloud.piece.pic.api.comics.categories.CategoriesResponseBody.Cate
 import projekt.cloud.piece.pic.base.BaseRecyclerViewAdapter.BaseRecyclerViewAdapterUtil.adapterInterface
 import projekt.cloud.piece.pic.base.SnackLayoutCompat
 import projekt.cloud.piece.pic.databinding.FragmentCategoriesBinding
+import projekt.cloud.piece.pic.ui.category.CategoryDirections
+import projekt.cloud.piece.pic.ui.empty.EmptyDirections
+import projekt.cloud.piece.pic.ui.home.HomeDirections
 import projekt.cloud.piece.pic.util.AdapterInterface
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.LayoutSizeMode
@@ -39,22 +44,22 @@ abstract class CategoriesLayoutCompat private constructor(
     override val snackContainer: View
         get() = binding.coordinatorLayout
     
-    private lateinit var navController: NavController
-    fun setNavController(navController: NavController) {
+    protected lateinit var navController: NavController
+        private set
+    open fun setNavController(navController: NavController) {
         this.navController = navController
     }
     
     protected val recyclerView: RecyclerView
         get() = binding.recyclerView
     
-    protected abstract val recyclerViewGrid: Int
-    
     open fun setupActionBar(fragment: Fragment, drawerHostFragment: Fragment) = Unit
     
     open fun setupRecyclerView(categoryList: List<Category>, fragment: Fragment, resources: Resources) {
-        (recyclerView.layoutManager as GridLayoutManager).spanCount = recyclerViewGrid
-        recyclerView.adapter = RecyclerViewAdapter(categoryList, fragment) { title -> }
+        recyclerView.adapter = RecyclerViewAdapter(categoryList, fragment, onRecyclerClick)
     }
+    
+    protected abstract val onRecyclerClick: (String) -> Unit
     
     override fun notifyClear() = Unit
     
@@ -68,11 +73,13 @@ abstract class CategoriesLayoutCompat private constructor(
             const val GRID_SPAN = 2
         }
     
+        override val onRecyclerClick: (String) -> Unit
+            get() = {
+                navController.navigate(HomeDirections.toCategory(it))
+            }
+        
         private val toolbar: MaterialToolbar
             get() = binding.materialToolbar!!
-        
-        override val recyclerViewGrid: Int
-            get() = GRID_SPAN
     
         override fun setupActionBar(fragment: Fragment, drawerHostFragment: Fragment) {
             drawerHostFragment.setSupportActionBar(toolbar)
@@ -85,6 +92,7 @@ abstract class CategoriesLayoutCompat private constructor(
         }
     
         override fun setupRecyclerView(categoryList: List<Category>, fragment: Fragment, resources: Resources) {
+            (recyclerView.layoutManager as GridLayoutManager).spanCount = GRID_SPAN
             super.setupRecyclerView(categoryList, fragment, resources)
             val verticalMargin = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_ver_8)
             val horizontalMarginInner = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_hor_8)
@@ -107,10 +115,13 @@ abstract class CategoriesLayoutCompat private constructor(
             const val GRID_SPAN = 4
         }
     
-        override val recyclerViewGrid: Int
-            get() = GRID_SPAN
-    
+        override val onRecyclerClick: (String) -> Unit
+            get() = {
+                navController.navigate(HomeDirections.toCategory(it))
+            }
+        
         override fun setupRecyclerView(categoryList: List<Category>, fragment: Fragment, resources: Resources) {
+            (recyclerView.layoutManager as GridLayoutManager).spanCount = GRID_SPAN
             super.setupRecyclerView(categoryList, fragment, resources)
             val verticalMargin = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_ver_8)
             val horizontalMarginInner = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_hor_8)
@@ -129,23 +140,33 @@ abstract class CategoriesLayoutCompat private constructor(
     
     private class CategoriesLayoutCompatW1240dpImpl(binding: FragmentCategoriesBinding): CategoriesLayoutCompat(binding) {
     
-        private companion object {
-            const val GRID_SPAN = 6
+        private val fragmentContainerView: FragmentContainerView
+            get() = binding.fragmentContainerView!!
+        
+        override val onRecyclerClick: (String) -> Unit
+            get() = {
+                navController.navigate(
+                    when (navController.currentDestination?.id) {
+                        R.id.category -> CategoryDirections.toCategory(it)
+                        else -> EmptyDirections.toCategory(it)
+                    }
+                )
+            }
+    
+        override fun setNavController(navController: NavController) {
+            super.setNavController(
+                fragmentContainerView.getFragment<NavHostFragment>().navController
+            )
         }
     
-        override val recyclerViewGrid: Int
-            get() = GRID_SPAN
-        
         override fun setupRecyclerView(categoryList: List<Category>, fragment: Fragment, resources: Resources) {
             super.setupRecyclerView(categoryList, fragment, resources)
             val verticalMargin = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_ver_8)
-            val horizontalMarginInner = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_hor_8)
             recyclerView.addItemDecoration(
                 object: ItemDecoration() {
                     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: State) {
                         super.getItemOffsets(outRect, view, parent, state)
                         outRect.bottom = verticalMargin
-                        outRect.right = horizontalMarginInner
                     }
                 }
             )
