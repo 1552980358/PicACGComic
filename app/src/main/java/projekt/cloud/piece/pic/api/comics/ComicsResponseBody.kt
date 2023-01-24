@@ -2,6 +2,7 @@ package projekt.cloud.piece.pic.api.comics
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import projekt.cloud.piece.pic.api.ApiConstants.IGNORE_INT
 import projekt.cloud.piece.pic.api.ApiConstants.IGNORE_STRING
 import projekt.cloud.piece.pic.api.image.Image
 
@@ -36,11 +37,11 @@ data class ComicsResponseBody(val code: Int, val message: Int, private val data:
         @SerialName("categories")
         val categoryList: List<String>,
         val finished: Boolean,
+        val likesCount: Int,
         @SerialName("id")
-        private val privateId: String,
-        val totalViews: Int,
-        val totalLikes: Int,
-        val likesCount: Int) {
+        private val privateId: String = IGNORE_STRING,
+        val totalViews: Int = IGNORE_INT,
+        val totalLikes: Int = IGNORE_INT, ) {
         
         val categories: String
             get() = categoryList.joinToString(separator = " ")
