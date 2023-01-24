@@ -14,5 +14,13 @@ object FragmentUtil {
     
     val Fragment.defaultSharedPreference: SharedPreferences
         get() = requireContext().defaultSharedPreference
+    
+    inline fun <reified F: Fragment> Fragment.findParentAs(): F {
+        var parent = requireParentFragment()
+        while (parent !is F) {
+            parent = parent.requireParentFragment()
+        }
+        return parent
+    }
 
 }

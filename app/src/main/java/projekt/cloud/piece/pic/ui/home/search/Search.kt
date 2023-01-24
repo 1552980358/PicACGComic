@@ -15,6 +15,7 @@ import projekt.cloud.piece.pic.ui.home.search.SearchViewModel.SearchViewModelUti
 import projekt.cloud.piece.pic.ui.home.search.SearchViewModel.SearchViewModelUtil.SEARCH_IO_EXCEPTION
 import projekt.cloud.piece.pic.ui.home.search.SearchViewModel.SearchViewModelUtil.SEARCH_PAGE_UPDATE
 import projekt.cloud.piece.pic.ui.home.search.SearchViewModel.SearchViewModelUtil.SEARCH_REJECTED
+import projekt.cloud.piece.pic.util.FragmentUtil.findParentAs
 import projekt.cloud.piece.pic.util.LayoutSizeMode
 
 class Search: BaseCallbackFragment<FragmentSearchBinding, SearchViewModel>() {

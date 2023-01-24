@@ -26,14 +26,6 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     private val viewBindingClass =
         ((this::class.java.genericSuperclass as ParameterizedType)
             .actualTypeArguments.first() as Class<VB>)
-    
-    protected inline fun <reified F: Fragment> findParentAs(): F {
-        var parent = requireParentFragment()
-        while (parent !is F) {
-            parent = parent.requireParentFragment()
-        }
-        return parent
-    }
 
     protected lateinit var layoutSizeMode: LayoutSizeMode
         private set

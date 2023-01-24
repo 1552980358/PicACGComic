@@ -17,6 +17,7 @@ import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConsta
 import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.INDEX_INVALID_STATE_CODE
 import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.INDEX_IO_EXCEPTION
 import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.INDEX_REJECTED
+import projekt.cloud.piece.pic.util.FragmentUtil.findParentAs
 import projekt.cloud.piece.pic.util.LayoutSizeMode
 
 class Index: BaseCallbackFragment<FragmentIndexBinding, IndexViewModel>() {
