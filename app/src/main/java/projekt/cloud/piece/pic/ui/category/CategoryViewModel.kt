@@ -63,10 +63,10 @@ class CategoryViewModel: BaseCallbackViewModel() {
     }
     
     private fun resetAndObtainCategoryComic(token: String, category: String, sort: Sort, coroutineScope: CoroutineScope = viewModelScope) {
-        page = 1
-        _comicList.clear()
-        hasMorePage = true
         coroutineScope.ui {
+            page = 1
+            _comicList.clear()
+            hasMorePage = true
             obtainNewPage(token, category, page, sort)
         }
     }
