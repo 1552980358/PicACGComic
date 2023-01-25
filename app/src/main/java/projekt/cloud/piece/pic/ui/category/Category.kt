@@ -25,6 +25,8 @@ class Category: BaseCallbackFragment<FragmentCategoryBinding, CategoryViewModel>
         const val TAG = "Category"
     }
     
+    private val mainViewModel: MainViewModel by activityViewModels()
+    
     override fun onSetupAnimation(layoutSizeMode: LayoutSizeMode) {
         enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
         exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
@@ -33,18 +35,8 @@ class Category: BaseCallbackFragment<FragmentCategoryBinding, CategoryViewModel>
     private lateinit var layoutCompat: CategoryLayoutCompat
     
     override fun onBindData(binding: FragmentCategoryBinding) {
-        val mainViewModel: MainViewModel by activityViewModels()
         binding.mainViewModel = mainViewModel
         binding.categoryViewModel = viewModel
-        val title = requireArguments().getString(getString(R.string.category_title))
-        if (!title.isNullOrBlank()) {
-            mainViewModel.account.observe(viewLifecycleOwner) {
-                when {
-                    it.isSignedIn -> viewModel.scopedObtainCategoryComics(it.token, title, lifecycleScope)
-                    else -> mainViewModel.performSignIn(requireActivity())
-                }
-            }
-        }
     }
     
     override fun onSetupLayoutCompat(binding: FragmentCategoryBinding, layoutSizeMode: LayoutSizeMode) {
@@ -58,6 +50,15 @@ class Category: BaseCallbackFragment<FragmentCategoryBinding, CategoryViewModel>
     
     override fun onSetupView(binding: FragmentCategoryBinding) {
         layoutCompat.setupRecyclerView(this, viewModel.comicList)
+        mainViewModel.account.observe(viewLifecycleOwner) {
+            val title = requireArguments().getString(getString(R.string.category_title))
+            if (!title.isNullOrBlank()) {
+                when {
+                    it.isSignedIn -> viewModel.scopedObtainCategoryComics(it.token, title, lifecycleScope)
+                    else -> mainViewModel.performSignIn(requireActivity())
+                }
+            }
+        }
     }
     
     override fun onCallbackReceived(code: Int, message: String?, responseCode: Int?, errorCode: Int?, responseDetail: String?) {
