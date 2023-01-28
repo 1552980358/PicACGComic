@@ -24,8 +24,8 @@
 1) ~~Sign In~~ - `Done`
 2) ~~Collections~~ - `Done`
 3) ~~Random~~ - `Done`
-4) Search - `In Progress`
-5) Category - `In Progress`
+4) ~~Search~~ - `Done`
+5) Category - `Partly Done` + `Need Optimize`
 6) Comment - `Planned`
 7) Download - `Planned`
 
