@@ -25,8 +25,8 @@
 2) ~~Collections~~ - `Done`
 3) ~~Random~~ - `Done`
 4) ~~Search~~ - `Done`
-5) Category - `Partly Done` + `Need Optimize`
-6) Comment - `Planned`
+5) ~~Category~~ - `Done`
+6) Comment - `In Progress`
 7) Download - `Planned`
 
 ## Build
