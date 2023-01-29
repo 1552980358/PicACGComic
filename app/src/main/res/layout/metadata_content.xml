@@ -49,16 +49,15 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
                     
-                    <projekt.cloud.piece.pic.widget.GlideShapeableImageView
-                        android:id="@+id/glide_shapeable_image_view_avatar"
+                    <projekt.cloud.piece.pic.widget.DefaultedImageView
+                        android:id="@+id/defaulted_image_view"
                         android:layout_width="@dimen/md_spec_avatar_size"
                         android:layout_height="@dimen/md_spec_avatar_size"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:shapeAppearance="@style/Widget.ShapeableImageView.Circle"
-                        app:defaultImage="@drawable/ic_round_account_circle_24"
-                        imageUrl="@{comicViewModel.creatorAvatar.url}" />
+                        app:defaultImage="@drawable/ic_round_account_circle_24" />
                 
                     <com.google.android.material.checkbox.MaterialCheckBox
                         android:id="@+id/material_check_box"
@@ -77,7 +76,7 @@
                         android:layout_marginStart="@dimen/md_spec_spacing_hor_16"
                         android:layout_marginEnd="@dimen/md_spec_spacing_hor_8"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/glide_shapeable_image_view_avatar"
+                        app:layout_constraintStart_toEndOf="@id/defaulted_image_view"
                         app:layout_constraintEnd_toStartOf="@id/material_check_box"
                         app:layout_constraintBottom_toBottomOf="parent">
                     

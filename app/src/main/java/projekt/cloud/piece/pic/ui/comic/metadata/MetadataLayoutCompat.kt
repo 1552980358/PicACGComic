@@ -1,6 +1,7 @@
 package projekt.cloud.piece.pic.ui.comic.metadata
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -10,11 +11,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.chip.ChipGroup
 import kotlinx.coroutines.CoroutineScope
 import projekt.cloud.piece.pic.api.comics.episodes.EpisodesResponseBody.Episode
+import projekt.cloud.piece.pic.api.image.Image
 import projekt.cloud.piece.pic.base.BaseRecyclerViewAdapter.BaseRecyclerViewAdapterUtil.adapterInterface
 import projekt.cloud.piece.pic.base.SnackLayoutCompat
 import projekt.cloud.piece.pic.databinding.ChipBinding
@@ -29,6 +36,7 @@ import projekt.cloud.piece.pic.util.LayoutSizeMode
 import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
 import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
 import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
+import projekt.cloud.piece.pic.widget.DefaultedImageView
 
 abstract class MetadataLayoutCompat(protected val binding: FragmentMetadataBinding): SnackLayoutCompat(), AdapterInterface {
 
@@ -59,6 +67,9 @@ abstract class MetadataLayoutCompat(protected val binding: FragmentMetadataBindi
     private val recyclerView: RecyclerView
         get() = binding.metadataChapters.recyclerView
     
+    private val defaultedImageView: DefaultedImageView
+        get() = metadataContent.defaultedImageView
+    
     private lateinit var navController: NavController
     
     fun setNavController(navController: NavController) {
@@ -83,6 +94,34 @@ abstract class MetadataLayoutCompat(protected val binding: FragmentMetadataBindi
     
     override val snackContainer: View
         get() = binding.root
+    
+    fun startLoadAvatar(fragment: Fragment, image: Image?) {
+        when {
+            image != null -> {
+                Glide.with(fragment)
+                    .load(image.getUrl())
+                    .listener(
+                        object: RequestListener<Drawable> {
+                            override fun onLoadFailed(
+                                e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean
+                            ): Boolean {
+                                defaultedImageView.switchToDefault()
+                                return false
+                            }
+                            override fun onResourceReady(
+                                resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean
+                            ): Boolean {
+                                return false
+                            }
+                        }
+                    )
+                    .into(defaultedImageView)
+            }
+            else -> {
+                defaultedImageView.switchToDefault()
+            }
+        }
+    }
     
     fun startUpdateCategoryAndTag(coroutineScope: CoroutineScope, context: Context, categoryList: List<String>, tagList: List<String>) {
         val layoutInflater = LayoutInflater.from(context)

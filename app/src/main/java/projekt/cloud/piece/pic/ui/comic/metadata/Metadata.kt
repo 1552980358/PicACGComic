@@ -66,6 +66,7 @@ class Metadata: BaseCallbackFragment<FragmentMetadataBinding, ComicViewModel>() 
         binding.comicViewModel = viewModel
         viewModel.comic.observe(viewLifecycleOwner) {
             it?.let {
+                layoutCompat.startLoadAvatar(this, it.creator.avatar)
                 layoutCompat.startUpdateCategoryAndTag(lifecycleScope, requireContext(), it.categoryList, it.tagList)
             }
         }

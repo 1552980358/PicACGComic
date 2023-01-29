@@ -6,7 +6,7 @@ import android.view.View.MeasureSpec.UNSPECIFIED
 import kotlin.math.min
 import projekt.cloud.piece.pic.R
 
-class FixRatioImageView(context: Context, attributeSet: AttributeSet): GlideShapeableImageView(context, attributeSet) {
+class FixRatioImageView(context: Context, attributeSet: AttributeSet): DefaultedImageView(context, attributeSet) {
     
     private var ratioX: Int
     private var ratioY: Int
