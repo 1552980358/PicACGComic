@@ -94,16 +94,16 @@ abstract class CategoriesLayoutCompat private constructor(
         }
     
         override fun setupRecyclerView(categoryList: List<Category>, fragment: Fragment, resources: Resources) {
-            (recyclerView.layoutManager as GridLayoutManager).spanCount = GRID_SPAN
             super.setupRecyclerView(categoryList, fragment, resources)
-            val verticalMargin = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_ver_8)
-            val horizontalMarginInner = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_hor_8)
+            val verticalMargin = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_ver_8) / 2
+            val horizontalMargin = resources.getDimensionPixelSize(R.dimen.md_spec_spacing_hor_16)
             recyclerView.addItemDecoration(
                 object: ItemDecoration() {
                     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: State) {
                         super.getItemOffsets(outRect, view, parent, state)
                         outRect.bottom = verticalMargin
-                        outRect.right = horizontalMarginInner
+                        outRect.left = horizontalMargin
+                        outRect.right = horizontalMargin
                     }
                 }
             )
@@ -114,7 +114,7 @@ abstract class CategoriesLayoutCompat private constructor(
     private class CategoriesLayoutCompatW600dpImpl(binding: FragmentCategoriesBinding): CategoriesLayoutCompat(binding) {
     
         private companion object {
-            const val GRID_SPAN = 4
+            const val GRID_SPAN = 2
         }
     
         override val onRecyclerClick: (String) -> Unit

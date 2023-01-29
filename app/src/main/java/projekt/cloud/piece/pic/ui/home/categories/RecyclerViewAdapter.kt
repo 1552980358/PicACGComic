@@ -9,6 +9,7 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.google.android.material.imageview.ShapeableImageView
 import projekt.cloud.piece.pic.api.comics.categories.CategoriesResponseBody.Category
 import projekt.cloud.piece.pic.api.image.Image
 import projekt.cloud.piece.pic.base.BaseRecyclerViewAdapter
@@ -16,7 +17,6 @@ import projekt.cloud.piece.pic.base.BaseRecyclerViewHolder
 import projekt.cloud.piece.pic.databinding.LayoutRecyclerCategoriesBinding
 import projekt.cloud.piece.pic.ui.home.categories.RecyclerViewAdapter.RecyclerViewHolder
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
-import projekt.cloud.piece.pic.widget.FixRatioImageView
 
 class RecyclerViewAdapter(
     categoryList: List<Category>,
@@ -32,8 +32,8 @@ class RecyclerViewAdapter(
             binding.onClick = onClick
         }
         
-        private val fixRatioImageView: FixRatioImageView
-            get() = binding.fixRatioImageView
+        private val shapeableImageView: ShapeableImageView
+            get() = binding.shapeableImageView
         
         fun onBind(category: Category, fragment: Fragment) {
             binding.title = category.title
@@ -49,7 +49,7 @@ class RecyclerViewAdapter(
                             override fun onLoadFailed(
                                 e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean
                             ): Boolean {
-                                Glide.with(fragment).clear(fixRatioImageView)
+                                Glide.with(fragment).clear(shapeableImageView)
                                 loadImage(thumb, fragment)
                                 return false
                             }
@@ -60,7 +60,7 @@ class RecyclerViewAdapter(
                             }
                         }
                     )
-                    .into(fixRatioImageView)
+                    .into(shapeableImageView)
             }
         }
         

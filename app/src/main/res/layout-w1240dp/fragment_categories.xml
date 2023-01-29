@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     
     <data>
         <import type="projekt.cloud.piece.pic.MainViewModel" />
@@ -51,7 +52,8 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toTopOf="@id/inset_space_view_bottom"
-                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        tools:listitem="@layout/layout_recycler_categories" />
             
                     <projekt.cloud.piece.pic.widget.InsetSpaceView
                         android:id="@+id/inset_space_view_bottom"

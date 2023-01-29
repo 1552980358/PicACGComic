@@ -23,8 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         
-            <projekt.cloud.piece.pic.widget.FixRatioImageView
-                android:id="@+id/fix_ratio_image_view"
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/shapeable_image_view"
                 android:layout_width="@dimen/md_spec_image_size"
                 android:layout_height="@dimen/md_spec_image_size"
                 android:scaleType="fitXY"
@@ -41,7 +41,7 @@
                 android:text="@{title}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/fix_ratio_image_view"
+                app:layout_constraintStart_toEndOf="@id/shapeable_image_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent" />
     
