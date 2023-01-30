@@ -80,7 +80,7 @@ data class CommentsResponseBody(val code: Int, val message: String, private val 
         val characterList: List<String>,
         val title: String = IGNORE_STRING,
         val role: String,
-        val verified: Boolean,
+        val verified: Boolean = false,
         val exp: Int,
         val level: Int,
     )
