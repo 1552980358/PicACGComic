@@ -2,6 +2,7 @@ package projekt.cloud.piece.pic.api.comics.comments
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import projekt.cloud.piece.pic.api.ApiConstants.IGNORE_INT
 import projekt.cloud.piece.pic.api.ApiConstants.IGNORE_STRING
 import projekt.cloud.piece.pic.api.base.BaseDateBody
 import projekt.cloud.piece.pic.api.base.Date
@@ -10,11 +11,23 @@ import projekt.cloud.piece.pic.api.image.Image
 @Serializable
 data class CommentsResponseBody(val code: Int, val message: String, private val data: Data) {
     
+    val pages: Int
+        get() = data.comments.pages
+    
+    val page: Int
+        get() = data.comments.page
+    
+    val topCommentList: List<Comment>
+        get() = data.topCommentList
+    
+    val commentList: List<Comment>
+        get() = data.comments.commentList
+    
     @Serializable
     data class Data(
         val comments: Comments,
         @SerialName("topComments")
-        val topCommentList: List<Comment>? = null
+        val topCommentList: List<Comment> = listOf()
     )
     
     @Serializable
@@ -37,10 +50,10 @@ data class CommentsResponseBody(val code: Int, val message: String, private val 
         val user: User,
         @SerialName("content")
         val comment: String,
-        val isLiked: Int,
-        val totalComments: Int,
+        val isLiked: Boolean,
         val likesCount: Int,
         val commentsCount: Int,
+        val totalComments: Int = IGNORE_INT,
         @SerialName("created_at")
         val createDate: Date,
         val isTop: Boolean,
@@ -59,8 +72,10 @@ data class CommentsResponseBody(val code: Int, val message: String, private val 
         @SerialName("_id")
         val id: String,
         val name: String,
+        val avatar: Image? = null,
         val gender: String,
         val slogan: String = IGNORE_STRING,
+        val character: String = IGNORE_STRING,
         @SerialName("characters")
         val characterList: List<String>,
         val title: String = IGNORE_STRING,
@@ -68,7 +83,6 @@ data class CommentsResponseBody(val code: Int, val message: String, private val 
         val verified: Boolean,
         val exp: Int,
         val level: Int,
-        val avatar: Image
     )
 
 }
