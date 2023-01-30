@@ -80,7 +80,7 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation("androidx.window:window:1.0.0")
     implementation("com.fasterxml.uuid:java-uuid-generator:4.0.1")
-    implementation("com.google.android.material:material:1.8.0-rc01")
+    implementation("com.google.android.material:material:1.9.0-alpha01")
     implementation("com.github.bumptech.glide:glide:4.14.2")
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.0")
