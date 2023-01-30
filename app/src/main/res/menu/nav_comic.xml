@@ -9,5 +9,11 @@
         android:title="@string/nav_comic_metadata"
         android:icon="@drawable/ic_round_book_24"
         android:checkable="true" />
+    
+    <item
+        android:id="@+id/comments"
+        android:checkable="true"
+        android:icon="@drawable/ic_round_comment_bubble"
+        android:title="@string/nav_comic_comments" />
 
 </menu>

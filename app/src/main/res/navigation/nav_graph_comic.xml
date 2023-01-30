@@ -4,8 +4,16 @@
     android:id="@+id/nav_graph_comic"
     app:startDestination="@id/metadata">
     
+    <action
+        android:id="@+id/to_metadata"
+        app:destination="@id/metadata" />
+    
     <fragment
         android:id="@+id/metadata"
         android:name="projekt.cloud.piece.pic.ui.comic.metadata.Metadata" />
+    
+    <fragment
+        android:id="@+id/comments"
+        android:name="projekt.cloud.piece.pic.ui.comic.comments.Comments" />
 
 </navigation>

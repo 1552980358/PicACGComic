@@ -12,7 +12,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigationrail.NavigationRailView
 import com.google.android.material.transition.platform.MaterialSharedAxis
+import kotlin.math.min
 import projekt.cloud.piece.pic.MainViewModel
+import projekt.cloud.piece.pic.R
+import projekt.cloud.piece.pic.databinding.ComicNavigationMenuItemActionBinding
 import projekt.cloud.piece.pic.databinding.FragmentComicBinding
 import projekt.cloud.piece.pic.databinding.NavHeaderComicBinding
 import projekt.cloud.piece.pic.util.LayoutSizeMode
@@ -57,7 +60,20 @@ abstract class ComicLayoutCompat private constructor(protected val binding: Frag
         )
     }
     
+    fun onBackPressed(): Boolean {
+        val childNavController = childNavController
+        if (childNavController.currentDestination?.id != R.id.metadata) {
+            childNavController.navigate(R.id.to_metadata)
+            return false
+        }
+        return true
+    }
+    
     open fun setupHeader(comicViewModel: ComicViewModel, mainViewModel: MainViewModel, lifecycleOwner: LifecycleOwner) = Unit
+    
+    abstract fun disableComment()
+    
+    abstract fun updateCommentCount(commentCount: Int)
     
     private class ComicLayoutCompatImpl(binding: FragmentComicBinding): ComicLayoutCompat(binding) {
     
@@ -66,6 +82,17 @@ abstract class ComicLayoutCompat private constructor(protected val binding: Frag
         
         override fun setupNavigation(fragment: Fragment) {
             bottomNavigationView.setupWithNavController(childNavController)
+        }
+    
+        override fun disableComment() {
+            bottomNavigationView.menu
+                .findItem(R.id.comments)
+                .isEnabled = false
+        }
+        
+        override fun updateCommentCount(commentCount: Int) {
+            bottomNavigationView.getOrCreateBadge(R.id.comments)
+                .number = commentCount
         }
         
     }
@@ -95,10 +122,24 @@ abstract class ComicLayoutCompat private constructor(protected val binding: Frag
             navHeaderComic.mainViewModel = mainViewModel
             navHeaderComic.lifecycleOwner = lifecycleOwner
         }
+    
+        override fun disableComment() {
+            navigationRailView.menu.findItem(R.id.comments)
+                .isEnabled = false
+        }
+    
+        override fun updateCommentCount(commentCount: Int) {
+            navigationRailView.getOrCreateBadge(R.id.comments)
+                .number = commentCount
+        }
         
     }
     
     private class ComicLayoutCompatW1240dpImpl(binding: FragmentComicBinding): ComicLayoutCompat(binding) {
+        
+        private companion object {
+            const val BADGE_MAX = 999
+        }
         
         private val navigationView: NavigationView
             get() = binding.navigationView!!
@@ -117,6 +158,20 @@ abstract class ComicLayoutCompat private constructor(protected val binding: Frag
             navHeaderComic.comicViewModel = comicViewModel
             navHeaderComic.mainViewModel = mainViewModel
             navHeaderComic.lifecycleOwner = lifecycleOwner
+        }
+    
+        override fun disableComment() {
+            navigationView.menu.findItem(R.id.comments)
+                .isEnabled = false
+        }
+    
+        override fun updateCommentCount(commentCount: Int) {
+            val binding = ComicNavigationMenuItemActionBinding.inflate(
+                LayoutInflater.from(navigationView.context), navigationView, false
+            )
+            binding.commentCount = min(commentCount, BADGE_MAX)
+            navigationView.menu.findItem(R.id.comments)
+                .actionView = binding.root
         }
         
     }
