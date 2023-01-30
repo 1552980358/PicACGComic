@@ -11,8 +11,8 @@ open class DefaultedImageView(context: Context, attributeSet: AttributeSet): Sha
     private val defaultDrawable: Drawable?
     
     init {
-        resources.obtainAttributes(attributeSet, R.styleable.GlideShapeableImageView).use { typedArray ->
-            defaultDrawable = typedArray.getDrawable(R.styleable.GlideShapeableImageView_defaultImage)
+        resources.obtainAttributes(attributeSet, R.styleable.DefaultedImageView).use { typedArray ->
+            defaultDrawable = typedArray.getDrawable(R.styleable.DefaultedImageView_defaultImage)
             switchToDefault()
         }
     }
