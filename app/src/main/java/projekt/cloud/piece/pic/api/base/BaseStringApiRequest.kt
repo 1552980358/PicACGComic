@@ -4,6 +4,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.Response
 import projekt.cloud.piece.pic.api.ErrorResponse.ErrorResponseBody
 import projekt.cloud.piece.pic.api.ErrorResponse.RejectedResponseBody
+import projekt.cloud.piece.pic.util.CoroutineUtil.default
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.SerializeUtil.decodeJson
 
@@ -33,7 +34,7 @@ abstract class BaseStringApiRequest<ResponseBody>: BaseApiRequest() {
         get() = _responseBody.isNullOrBlank()
     
     suspend fun isRejected(): Boolean {
-        return withContext(io) {
+        return withContext(default) {
             runCatching { responseBody.decodeJson<RejectedResponseBody>() }
                 .getOrNull() != null
         }
