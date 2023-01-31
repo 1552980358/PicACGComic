@@ -28,8 +28,5 @@ object CoroutineUtil {
     
     fun CoroutineScope.default(block: suspend CoroutineScope.() -> Unit) =
         CoroutineScope(default).launch(block = block)
-    
-    suspend fun <T> ioContext(block: suspend CoroutineScope.() -> T) =
-        withContext(io, block)
 
 }
