@@ -65,7 +65,7 @@
                     android:id="@+id/inset_space_view_bottom"
                     android:layout_width="@dimen/constraint_fill_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/recycler_view_normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/recycler_view_top"
