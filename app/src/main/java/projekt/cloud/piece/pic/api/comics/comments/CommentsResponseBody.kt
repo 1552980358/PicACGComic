@@ -59,7 +59,7 @@ data class CommentsResponseBody(val code: Int, val message: String, private val 
         val isTop: Boolean,
         val hide: Boolean,
         @SerialName("id")
-        private val privateId: String
+        private val privateId: String = IGNORE_STRING
     ): BaseDateBody() {
         
         val createDateStr: String
