@@ -1,6 +1,7 @@
 package projekt.cloud.piece.pic.ui.comic.comments
 
 import android.view.View
+import android.view.View.GONE
 import androidx.core.widget.NestedScrollView
 import androidx.core.widget.NestedScrollView.OnScrollChangeListener
 import androidx.fragment.app.Fragment
@@ -41,6 +42,9 @@ abstract class CommentsLayoutCompat private constructor(
     private val normal: RecyclerView
         get() = binding.recyclerViewNormal
     
+    private val linearProgressIndicator: LinearProgressIndicator
+        get() = binding.linearProgressIndicator
+    
     open fun setupActionBar(fragment: Fragment) = Unit
     
     open fun setupRecyclerViews(fragment: Fragment, mainViewModel: MainViewModel, commentsViewModel: CommentsViewModel) {
@@ -51,7 +55,15 @@ abstract class CommentsLayoutCompat private constructor(
         normal.setRecycledViewPool(top.recycledViewPool)
     }
     
-    open fun setupLoadingIndicator(fragment: Fragment, commentsViewModel: CommentsViewModel) = Unit
+    fun setupLoadingIndicator(fragment: Fragment, commentsViewModel: CommentsViewModel) {
+        linearProgressIndicator.setVisibilityAfterHide(GONE)
+        commentsViewModel.isUpdating.observe(fragment.viewLifecycleOwner) {
+            when {
+                it -> linearProgressIndicator.show()
+                else -> linearProgressIndicator.hide()
+            }
+        }
+    }
     
     override fun notifyClear() = Unit
     
@@ -68,9 +80,6 @@ abstract class CommentsLayoutCompat private constructor(
         private val nestedScrollView: NestedScrollView
             get() = binding.nestedScrollView
         
-        private val linearProgressIndicator: LinearProgressIndicator
-            get() = binding.linearProgressIndicator!!
-        
         override fun setupActionBar(fragment: Fragment) {
             fragment.setSupportActionBar(toolbar)
         }
@@ -86,15 +95,6 @@ abstract class CommentsLayoutCompat private constructor(
                     }
                 }
             })
-        }
-    
-        override fun setupLoadingIndicator(fragment: Fragment, commentsViewModel: CommentsViewModel) {
-            commentsViewModel.isUpdating.observe(fragment.viewLifecycleOwner) {
-                when {
-                    it -> linearProgressIndicator.show()
-                    else -> linearProgressIndicator.hide()
-                }
-            }
         }
         
     }

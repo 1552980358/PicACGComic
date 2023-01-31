@@ -16,64 +16,86 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nested_scroll_view"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".ui.comic.comments.Comments">
-        
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            
-                <projekt.cloud.piece.pic.widget.InsetSpaceView
-                    android:id="@+id/inset_space_view_top"
-                    android:layout_width="@dimen/constraint_fill_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/recycler_view_top"
-                    inset_vertical="@{mainViewModel.systemInsets.top}" />
-            
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view_top"
-                    android:layout_width="@dimen/constraint_fill_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    app:layout_constraintTop_toBottomOf="@id/inset_space_view_top"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/recycler_view_normal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/layout_recycler_comments" />
-            
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view_normal"
-                    android:layout_width="@dimen/constraint_fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/md_spec_spacing_ver_8"
-                    android:nestedScrollingEnabled="false"
-                    app:layout_constraintTop_toBottomOf="@id/recycler_view_top"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/inset_space_view_bottom"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/layout_recycler_comments" />
-            
-                <projekt.cloud.piece.pic.widget.InsetSpaceView
-                    android:id="@+id/inset_space_view_bottom"
-                    android:layout_width="@dimen/constraint_fill_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/recycler_view_normal"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/recycler_view_top"
-                    inset_vertical="@{mainViewModel.systemInsets.bottom}" />
-        
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="match_parent">
     
-        </androidx.core.widget.NestedScrollView>
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/app_bar_layout"
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@{mainViewModel.systemInsets.top}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+        
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:title="@string/comments_title" />
+        
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/linear_progress_indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true" />
+    
+            </com.google.android.material.appbar.AppBarLayout>
+    
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nested_scroll_view"
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="@dimen/constraint_fill_parent"
+                app:layout_constraintTop_toBottomOf="@id/app_bar_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:context=".ui.comic.comments.Comments">
+        
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+            
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view_top"
+                        android:layout_width="@dimen/constraint_fill_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        app:layout_constraintTop_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/recycler_view_normal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/layout_recycler_comments" />
+            
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view_normal"
+                        android:layout_width="@dimen/constraint_fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/md_spec_spacing_ver_8"
+                        android:nestedScrollingEnabled="false"
+                        app:layout_constraintTop_toBottomOf="@id/recycler_view_top"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/inset_space_view_bottom"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/layout_recycler_comments" />
+            
+                    <projekt.cloud.piece.pic.widget.InsetSpaceView
+                        android:id="@+id/inset_space_view_bottom"
+                        android:layout_width="@dimen/constraint_fill_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/recycler_view_normal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/recycler_view_top"
+                        inset_vertical="@{mainViewModel.systemInsets.bottom}" />
+        
+                </androidx.constraintlayout.widget.ConstraintLayout>
+    
+            </androidx.core.widget.NestedScrollView>
+            
+        </androidx.constraintlayout.widget.ConstraintLayout>
         
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
