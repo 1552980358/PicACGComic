@@ -4,6 +4,7 @@ import kotlinx.coroutines.withContext
 import projekt.cloud.piece.pic.api.ApiConstants.PICA_COMIC_API_DOMAIN
 import projekt.cloud.piece.pic.api.Header
 import projekt.cloud.piece.pic.api.base.BaseStringApiRequest
+import projekt.cloud.piece.pic.util.CoroutineUtil.default
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.HttpRequest
 import projekt.cloud.piece.pic.util.HttpRequest.HttpRequestUtil.HttpRequestMethod.POST
@@ -17,7 +18,7 @@ class Favourite(private val token: String, val id: String): BaseStringApiRequest
     }
     
     override suspend fun responseBody(): FavouriteResponseBody {
-        return reflectInline(responseBody)
+        return withContext(default) { reflectInline(responseBody) }
     }
     
     override suspend fun requestApi(): HttpRequest {

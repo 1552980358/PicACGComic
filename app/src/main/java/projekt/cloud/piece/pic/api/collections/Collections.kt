@@ -4,6 +4,7 @@ import kotlinx.coroutines.withContext
 import projekt.cloud.piece.pic.api.ApiConstants.PICA_COMIC_API_DOMAIN
 import projekt.cloud.piece.pic.api.Header
 import projekt.cloud.piece.pic.api.base.BaseStringApiRequest
+import projekt.cloud.piece.pic.util.CoroutineUtil.default
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.HttpRequest
 import projekt.cloud.piece.pic.util.HttpRequest.HttpRequestUtil.HttpRequestMethod.GET
@@ -25,7 +26,7 @@ class Collections(private val token: String): BaseStringApiRequest<CollectionsRe
     }
     
     override suspend fun responseBody(): CollectionsResponseBody {
-        return reflectInline(responseBody)
+        return withContext(default) { reflectInline(responseBody) }
     }
     
 }

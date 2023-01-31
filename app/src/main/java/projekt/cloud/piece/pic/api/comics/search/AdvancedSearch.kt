@@ -44,7 +44,7 @@ class AdvancedSearch private constructor(
     }
     
     override suspend fun responseBody(): AdvancedSearchResponseBody {
-        return reflectInline(responseBody)
+        return withContext(io) { reflectInline(responseBody) }
     }
     
 }

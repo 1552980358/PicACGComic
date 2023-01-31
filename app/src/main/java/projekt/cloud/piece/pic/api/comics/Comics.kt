@@ -7,6 +7,7 @@ import projekt.cloud.piece.pic.api.ApiConstants.PICA_COMIC_API_DOMAIN
 import projekt.cloud.piece.pic.api.Header
 import projekt.cloud.piece.pic.api.Sort
 import projekt.cloud.piece.pic.api.base.BaseStringApiRequest
+import projekt.cloud.piece.pic.util.CoroutineUtil.default
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.HttpRequest
 import projekt.cloud.piece.pic.util.HttpRequest.HttpRequestUtil.HttpRequestMethod.GET
@@ -45,7 +46,7 @@ class Comics private constructor(
     }
     
     override suspend fun responseBody(): ComicsResponseBody {
-        return reflectInline(responseBody)
+        return withContext(default) { reflectInline(responseBody) }
     }
     
 }
