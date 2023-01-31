@@ -50,8 +50,8 @@ class CommentsViewModel: BaseCallbackViewModel() {
         get() = _id.value!!
     
     fun scopedObtainComments(token: String, id: String, coroutineScope: CoroutineScope = viewModelScope) {
-        _isUpdating.value = true
         if (_id.value != id) {
+            _isUpdating.value = true
             _id.value = id
             coroutineScope.ui {
                 if (_topCommentList.isNotEmpty()) {
