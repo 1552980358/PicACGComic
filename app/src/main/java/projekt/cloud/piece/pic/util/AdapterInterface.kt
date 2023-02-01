@@ -6,4 +6,6 @@ interface AdapterInterface {
     
     fun notifyClear()
     
+    fun notifyUpdate(index: Int) = Unit
+    
 }
