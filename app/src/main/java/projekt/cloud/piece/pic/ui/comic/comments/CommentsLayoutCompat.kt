@@ -130,6 +130,9 @@ abstract class CommentsLayoutCompat private constructor(
         
         override fun setupActionBar(fragment: Fragment) {
             fragment.setSupportActionBar(toolbar)
+            toolbar.setNavigationOnClickListener {
+                fragment.requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
         }
     
         override fun setupRecyclerViews(fragment: Fragment, mainViewModel: MainViewModel, commentsViewModel: CommentsViewModel) {

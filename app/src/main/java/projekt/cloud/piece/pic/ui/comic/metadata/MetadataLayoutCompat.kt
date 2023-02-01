@@ -186,6 +186,9 @@ abstract class MetadataLayoutCompat(protected val binding: FragmentMetadataBindi
         
         override fun setupActionBar(fragment: Fragment) {
             fragment.setSupportActionBar(toolbar)
+            toolbar.setNavigationOnClickListener {
+                fragment.requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
         }
         
     }

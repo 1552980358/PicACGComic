@@ -71,7 +71,11 @@ class Comic: BaseCallbackFragment<FragmentComicBinding, ComicViewModel>() {
     }
     
     override fun onBackPressed(): Boolean {
-        return layoutCompat.onBackPressed()
+        if (!layoutCompat.onBackPressed()) {
+            return false
+        }
+        exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
+        return super.onBackPressed()
     }
     
 }
