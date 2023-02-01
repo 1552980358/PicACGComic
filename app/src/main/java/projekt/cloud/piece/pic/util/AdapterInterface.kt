@@ -8,4 +8,6 @@ interface AdapterInterface {
     
     fun notifyUpdate(index: Int) = Unit
     
+    fun notifyUpdate(index: Int, value: Any?) = Unit
+    
 }
