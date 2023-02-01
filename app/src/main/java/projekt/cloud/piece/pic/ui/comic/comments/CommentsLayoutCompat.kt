@@ -9,11 +9,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.progressindicator.LinearProgressIndicator
+import kotlinx.coroutines.withContext
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import projekt.cloud.piece.pic.MainViewModel
+import projekt.cloud.piece.pic.api.common.LikeResponseBody
 import projekt.cloud.piece.pic.base.BaseRecyclerViewAdapter.BaseRecyclerViewAdapterUtil.adapterInterface
 import projekt.cloud.piece.pic.base.SnackLayoutCompat
 import projekt.cloud.piece.pic.databinding.FragmentCommentsBinding
 import projekt.cloud.piece.pic.util.AdapterInterface
+import projekt.cloud.piece.pic.util.CoroutineUtil.default
+import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.LayoutSizeMode
 import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
@@ -32,6 +38,8 @@ abstract class CommentsLayoutCompat private constructor(
             MEDIUM -> CommentsLayoutCompatW600dpImpl(this)
             EXPANDED -> CommentsLayoutCompatW1240dpImpl(this)
         }
+        
+        private const val INDEX_NOT_FOUND = -1
     }
     
     override val snackContainer: View
@@ -48,8 +56,16 @@ abstract class CommentsLayoutCompat private constructor(
     open fun setupActionBar(fragment: Fragment) = Unit
     
     open fun setupRecyclerViews(fragment: Fragment, mainViewModel: MainViewModel, commentsViewModel: CommentsViewModel) {
-        top.adapter = RecyclerViewAdapter(commentsViewModel.topCommentList, fragment)
-        normal.adapter = RecyclerViewAdapter(commentsViewModel.commentList, fragment)
+        val onClick: (String) -> Unit = {
+            mainViewModel.account.value?.let { account ->
+                if (account.isSignedIn) {
+                    commentsViewModel.scopedPostLikeComic(account.token, it)
+                }
+            }
+        }
+        
+        top.adapter = RecyclerViewAdapter(commentsViewModel.topCommentList, fragment, onClick)
+        normal.adapter = RecyclerViewAdapter(commentsViewModel.commentList, fragment, onClick)
         
         // Set RecyclerView holder pool
         normal.setRecycledViewPool(top.recycledViewPool)
@@ -61,6 +77,38 @@ abstract class CommentsLayoutCompat private constructor(
             when {
                 it -> linearProgressIndicator.show()
                 else -> linearProgressIndicator.hide()
+            }
+        }
+    }
+    
+    fun updateCommentLike(fragment: Fragment, commentsViewModel: CommentsViewModel, id: String?, responseContent: String?) {
+        fragment.lifecycleScope.ui {
+            id ?: return@ui
+            responseContent ?: return@ui
+            val isLiked = withContext(default) {
+                Json.decodeFromString<LikeResponseBody>(responseContent)
+            }.isLiked
+            updateCommentLike(commentsViewModel, id, isLiked)
+        }
+    }
+    
+    private suspend fun updateCommentLike(commentsViewModel: CommentsViewModel, id: String, isLiked: Boolean) {
+        var index = withContext(default) {
+            commentsViewModel.topCommentList.indexOfFirst { it.id == id }
+        }
+        if (index != INDEX_NOT_FOUND) {
+            commentsViewModel.topCommentList[index].let { comment ->
+                comment.isLiked = isLiked
+                top.adapterInterface.notifyUpdate(index, comment)
+            }
+        }
+        index = withContext(default) {
+            commentsViewModel.commentList.indexOfFirst { it.id == id }
+        }
+        if (index != INDEX_NOT_FOUND) {
+            commentsViewModel.commentList[index].let { comment ->
+                comment.isLiked = isLiked
+                normal.adapterInterface.notifyUpdate(index, comment)
             }
         }
     }

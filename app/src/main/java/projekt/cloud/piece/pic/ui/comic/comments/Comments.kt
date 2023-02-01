@@ -19,6 +19,13 @@ import projekt.cloud.piece.pic.ui.comic.comments.CommentsViewModel.CommentsViewM
 import projekt.cloud.piece.pic.ui.comic.comments.CommentsViewModel.CommentsViewModelUtil.COMMENTS_IO_EXCEPTION
 import projekt.cloud.piece.pic.ui.comic.comments.CommentsViewModel.CommentsViewModelUtil.COMMENTS_REJECTED
 import projekt.cloud.piece.pic.ui.comic.comments.CommentsViewModel.CommentsViewModelUtil.COMMENTS_UPDATE
+import projekt.cloud.piece.pic.ui.comic.comments.CommentsViewModel.CommentsViewModelUtil.LIKE_COMPLETE
+import projekt.cloud.piece.pic.ui.comic.comments.CommentsViewModel.CommentsViewModelUtil.LIKE_EMPTY_CONTENT
+import projekt.cloud.piece.pic.ui.comic.comments.CommentsViewModel.CommentsViewModelUtil.LIKE_ERROR
+import projekt.cloud.piece.pic.ui.comic.comments.CommentsViewModel.CommentsViewModelUtil.LIKE_EXCEPTION
+import projekt.cloud.piece.pic.ui.comic.comments.CommentsViewModel.CommentsViewModelUtil.LIKE_INVALID_STATE_CODE
+import projekt.cloud.piece.pic.ui.comic.comments.CommentsViewModel.CommentsViewModelUtil.LIKE_IO_EXCEPTION
+import projekt.cloud.piece.pic.ui.comic.comments.CommentsViewModel.CommentsViewModelUtil.LIKE_REJECTED
 import projekt.cloud.piece.pic.util.FragmentUtil.findParentAs
 import projekt.cloud.piece.pic.util.LayoutSizeMode
 
@@ -75,22 +82,25 @@ class Comments: BaseCallbackFragment<FragmentCommentsBinding, CommentsViewModel>
             COMMENTS_COMPLETE -> {
                 // Complete
             }
-            COMMENTS_IO_EXCEPTION -> {
+            LIKE_COMPLETE -> {
+                layoutCompat.updateCommentLike(this, viewModel, message, responseDetail)
+            }
+            COMMENTS_IO_EXCEPTION, LIKE_IO_EXCEPTION -> {
                 layoutCompat.indefiniteSnack(getString(R.string.request_io_exception, message))
             }
-            COMMENTS_EXCEPTION -> {
+            COMMENTS_EXCEPTION, LIKE_EXCEPTION -> {
                 layoutCompat.indefiniteSnack(getString(R.string.request_unknown_exception, message))
             }
-            COMMENTS_ERROR -> {
+            COMMENTS_ERROR, LIKE_ERROR -> {
                 layoutCompat.indefiniteSnack(getString(R.string.response_error, responseCode, code, message, responseDetail))
             }
-            COMMENTS_EMPTY_CONTENT -> {
+            COMMENTS_EMPTY_CONTENT, LIKE_EMPTY_CONTENT -> {
                 layoutCompat.indefiniteSnack(getString(R.string.response_empty))
             }
-            COMMENTS_REJECTED -> {
+            COMMENTS_REJECTED, LIKE_REJECTED -> {
                 layoutCompat.indefiniteSnack(getString(R.string.response_rejected))
             }
-            COMMENTS_INVALID_STATE_CODE -> {
+            COMMENTS_INVALID_STATE_CODE, LIKE_INVALID_STATE_CODE -> {
                 layoutCompat.indefiniteSnack(getString(R.string.request_unexpected_state, message))
             }
         }

@@ -4,6 +4,7 @@
     
     <data>
         <import type="projekt.cloud.piece.pic.ui.comic.comments.CommentsLayoutCompat" />
+        <import type="projekt.cloud.piece.pic.ui.comic.comments.RecyclerViewAdapter" />
         <variable
             name="id"
             type="String" />
@@ -19,6 +20,9 @@
         <variable
             name="commentsLayoutCompat"
             type="CommentsLayoutCompat" />
+        <variable
+            name="viewHolder"
+            type="RecyclerViewAdapter" />
     </data>
     
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,6 +48,7 @@
             android:layout_width="@dimen/md_spec_icon_size"
             android:layout_height="@dimen/md_spec_icon_size"
             android:background="?attr/selectableItemBackgroundBorderless"
+            android:onClick="@{() -> viewHolder.likeButtonClicked(id)}"
             android:src="@{isLiked ? @drawable/ic_round_favorite_24 : @drawable/ic_round_favorite_border_24}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/constraint_layout_text"

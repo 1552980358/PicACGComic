@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import projekt.cloud.piece.pic.api.base.BaseApiRequest.BaseApiRequestUtil.request
 import projekt.cloud.piece.pic.api.comics.comments.Comments
 import projekt.cloud.piece.pic.api.comics.comments.CommentsResponseBody.Comment
+import projekt.cloud.piece.pic.api.comments.like.Like
 import projekt.cloud.piece.pic.base.BaseCallbackViewModel
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.HttpRequest.HttpRequestUtil.HttpRequestState.STATE_EXCEPTION
@@ -24,6 +25,14 @@ class CommentsViewModel: BaseCallbackViewModel() {
         const val COMMENTS_ERROR = -4
         const val COMMENTS_EMPTY_CONTENT = -5
         const val COMMENTS_REJECTED = -6
+        
+        const val LIKE_COMPLETE = 10
+        const val LIKE_IO_EXCEPTION = -11
+        const val LIKE_EXCEPTION = -12
+        const val LIKE_INVALID_STATE_CODE = -13
+        const val LIKE_ERROR = -14
+        const val LIKE_EMPTY_CONTENT = -15
+        const val LIKE_REJECTED = -16
         
         private const val PAGE_DEFAULT_VALUE = 0
         private const val TOP_COMMENT_UPDATE_PAGE = 1
@@ -139,6 +148,54 @@ class CommentsViewModel: BaseCallbackViewModel() {
             hasMorePage = false
             setCallback(COMMENTS_COMPLETE)
         }
+    }
+    
+    fun scopedPostLikeComic(token: String, id: String, coroutineScope: CoroutineScope = viewModelScope) {
+        coroutineScope.ui { postLikeComic(token, id) }
+    }
+    
+    private suspend fun postLikeComic(token: String, id: String) {
+        val like = Like(token, id).request()
+        
+        if (!like.isComplete) {
+            return when (like.state) {
+                STATE_IO_EXCEPTION -> {
+                    setCallback(LIKE_IO_EXCEPTION, like.message)
+                }
+                STATE_EXCEPTION -> {
+                    setCallback(LIKE_EXCEPTION, like.message)
+                }
+                else -> {
+                    setCallback(LIKE_INVALID_STATE_CODE, like.message)
+                }
+            }
+        }
+    
+        if (like.isErrorResponse) {
+            return like.errorResponse().let { errorResponseBody ->
+                setCallback(
+                    LIKE_ERROR,
+                    errorResponseBody.message,
+                    errorResponseBody.code,
+                    errorResponseBody.error,
+                    errorResponseBody.detail
+                )
+            }
+        }
+    
+        if (like.isEmptyResponse) {
+            return setCallback(LIKE_EMPTY_CONTENT)
+        }
+    
+        if (like.isRejected()) {
+            return setCallback(LIKE_REJECTED)
+        }
+        
+        setCallback(
+            LIKE_COMPLETE,
+            id,
+            responseDetail = like.response
+        )
     }
 
 }

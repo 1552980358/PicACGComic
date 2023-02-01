@@ -50,7 +50,7 @@ data class CommentsResponseBody(val code: Int, val message: String, private val 
         val user: User,
         @SerialName("content")
         val comment: String,
-        val isLiked: Boolean,
+        var isLiked: Boolean,
         val likesCount: Int,
         val commentsCount: Int,
         val totalComments: Int = IGNORE_INT,

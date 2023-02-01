@@ -19,22 +19,29 @@ import projekt.cloud.piece.pic.widget.DefaultedImageView
 
 class RecyclerViewAdapter(
     commentList: List<Comment>,
-    private val fragment: Fragment
+    private val fragment: Fragment,
+    private val onClick: (String) -> Unit
 ): BaseRecyclerViewAdapter<RecyclerViewAdapter.RecyclerViewHolder, Comment>(commentList) {
 
     class RecyclerViewHolder(
-        parent: ViewGroup
+        parent: ViewGroup, viewHolder: RecyclerViewAdapter
     ): BaseRecyclerViewHolder<LayoutRecyclerCommentsBinding>(parent, LayoutRecyclerCommentsBinding::class.java) {
+        
+        init {
+            binding.viewHolder = viewHolder
+        }
         
         private val defaultedImageView: DefaultedImageView
             get() = binding.defaultedImageView
         
         fun onBind(comment: Comment, fragment: Fragment) {
-            binding.id = comment.id
-            binding.user = comment.user.name
-            binding.comment = comment.comment
             binding.isLiked = comment.isLiked
-            loadAvatarImage(comment.user.avatar, fragment)
+            if (binding.id != comment.id) {
+                binding.id = comment.id
+                binding.user = comment.user.name
+                binding.comment = comment.comment
+                loadAvatarImage(comment.user.avatar, fragment)
+            }
         }
         
         private fun loadAvatarImage(image: Image?, fragment: Fragment) {
@@ -63,10 +70,14 @@ class RecyclerViewAdapter(
     }
     
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        RecyclerViewHolder(parent)
+        RecyclerViewHolder(parent, this)
     
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
         holder.onBind(itemList[position], fragment)
+    }
+    
+    fun likeButtonClicked(id: String) {
+        onClick.invoke(id)
     }
     
 }
