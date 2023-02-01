@@ -14,6 +14,9 @@ abstract class BaseStringApiRequest<ResponseBody>: BaseApiRequest() {
     protected val responseBody: String
         get() = _responseBody!!
     
+    val response: String
+        get() = responseBody
+    
     val isComplete: Boolean
         get() = httpRequest.isComplete
     
