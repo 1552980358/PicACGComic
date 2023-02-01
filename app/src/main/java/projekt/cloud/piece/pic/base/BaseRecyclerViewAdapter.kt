@@ -35,4 +35,8 @@ abstract class BaseRecyclerViewAdapter<VH: ViewHolder, T>(protected val itemList
         itemListSize = 0
     }
     
+    override fun notifyUpdate(index: Int) {
+        notifyItemChanged(index)
+    }
+    
 }
