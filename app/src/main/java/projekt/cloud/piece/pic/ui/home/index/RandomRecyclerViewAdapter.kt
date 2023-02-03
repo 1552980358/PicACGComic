@@ -44,24 +44,34 @@ class RandomRecyclerViewAdapter(
             loadImage(comic.thumb, fragment)
         }
     
-        private fun loadImage(cover: Image, fragment: Fragment) {
-            Glide.with(fragment)
-                .load(cover.getUrl())
-                .addListener(object: RequestListener<Drawable> {
-                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                        fragment.lifecycleScope.ui {
-                            loadImage(cover, fragment)
+        private fun loadImage(cover: Image, fragment: Fragment, clear: Boolean = false) {
+            fragment.lifecycleScope.ui {
+                if (clear) {
+                    Glide.with(fragment)
+                        .clear(shapeableImageView)
+                }
+                Glide.with(fragment)
+                    .load(cover.getUrl())
+                    .addListener(
+                        object: RequestListener<Drawable> {
+                            override fun onLoadFailed(
+                                e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean
+                            ): Boolean {
+                                loadImage(cover, fragment, true)
+                                return false
+                            }
+                            override fun onResourceReady(
+                                resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean
+                            ): Boolean {
+                                circularProgressIndicator.hide()
+                                circularProgressIndicator.isIndeterminate = false
+                                binding.isLoading = false
+                                return false
+                            }
                         }
-                        return false
-                    }
-                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                        circularProgressIndicator.hide()
-                        circularProgressIndicator.isIndeterminate = false
-                        binding.isLoading = false
-                        return false
-                    }
-                })
-                .into(shapeableImageView)
+                    )
+                    .into(shapeableImageView)
+            }
         }
         
     }
