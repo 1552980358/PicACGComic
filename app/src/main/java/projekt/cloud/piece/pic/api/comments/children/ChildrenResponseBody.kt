@@ -2,7 +2,9 @@ package projekt.cloud.piece.pic.api.comments.children
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import projekt.cloud.piece.pic.api.ApiConstants.IGNORE_INT
 import projekt.cloud.piece.pic.api.ApiConstants.IGNORE_STRING
+import projekt.cloud.piece.pic.api.base.BaseDateBody
 import projekt.cloud.piece.pic.api.image.Image
 
 /**
@@ -37,19 +39,19 @@ data class ChildrenResponseBody(val code: Int, val message: String, private val 
         val id: String,
         @SerialName("content")
         val comment: String,
-        @SerialName("user")
+        @SerialName("_user")
         val user: User,
         @SerialName("_comic")
         val comic: String,
         @SerialName("_parent")
         val replyTo: String,
-        val isLiked: Boolean,
+        var isLiked: Boolean,
         @SerialName("created_at")
         val createDate: String,
-        val totalComments: Int,
         val likesCount: Int,
         val isTop: Boolean,
         val hide: Boolean,
+        val totalComments: Int = IGNORE_INT,
         @SerialName("id")
         private val privateId: String
     )
