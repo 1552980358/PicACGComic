@@ -1,7 +1,11 @@
 package projekt.cloud.piece.pic.ui.comment
 
 import android.graphics.drawable.Drawable
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -11,6 +15,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.google.android.material.appbar.MaterialToolbar
+import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.base.BaseRecyclerViewAdapter.BaseRecyclerViewAdapterUtil.adapterInterface
 import projekt.cloud.piece.pic.base.SnackLayoutCompat
 import projekt.cloud.piece.pic.databinding.FragmentCommentBinding
@@ -81,6 +86,17 @@ abstract class CommentLayoutCompat private constructor(
     
     fun setupActionBar(fragment: Fragment) {
         fragment.setSupportActionBar(toolbar)
+        fragment.requireActivity().addMenuProvider(
+            object: MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menu.clear()
+                    menuInflater.inflate(R.menu.menu_comment, menu)
+                }
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    return false
+                }
+            }
+        )
     }
     
     override fun notifyUpdate() {

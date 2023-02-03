@@ -75,7 +75,7 @@
     <string name="comments_title">Comments</string>
     
     <string name="comment_title">Comment</string>
-    <string name="comment_add">Add Reply</string>
+    <string name="comment_like">Like</string>
     <string name="comment_level">Lv.%s</string>
     
     <string name="viewer_image_load_error">Image Load Error.\nClick to retry</string>
