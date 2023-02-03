@@ -79,22 +79,23 @@ class Metadata: BaseCallbackFragment<FragmentMetadataBinding, ComicViewModel>() 
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                     menu.clear()
                     menuInflater.inflate(R.menu.menu_metadata, menu)
-                    val likes = menu.getItem(0)
-                    if (likes.itemId == R.id.likes) {
-                        likes.setIcon(
-                            when (viewModel.isLiked.value) {
-                                true -> {
-                                    R.drawable.ic_round_favorite_24
+                    menu.findItem(R.id.like).let { like ->
+                        viewModel.isLiked.observe(viewLifecycleOwner) { isLiked ->
+                            like.setIcon(
+                                when (isLiked) {
+                                    true -> {
+                                        R.drawable.ic_round_favorite_24
+                                    }
+                                    else -> {
+                                        R.drawable.ic_round_favorite_border_24
+                                    }
                                 }
-                                else -> {
-                                    R.drawable.ic_round_favorite_border_24
-                                }
-                            }
-                        )
+                            )
+                        }
                     }
                 }
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                    if (menuItem.itemId == R.id.likes) {
+                    if (menuItem.itemId == R.id.like) {
                         mainViewModel.account.value?.let { account ->
                             if (account.isSignedIn) {
                                 viewModel.id.value?.let { id ->
@@ -110,9 +111,9 @@ class Metadata: BaseCallbackFragment<FragmentMetadataBinding, ComicViewModel>() 
             this,
             STARTED
         )
-        viewModel.isLiked.observe(viewLifecycleOwner) {
-            requireActivity().invalidateOptionsMenu()
-        }
+        //viewModel.isLiked.observe(viewLifecycleOwner) {
+        //    requireActivity().invalidateOptionsMenu()
+        //}
     }
     
     override fun onSetupView(binding: FragmentMetadataBinding) {
