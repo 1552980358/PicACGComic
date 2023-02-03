@@ -134,7 +134,8 @@ abstract class CommentsLayoutCompat private constructor(
         override fun setupActionBar(fragment: Fragment) {
             fragment.setSupportActionBar(toolbar)
             toolbar.setNavigationOnClickListener {
-                fragment.requireActivity().onBackPressedDispatcher.onBackPressed()
+                fragment.findParentAs<Comic>().findNavController()
+                    .navigateUp()
             }
         }
     
