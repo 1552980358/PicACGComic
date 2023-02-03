@@ -6,7 +6,13 @@
     
     <action
         android:id="@+id/to_metadata"
-        app:destination="@id/metadata" />
+        app:destination="@id/metadata"
+        app:popUpTo="@id/metadata"
+        app:popUpToSaveState="true"
+        app:enterAnim="@animator/nav_default_enter_anim"
+        app:exitAnim="@animator/nav_default_exit_anim"
+        app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+        app:popExitAnim="@animator/nav_default_pop_exit_anim" />
     
     <fragment
         android:id="@+id/metadata"
