@@ -57,6 +57,12 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    
+    // https://kotlinlang.org/docs/gradle-configure-project.html#gradle-java-toolchains-support
+    kotlin {
+        jvmToolchain(11)
+    }
+    
     buildFeatures {
         viewBinding = true
         dataBinding = true
