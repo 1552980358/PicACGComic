@@ -54,11 +54,13 @@ class RecyclerViewAdapter(
         }
         
         private fun loadAvatarImage(image: Image?, fragment: Fragment) {
-            defaultedImageView.switchToDefault()
-            image ?: return
+            if (image == null) {
+                return defaultedImageView.switchToDefault()
+            }
             fragment.lifecycleScope.ui {
                 Glide.with(fragment)
                     .load(image.getUrl())
+                    .placeholder(defaultedImageView.defaultDrawable)
                     .listener(
                         object: RequestListener<Drawable> {
                             override fun onLoadFailed(
