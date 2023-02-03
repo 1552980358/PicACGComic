@@ -42,6 +42,7 @@ android {
             versionNameSuffix = "-debug"
         }
     }
+    
     applicationVariants.all {
         outputs.all {
             if (this is BaseVariantOutputImpl) {
@@ -50,10 +51,12 @@ android {
             }
         }
     }
+    
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    
     kotlinOptions {
         jvmTarget = "11"
     }
@@ -67,6 +70,7 @@ android {
         viewBinding = true
         dataBinding = true
     }
+    
     ndkVersion = "25.1.8937393"
     externalNativeBuild {
         cmake {
