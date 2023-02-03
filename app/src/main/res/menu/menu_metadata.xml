@@ -7,7 +7,7 @@
     <item
         android:id="@+id/likes"
         android:icon="@drawable/ic_round_favorite_border_24"
-        android:title="@string/comic_likes"
+        android:title="@string/comic_like"
         app:showAsAction="always" />
 
 </menu>

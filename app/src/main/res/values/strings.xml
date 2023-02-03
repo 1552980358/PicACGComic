@@ -63,7 +63,7 @@
     <string name="search_menu_sort_likes">Likes</string>
     <string name="search_menu_sort_views">Views</string>
     
-    <string name="comic_likes">Likes</string>
+    <string name="comic_like">Like</string>
     
     <string name="metadata_chapter_title">Chapter</string>
     <string name="metadata_chapter_asc">ASC</string>
