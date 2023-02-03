@@ -14,6 +14,9 @@ import projekt.cloud.piece.pic.api.image.Image
 @Serializable
 data class ChildrenResponseBody(val code: Int, val message: String, private val data: Data) {
 
+    val page: Int
+        get() = data.comments.page
+    
     val pages: Int
         get() = data.comments.pages
     
