@@ -57,7 +57,12 @@ data class ChildrenResponseBody(val code: Int, val message: String, private val 
         val totalComments: Int = IGNORE_INT,
         @SerialName("id")
         private val privateId: String
-    )
+    ): BaseDateBody() {
+        
+        val createDateStr: String
+            get() = createDate.str
+        
+    }
     
     @Serializable
     data class User(
