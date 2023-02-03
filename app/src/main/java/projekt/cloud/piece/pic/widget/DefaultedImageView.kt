@@ -7,7 +7,7 @@ import projekt.cloud.piece.pic.R
 
 open class DefaultedImageView(context: Context, attributeSet: AttributeSet): ShapeableImageView(context, attributeSet) {
     
-    private val defaultDrawable: Int
+    val defaultDrawable: Int
     
     init {
         resources.obtainAttributes(attributeSet, R.styleable.DefaultedImageView).use { typedArray ->
