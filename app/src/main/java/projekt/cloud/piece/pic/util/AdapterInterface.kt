@@ -2,9 +2,9 @@ package projekt.cloud.piece.pic.util
 
 interface AdapterInterface {
     
-    fun notifyUpdate()
+    fun notifyUpdate() = Unit
     
-    fun notifyClear()
+    fun notifyClear() = Unit
     
     fun notifyUpdate(index: Int) = Unit
     
