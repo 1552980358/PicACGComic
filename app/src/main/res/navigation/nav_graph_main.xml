@@ -2,6 +2,7 @@
 <navigation
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_main"
     app:startDestination="@id/home">
 
@@ -69,10 +70,25 @@
                 android:name="title"
                 app:argType="string" />
         </action>
+        <action
+            android:id="@+id/to_comment"
+            app:destination="@id/comment">
+            <argument
+                android:name="id"
+                app:argType="string" />
+            <argument
+                android:name="comment"
+                app:argType="string" />
+        </action>
     </fragment>
     
     <fragment
         android:id="@+id/viewer"
         android:name="projekt.cloud.piece.pic.ui.viewer.Viewer" />
+    
+    <fragment
+        android:id="@+id/comment"
+        android:name="projekt.cloud.piece.pic.ui.comment.Comment"
+        tools:layout="@layout/fragment_comment" />
 
 </navigation>

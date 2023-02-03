@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <data>
+        <variable
+            name="id"
+            type="String" />
+        <variable
+            name="user"
+            type="String" />
+        <variable
+            name="createDate"
+            type="String" />
+        <variable
+            name="comment"
+            type="String" />
+        <variable
+            name="level"
+            type="Integer" />
+        <variable
+            name="isLiked"
+            type="Boolean" />
+    </data>
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/md_spec_spacing_hor_16"
+        android:paddingEnd="@dimen/md_spec_spacing_hor_24"
+        android:paddingVertical="@dimen/md_spec_spacing_ver_8">
+        
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_start"
+            android:layout_width="@dimen/md_spec_avatar_size"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/constraint_layout_center">
+    
+            <projekt.cloud.piece.pic.widget.DefaultedImageView
+                android:id="@+id/defaulted_image_view"
+                android:layout_width="@dimen/md_spec_avatar_size"
+                android:layout_height="@dimen/md_spec_avatar_size"
+                app:defaultImage="@drawable/ic_round_account_circle_24"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/material_text_view_level" />
+    
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/material_text_view_level"
+                android:layout_width="@dimen/md_spec_avatar_size"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{@string/comment_level(String.valueOf(level))}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                app:layout_constraintTop_toBottomOf="@id/defaulted_image_view"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+            
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/app_compat_image_button_like"
+            android:layout_width="@dimen/md_spec_icon_size"
+            android:layout_height="@dimen/md_spec_icon_size"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@{isLiked ? @drawable/ic_round_favorite_24 : @drawable/ic_round_favorite_border_24}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/constraint_layout_center"
+            app:layout_constraintEnd_toEndOf="parent" />
+        
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout_center"
+            android:layout_width="@dimen/constraint_fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/constraint_layout_start"
+            app:layout_constraintEnd_toStartOf="@id/app_compat_image_button_like">
+            
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/material_text_view_name"
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@{user}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/material_text_view_update_date" />
+    
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/material_text_view_update_date"
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@{createDate}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                app:layout_constraintTop_toBottomOf="@id/material_text_view_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/material_text_view_update_comment"/>
+            
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/material_text_view_update_comment"
+                android:layout_width="@dimen/constraint_fill_parent"
+                android:layout_height="wrap_content"
+                android:minLines="1"
+                android:text="@{comment}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                app:layout_constraintTop_toBottomOf="@id/material_text_view_update_date"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+            
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

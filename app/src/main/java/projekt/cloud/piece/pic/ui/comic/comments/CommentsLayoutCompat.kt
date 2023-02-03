@@ -6,6 +6,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.core.widget.NestedScrollView.OnScrollChangeListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -17,9 +18,11 @@ import projekt.cloud.piece.pic.api.common.LikeResponseBody
 import projekt.cloud.piece.pic.base.BaseRecyclerViewAdapter.BaseRecyclerViewAdapterUtil.adapterInterface
 import projekt.cloud.piece.pic.base.SnackLayoutCompat
 import projekt.cloud.piece.pic.databinding.FragmentCommentsBinding
+import projekt.cloud.piece.pic.ui.comic.Comic
 import projekt.cloud.piece.pic.util.AdapterInterface
 import projekt.cloud.piece.pic.util.CoroutineUtil.default
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
+import projekt.cloud.piece.pic.util.FragmentUtil.findParentAs
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.LayoutSizeMode
 import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
@@ -45,13 +48,16 @@ abstract class CommentsLayoutCompat private constructor(
     override val snackContainer: View
         get() = binding.coordinatorLayout
     
-    private val top: RecyclerView
+    protected val top: RecyclerView
         get() = binding.recyclerViewTop
-    private val normal: RecyclerView
+    protected val normal: RecyclerView
         get() = binding.recyclerViewNormal
     
     private val linearProgressIndicator: LinearProgressIndicator
         get() = binding.linearProgressIndicator
+    
+    protected val nestedScrollView: NestedScrollView
+        get() = binding.nestedScrollView
     
     open fun setupActionBar(fragment: Fragment) = Unit
     
@@ -125,9 +131,6 @@ abstract class CommentsLayoutCompat private constructor(
         private val toolbar: MaterialToolbar
             get() = binding.materialToolbar!!
         
-        private val nestedScrollView: NestedScrollView
-            get() = binding.nestedScrollView
-        
         override fun setupActionBar(fragment: Fragment) {
             fragment.setSupportActionBar(toolbar)
             toolbar.setNavigationOnClickListener {
@@ -137,6 +140,11 @@ abstract class CommentsLayoutCompat private constructor(
     
         override fun setupRecyclerViews(fragment: Fragment, mainViewModel: MainViewModel, commentsViewModel: CommentsViewModel) {
             super.setupRecyclerViews(fragment, mainViewModel, commentsViewModel)
+            
+            val navController = fragment.findParentAs<Comic>().findNavController()
+            (top.adapter as RecyclerViewAdapter).setNavController(navController)
+            (normal.adapter as RecyclerViewAdapter).setNavController(navController)
+            
             nestedScrollView.setOnScrollChangeListener(OnScrollChangeListener { nestedScrollView, _, _, _, _ ->
                 if (!nestedScrollView.canScrollDown && commentsViewModel.hasMorePage) {
                     mainViewModel.account.value?.let { account ->
@@ -150,7 +158,27 @@ abstract class CommentsLayoutCompat private constructor(
         
     }
     
-    private class CommentsLayoutCompatW600dpImpl(binding: FragmentCommentsBinding): CommentsLayoutCompat(binding)
+    private class CommentsLayoutCompatW600dpImpl(binding: FragmentCommentsBinding): CommentsLayoutCompat(binding) {
+    
+        override fun setupRecyclerViews(fragment: Fragment, mainViewModel: MainViewModel, commentsViewModel: CommentsViewModel) {
+            super.setupRecyclerViews(fragment, mainViewModel, commentsViewModel)
+            
+            val navController = fragment.findParentAs<Comic>().findNavController()
+            (top.adapter as RecyclerViewAdapter).setNavController(navController)
+            (normal.adapter as RecyclerViewAdapter).setNavController(navController)
+    
+            nestedScrollView.setOnScrollChangeListener(OnScrollChangeListener { nestedScrollView, _, _, _, _ ->
+                if (!nestedScrollView.canScrollDown && commentsViewModel.hasMorePage) {
+                    mainViewModel.account.value?.let { account ->
+                        if (account.isSignedIn) {
+                            commentsViewModel.scopedObtainCommentsNewPage(account.token, fragment.lifecycleScope)
+                        }
+                    }
+                }
+            })
+        }
+        
+    }
     
     private class CommentsLayoutCompatW1240dpImpl(binding: FragmentCommentsBinding): CommentsLayoutCompat(binding)
 

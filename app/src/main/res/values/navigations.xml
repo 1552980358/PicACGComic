@@ -11,5 +11,8 @@
     <string name="viewer_arg_order" translatable="false">order</string>
     <string name="viewer_arg_last_order" translatable="false">last_order</string>
     <string name="viewer_arg_title" translatable="false">title</string>
+    
+    <string name="comment_arg_id" translatable="false">id</string>
+    <string name="comment_arg_comment" translatable="false">comment</string>
 
 </resources>

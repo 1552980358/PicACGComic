@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    
+    <data>
+        <import type="projekt.cloud.piece.pic.MainViewModel" />
+        <import type="projekt.cloud.piece.pic.ui.comment.CommentViewModel" />
+        <variable
+            name="mainViewModel"
+            type="MainViewModel" />
+        <variable
+            name="commentViewModel"
+            type="CommentViewModel" />
+    </data>
+    
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@{mainViewModel.systemInsets.top}">
+            
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/material_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_round_arrow_back_24"
+                app:title="@string/comment_title" />
+        
+        </com.google.android.material.appbar.AppBarLayout>
+        
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+        
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraint_layout_metadata"
+                    android:layout_width="@dimen/constraint_fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/md_spec_spacing_hor_16"
+                    android:paddingVertical="@dimen/md_spec_spacing_ver_12"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+                    
+                    <projekt.cloud.piece.pic.widget.DefaultedImageView
+                        android:id="@+id/defaulted_image_view"
+                        android:layout_width="@dimen/md_spec_avatar_size"
+                        android:layout_height="@dimen/md_spec_avatar_size"
+                        app:defaultImage="@drawable/ic_round_account_circle_24"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/constraint_layout_detail"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:shapeAppearance="@style/Widget.ShapeableImageView.Circle" />
+                    
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraint_layout_detail"
+                        android:layout_width="@dimen/constraint_fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/md_spec_spacing_hor_16"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/defaulted_image_view"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+                        
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/material_text_view_user"
+                            android:layout_width="@dimen/constraint_fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{commentViewModel.comment.user.name}"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toTopOf="@id/material_text_view_date" />
+                        
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/material_text_view_level"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{@string/comment_level(commentViewModel.comment.user.level)}"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                            app:layout_constraintTop_toBottomOf="@id/material_text_view_user"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/material_text_view_date"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+    
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/material_text_view_date"
+                            android:layout_width="@dimen/constraint_fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/md_spec_spacing_hor_16"
+                            android:text="@{commentViewModel.comment.createDateStr}"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                            app:layout_constraintTop_toBottomOf="@id/material_text_view_user"
+                            app:layout_constraintStart_toEndOf="@id/material_text_view_level"
+                            app:layout_constraintEnd_toEndOf="parent" />
+                        
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+            
+                </androidx.constraintlayout.widget.ConstraintLayout>
+    
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/material_text_view_comment"
+                    android:layout_width="@dimen/constraint_fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/md_spec_spacing_ver_8"
+                    android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
+                    android:text="@{commentViewModel.comment.comment}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                    app:layout_constraintTop_toBottomOf="@id/constraint_layout_metadata"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/recycler_view" />
+    
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="@dimen/constraint_fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
+                    app:layout_constraintTop_toBottomOf="@id/material_text_view_comment"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+                
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="@dimen/constraint_fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/md_spec_spacing_ver_8"
+                    android:nestedScrollingEnabled="false"
+                    app:layout_constraintTop_toBottomOf="@id/material_text_view_comment"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/layout_recycler_comment" />
+        
+            </androidx.constraintlayout.widget.ConstraintLayout>
+    
+        </androidx.core.widget.NestedScrollView>
+    
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
