@@ -5,7 +5,7 @@
     tools:showIn="@layout/fragment_metadata">
     
     <item
-        android:id="@+id/likes"
+        android:id="@+id/like"
         android:icon="@drawable/ic_round_favorite_border_24"
         android:title="@string/comic_like"
         app:showAsAction="always" />
