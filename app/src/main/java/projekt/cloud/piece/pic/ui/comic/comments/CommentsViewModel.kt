@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import java.util.ArrayList
 import kotlinx.coroutines.CoroutineScope
 import projekt.cloud.piece.pic.api.base.BaseApiRequest.BaseApiRequestUtil.request
-import projekt.cloud.piece.pic.api.comics.comments.Comments
-import projekt.cloud.piece.pic.api.comics.comments.CommentsResponseBody.Comment
+import projekt.cloud.piece.pic.api.comics.comments.get.Comments
+import projekt.cloud.piece.pic.api.comics.comments.get.CommentsResponseBody.Comment
 import projekt.cloud.piece.pic.api.comments.like.Like
 import projekt.cloud.piece.pic.base.BaseCallbackViewModel
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui

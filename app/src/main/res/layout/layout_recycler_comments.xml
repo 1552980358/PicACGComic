@@ -5,7 +5,7 @@
     <data>
         <import type="projekt.cloud.piece.pic.ui.comic.comments.CommentsLayoutCompat" />
         <import type="projekt.cloud.piece.pic.ui.comic.comments.RecyclerViewAdapter" />
-        <import type="projekt.cloud.piece.pic.api.comics.comments.CommentsResponseBody.Comment" />
+        <import type="projekt.cloud.piece.pic.api.comics.comments.get.CommentsResponseBody.Comment" />
         <variable
             name="comment"
             type="Comment" />

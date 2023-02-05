@@ -1,4 +1,4 @@
-package projekt.cloud.piece.pic.api.comics.comments
+package projekt.cloud.piece.pic.api.comics.comments.get
 
 import kotlinx.coroutines.withContext
 import projekt.cloud.piece.pic.api.ApiConstants.PICA_COMIC_API_DOMAIN

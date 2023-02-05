@@ -13,7 +13,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import kotlinx.coroutines.withContext
 import projekt.cloud.piece.pic.R
-import projekt.cloud.piece.pic.api.comics.comments.CommentsResponseBody.Comment
+import projekt.cloud.piece.pic.api.comics.comments.get.CommentsResponseBody.Comment
 import projekt.cloud.piece.pic.api.image.Image
 import projekt.cloud.piece.pic.base.BaseRecyclerViewAdapter
 import projekt.cloud.piece.pic.base.BaseRecyclerViewHolder

@@ -1,4 +1,4 @@
-package projekt.cloud.piece.pic.api.comics.comments
+package projekt.cloud.piece.pic.api.comics.comments.get
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

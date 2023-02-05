@@ -7,7 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import projekt.cloud.piece.pic.api.base.BaseApiRequest.BaseApiRequestUtil.request
-import projekt.cloud.piece.pic.api.comics.comments.CommentsResponseBody
+import projekt.cloud.piece.pic.api.comics.comments.get.CommentsResponseBody
 import projekt.cloud.piece.pic.api.comments.children.Children
 import projekt.cloud.piece.pic.api.comments.children.ChildrenResponseBody
 import projekt.cloud.piece.pic.api.comments.like.Like
