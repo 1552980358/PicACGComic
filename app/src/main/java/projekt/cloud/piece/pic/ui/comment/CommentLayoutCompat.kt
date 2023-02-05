@@ -15,16 +15,23 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.google.android.material.appbar.MaterialToolbar
+import kotlinx.coroutines.withContext
+import projekt.cloud.piece.pic.MainViewModel
 import projekt.cloud.piece.pic.R
+import projekt.cloud.piece.pic.api.comments.children.ChildrenResponseBody.Comment
+import projekt.cloud.piece.pic.api.common.LikeResponseBody
 import projekt.cloud.piece.pic.base.BaseRecyclerViewAdapter.BaseRecyclerViewAdapterUtil.adapterInterface
 import projekt.cloud.piece.pic.base.SnackLayoutCompat
 import projekt.cloud.piece.pic.databinding.FragmentCommentBinding
 import projekt.cloud.piece.pic.util.AdapterInterface
+import projekt.cloud.piece.pic.util.CoroutineUtil.default
+import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
 import projekt.cloud.piece.pic.util.LayoutSizeMode
 import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
 import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
 import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
+import projekt.cloud.piece.pic.util.SerializeUtil.decodeJson
 import projekt.cloud.piece.pic.widget.DefaultedImageView
 
 abstract class CommentLayoutCompat private constructor(
@@ -38,6 +45,8 @@ abstract class CommentLayoutCompat private constructor(
             MEDIUM -> CommentLayoutCompatImpl(this)
             EXPANDED -> CommentLayoutCompatW1240Impl(this)
         }
+    
+        private const val INDEX_NOT_FOUND = -1
     }
     
     override val snackContainer: View
@@ -80,8 +89,14 @@ abstract class CommentLayoutCompat private constructor(
         }
     }
     
-    fun setupRecyclerView(fragment: Fragment, commentViewModel: CommentViewModel) {
-        recyclerView.adapter = RecyclerViewAdapter(commentViewModel.commentList, fragment)
+    fun setupRecyclerView(fragment: Fragment, mainViewModel: MainViewModel, commentViewModel: CommentViewModel) {
+        recyclerView.adapter = RecyclerViewAdapter(commentViewModel.commentList, fragment) { id ->
+            mainViewModel.account.value?.let { account ->
+                if (account.isSignedIn) {
+                    commentViewModel.scopedPostLikeComic(account.token, id, fragment.lifecycleScope)
+                }
+            }
+        }
     }
     
     fun setupActionBar(fragment: Fragment) {
@@ -101,6 +116,36 @@ abstract class CommentLayoutCompat private constructor(
     
     override fun notifyUpdate() {
         recyclerView.adapterInterface.notifyUpdate()
+    }
+    
+    override fun notifyUpdate(index: Int, value: Any?) {
+        recyclerView.adapterInterface.notifyUpdate(index, value)
+    }
+    
+    fun updateCommentLike(fragment: Fragment, commentViewModel: CommentViewModel, id: String?, responseContent: String?) {
+        if (!id.isNullOrBlank() && !responseContent.isNullOrBlank()) {
+            fragment.lifecycleScope.ui {
+                updateCommentLike(
+                    commentViewModel.commentList,
+                    id,
+                    withContext(default) {
+                        responseContent.decodeJson<LikeResponseBody>().isLiked
+                    }
+                )
+            }
+        }
+    }
+    
+    private suspend fun updateCommentLike(commentList: List<Comment>, id: String, isLiked: Boolean) {
+        val index = withContext(default) {
+            commentList.indexOfFirst { it.id == id }
+        }
+        if (index != INDEX_NOT_FOUND) {
+            commentList[index].let { comment ->
+                comment.isLiked = isLiked
+                notifyUpdate(index, comment)
+            }
+        }
     }
     
     private class CommentLayoutCompatImpl(binding: FragmentCommentBinding): CommentLayoutCompat(binding)

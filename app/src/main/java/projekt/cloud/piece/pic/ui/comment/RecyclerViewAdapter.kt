@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
@@ -19,12 +18,16 @@ import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.widget.DefaultedImageView
 
 class RecyclerViewAdapter(
-    commentList: List<Comment>, private val fragment: Fragment
+    commentList: List<Comment>, private val fragment: Fragment, private val likeClicked: (String) -> Unit
 ): BaseRecyclerViewAdapter<RecyclerViewAdapter.RecyclerViewHolder, Comment>(commentList) {
     
     class RecyclerViewHolder(
-        parent: ViewGroup
+        parent: ViewGroup, recyclerViewAdapter: RecyclerViewAdapter
     ): BaseRecyclerViewHolder<LayoutRecyclerCommentBinding>(parent, LayoutRecyclerCommentBinding::class.java) {
+        
+        init {
+            binding.adapter = recyclerViewAdapter
+        }
         
         private val defaultedImageView: DefaultedImageView
             get() = binding.defaultedImageView
@@ -69,10 +72,14 @@ class RecyclerViewAdapter(
         
     }
     
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = RecyclerViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = RecyclerViewHolder(parent, this)
     
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
         holder.bind(itemList[position], fragment)
+    }
+    
+    fun likeButtonClicked(id: String) {
+        likeClicked.invoke(id)
     }
     
 }

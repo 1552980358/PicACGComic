@@ -16,6 +16,13 @@ import projekt.cloud.piece.pic.ui.comment.CommentViewModel.CommentViewModelUtil.
 import projekt.cloud.piece.pic.ui.comment.CommentViewModel.CommentViewModelUtil.COMMENT_IO_EXCEPTION
 import projekt.cloud.piece.pic.ui.comment.CommentViewModel.CommentViewModelUtil.COMMENT_REJECTED
 import projekt.cloud.piece.pic.ui.comment.CommentLayoutCompat.CommentLayoutCompatUtil.getLayoutCompat
+import projekt.cloud.piece.pic.ui.comment.CommentViewModel.CommentViewModelUtil.LIKE_COMPLETE
+import projekt.cloud.piece.pic.ui.comment.CommentViewModel.CommentViewModelUtil.LIKE_EMPTY_CONTENT
+import projekt.cloud.piece.pic.ui.comment.CommentViewModel.CommentViewModelUtil.LIKE_ERROR
+import projekt.cloud.piece.pic.ui.comment.CommentViewModel.CommentViewModelUtil.LIKE_EXCEPTION
+import projekt.cloud.piece.pic.ui.comment.CommentViewModel.CommentViewModelUtil.LIKE_INVALID_STATE_CODE
+import projekt.cloud.piece.pic.ui.comment.CommentViewModel.CommentViewModelUtil.LIKE_IO_EXCEPTION
+import projekt.cloud.piece.pic.ui.comment.CommentViewModel.CommentViewModelUtil.LIKE_REJECTED
 import projekt.cloud.piece.pic.util.LayoutSizeMode
 
 class Comment: BaseCallbackFragment<FragmentCommentBinding, CommentViewModel>() {
@@ -48,7 +55,7 @@ class Comment: BaseCallbackFragment<FragmentCommentBinding, CommentViewModel>() 
     
     override fun onSetupView(binding: FragmentCommentBinding) {
         layoutCompat.setupAvatar(this, viewModel)
-        layoutCompat.setupRecyclerView(this, viewModel)
+        layoutCompat.setupRecyclerView(this, mainViewModel, viewModel)
         
         requireArguments().getString(getString(R.string.comment_arg_id))?.let { id ->
             if (id.isNotBlank()) {
@@ -80,22 +87,25 @@ class Comment: BaseCallbackFragment<FragmentCommentBinding, CommentViewModel>() 
             COMMENT_COMPLETE -> {
                 layoutCompat.notifyUpdate()
             }
-            COMMENT_IO_EXCEPTION -> {
+            LIKE_COMPLETE -> {
+                layoutCompat.updateCommentLike(this, viewModel, message, responseDetail)
+            }
+            COMMENT_IO_EXCEPTION, LIKE_IO_EXCEPTION -> {
                 layoutCompat.indefiniteSnack(getString(R.string.request_io_exception, message))
             }
-            COMMENT_EXCEPTION -> {
+            COMMENT_EXCEPTION, LIKE_EXCEPTION -> {
                 layoutCompat.indefiniteSnack(getString(R.string.request_unknown_exception, message))
             }
-            COMMENT_ERROR -> {
+            COMMENT_ERROR, LIKE_ERROR -> {
                 layoutCompat.indefiniteSnack(getString(R.string.response_error, responseCode, code, message, responseDetail))
             }
-            COMMENT_EMPTY_CONTENT -> {
+            COMMENT_EMPTY_CONTENT, LIKE_EMPTY_CONTENT -> {
                 layoutCompat.indefiniteSnack(getString(R.string.response_empty))
             }
-            COMMENT_REJECTED -> {
+            COMMENT_REJECTED, LIKE_REJECTED -> {
                 layoutCompat.indefiniteSnack(getString(R.string.response_rejected))
             }
-            COMMENT_INVALID_STATE_CODE -> {
+            COMMENT_INVALID_STATE_CODE, LIKE_INVALID_STATE_CODE -> {
                 layoutCompat.indefiniteSnack(getString(R.string.request_unexpected_state, message))
             }
         }
