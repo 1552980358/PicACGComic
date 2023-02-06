@@ -1,4 +1,4 @@
-package projekt.cloud.piece.pic.api.comics.comments.post
+package projekt.cloud.piece.pic.api.common
 
 import kotlinx.serialization.Serializable
 
