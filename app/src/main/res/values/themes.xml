@@ -20,5 +20,10 @@
         <item name="duration">400</item>
         <item name="postSplashScreenTheme">@style/Theme.Pic</item>
     </style>
+    
+    <style name="Theme.DialogFragment.Commenting" parent="Theme.Material3.DayNight.DialogWhenLarge">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
 
 </resources>

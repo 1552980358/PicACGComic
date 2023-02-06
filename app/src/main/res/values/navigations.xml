@@ -14,5 +14,13 @@
     
     <string name="comment_arg_id" translatable="false">id</string>
     <string name="comment_arg_comment" translatable="false">comment</string>
+    
+    <string name="commenting_arg_comic_id">comic_id</string>
+    <string name="commenting_arg_comic_title">comic_title</string>
+    <string name="commenting_arg_comic_creator">comic_creator</string>
+    <string name="commenting_arg_comment_comment">comment</string>
+    <string name="commenting_arg_comment_id">comment_id</string>
+    <string name="commenting_arg_comment_user">comment_user</string>
+    <string name="commenting_arg_comment_user_avatar">comment_user_avatar</string>
 
 </resources>

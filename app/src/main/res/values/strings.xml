@@ -78,6 +78,8 @@
     <string name="comment_like">Like</string>
     <string name="comment_level">Lv.%s</string>
     
+    <string name="commenting_menu_send">Send</string>
+    
     <string name="viewer_image_load_error">Image Load Error.\nClick to retry</string>
     <string name="viewer_fab_next">Next</string>
     <string name="viewer_fab_back">Back</string>
