@@ -1,10 +1,18 @@
 package projekt.cloud.piece.pic.ui.comic.comments
 
+import android.view.Menu
+import android.view.Menu.NONE
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.MenuItem.SHOW_AS_ACTION_ALWAYS
 import android.view.View
 import android.view.View.GONE
+import androidx.core.view.MenuProvider
 import androidx.core.widget.NestedScrollView
 import androidx.core.widget.NestedScrollView.OnScrollChangeListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -14,11 +22,14 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import projekt.cloud.piece.pic.MainViewModel
+import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.common.LikeResponseBody
 import projekt.cloud.piece.pic.base.BaseRecyclerViewAdapter.BaseRecyclerViewAdapterUtil.adapterInterface
 import projekt.cloud.piece.pic.base.SnackLayoutCompat
 import projekt.cloud.piece.pic.databinding.FragmentCommentsBinding
 import projekt.cloud.piece.pic.ui.comic.Comic
+import projekt.cloud.piece.pic.ui.comic.ComicDirections
+import projekt.cloud.piece.pic.ui.comic.ComicViewModel
 import projekt.cloud.piece.pic.util.AdapterInterface
 import projekt.cloud.piece.pic.util.CoroutineUtil.default
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
@@ -60,6 +71,8 @@ abstract class CommentsLayoutCompat private constructor(
         get() = binding.nestedScrollView
     
     open fun setupActionBar(fragment: Fragment) = Unit
+    
+    open fun setupMenu(fragment: Fragment) = Unit
     
     open fun setupRecyclerViews(fragment: Fragment, mainViewModel: MainViewModel, commentsViewModel: CommentsViewModel) {
         val onClick: (String) -> Unit = {
@@ -137,6 +150,38 @@ abstract class CommentsLayoutCompat private constructor(
                 fragment.findParentAs<Comic>().findNavController()
                     .navigateUp()
             }
+        }
+    
+        override fun setupMenu(fragment: Fragment) {
+            val commentId = View.generateViewId()
+            val host = fragment.findParentAs<Comic>()
+            val comicViewModel: ComicViewModel by host.viewModels()
+            fragment.requireActivity().addMenuProvider(
+                object: MenuProvider {
+                    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                        menu.clear()
+                        menu.add(0, commentId, NONE, R.string.comic_menu_comment).let { comment ->
+                            comment.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
+                            comment.setIcon(R.drawable.ic_round_add_24)
+                        }
+                    }
+                    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                        if (menuItem.itemId == commentId) {
+                            comicViewModel.comic.value?.let { comic ->
+                                host.findNavController().navigate(
+                                    ComicDirections.toCommenting(
+                                        comic.id, comic.title, comic.creator.name
+                                    )
+                                )
+                            }
+                            return true
+                        }
+                        return false
+                    }
+                },
+                fragment.viewLifecycleOwner,
+                STARTED
+            )
         }
     
         override fun setupRecyclerViews(fragment: Fragment, mainViewModel: MainViewModel, commentsViewModel: CommentsViewModel) {

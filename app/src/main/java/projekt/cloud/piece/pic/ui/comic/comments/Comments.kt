@@ -49,6 +49,7 @@ class Comments: BaseCallbackFragment<FragmentCommentsBinding, CommentsViewModel>
     
     override fun onSetupActionBar(binding: FragmentCommentsBinding) {
         layoutCompat.setupActionBar(this)
+        layoutCompat.setupMenu(this)
     }
     
     override fun onSetupView(binding: FragmentCommentsBinding) {
