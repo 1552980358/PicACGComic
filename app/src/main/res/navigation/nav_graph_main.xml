@@ -85,8 +85,7 @@
             app:destination="@id/commenting">
             <argument
                 android:name="comic_id"
-                app:argType="string"
-                app:nullable="true" />
+                app:argType="string" />
             <argument
                 android:name="comic_title"
                 app:argType="string" />
