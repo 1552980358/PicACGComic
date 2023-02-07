@@ -3,12 +3,20 @@ package projekt.cloud.piece.pic.ui.comic.metadata
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.Menu.NONE
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.MenuItem.SHOW_AS_ACTION_ALWAYS
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -20,6 +28,8 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.chip.ChipGroup
 import kotlinx.coroutines.CoroutineScope
+import projekt.cloud.piece.pic.MainViewModel
+import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.api.comics.episodes.EpisodesResponseBody.Episode
 import projekt.cloud.piece.pic.api.image.Image
 import projekt.cloud.piece.pic.base.BaseRecyclerViewAdapter.BaseRecyclerViewAdapterUtil.adapterInterface
@@ -77,6 +87,8 @@ abstract class MetadataLayoutCompat(protected val binding: FragmentMetadataBindi
     }
     
     open fun setupActionBar(fragment: Fragment) = Unit
+    
+    open fun setupMenu(fragment: Fragment, mainViewModel: MainViewModel, comicViewModel: ComicViewModel) = Unit
     
     fun triggerShowOrGone(container: View, materialCheckBox: MaterialCheckBox) {
         container.visibility = when (container.visibility) {
@@ -189,6 +201,48 @@ abstract class MetadataLayoutCompat(protected val binding: FragmentMetadataBindi
             toolbar.setNavigationOnClickListener {
                 fragment.requireActivity().onBackPressedDispatcher.onBackPressed()
             }
+        }
+    
+        override fun setupMenu(fragment: Fragment, mainViewModel: MainViewModel, comicViewModel: ComicViewModel) {
+            val likeId = View.generateViewId()
+            fragment.requireActivity().addMenuProvider(
+                object: MenuProvider {
+                    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                        menu.clear()
+                        menu.add(NONE, likeId, NONE, R.string.comic_like).let { like ->
+                            like.setIcon(R.drawable.ic_round_favorite_border_24)
+                            like.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
+                            comicViewModel.isLiked.observe(fragment.viewLifecycleOwner) { isLiked ->
+                                like.setIcon(
+                                    when (isLiked) {
+                                        true -> {
+                                            R.drawable.ic_round_favorite_24
+                                        }
+                                        else -> {
+                                            R.drawable.ic_round_favorite_border_24
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    }
+                    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                        if (menuItem.itemId == likeId) {
+                            mainViewModel.account
+                                .value
+                                ?.takeIf { it.isSignedIn }
+                                ?.let { account ->
+                                    comicViewModel.id.value?.let { id ->
+                                        comicViewModel.scopedUpdateLiked(account.token, id, fragment.lifecycleScope)
+                                    }
+                                }
+                        }
+                        return false
+                    }
+                },
+                fragment.viewLifecycleOwner,
+                STARTED
+            )
         }
         
     }
