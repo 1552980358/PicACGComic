@@ -64,7 +64,7 @@
     <string name="search_menu_sort_views">Views</string>
     
     <string name="comic_like">Like</string>
-    <string name="comic_menu_comment">Comment</string>
+    <string name="comic_comment">Comment</string>
     
     <string name="metadata_chapter_title">Chapter</string>
     <string name="metadata_chapter_asc">ASC</string>

@@ -160,7 +160,7 @@ abstract class CommentsLayoutCompat private constructor(
                 object: MenuProvider {
                     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                         menu.clear()
-                        menu.add(0, commentId, NONE, R.string.comic_menu_comment).let { comment ->
+                        menu.add(0, commentId, NONE, R.string.comic_comment).let { comment ->
                             comment.setShowAsAction(SHOW_AS_ACTION_ALWAYS)
                             comment.setIcon(R.drawable.ic_round_add_24)
                         }
