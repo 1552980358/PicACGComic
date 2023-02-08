@@ -6,8 +6,10 @@ import android.content.Context.INPUT_METHOD_SERVICE
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Menu
+import android.view.Menu.NONE
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.MenuItem.SHOW_AS_ACTION_ALWAYS
 import android.view.View
 import android.view.View.GONE
 import android.view.inputmethod.InputMethodManager
@@ -20,6 +22,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -89,7 +92,9 @@ abstract class CommentingLayoutCompat private constructor(
         get() = binding.root
     
     fun setupActionBar(fragment: Fragment) {
-        fragment.setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener {
+            fragment.findNavController().navigateUp()
+        }
     }
     
     fun setupWithArgument(fragment: Fragment, arguments: Bundle) {
@@ -145,28 +150,23 @@ abstract class CommentingLayoutCompat private constructor(
     }
     
     fun setupMenu(dialogFragment: DialogFragment) {
-        dialogFragment.requireActivity().addMenuProvider(
-            object: MenuProvider {
-                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                    menu.clear()
-                    menuInflater.inflate(R.menu.menu_commenting, menu)
+        val sendId = View.generateViewId()
+        toolbar.menu.add(NONE, sendId, NONE, R.string.commenting_menu_send)
+            .setIcon(R.drawable.ic_round_send_24)
+            .setShowAsAction(SHOW_AS_ACTION_ALWAYS)
+        toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                sendId -> {
+                    hideKeyboard(dialogFragment.requireActivity())
+                    sendComment(
+                        dialogFragment,
+                        dialogFragment.activityViewModels<MainViewModel>().value
+                    )
+                    true
                 }
-                override fun onMenuItemSelected(menuItem: MenuItem) =
-                    when (menuItem.itemId) {
-                        R.id.send -> {
-                            hideKeyboard(dialogFragment.requireActivity())
-                            sendComment(
-                                dialogFragment,
-                                dialogFragment.activityViewModels<MainViewModel>().value
-                            )
-                            true
-                        }
-                        else -> false
-                    }
-            },
-            dialogFragment.viewLifecycleOwner,
-            STARTED
-        )
+                else -> false
+            }
+        }
     }
     
     private fun hideKeyboard(activity: Activity) {
