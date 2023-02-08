@@ -82,6 +82,7 @@ abstract class CommentingLayoutCompat private constructor(
     
     init {
         linearProgressIndicator.setVisibilityAfterHide(GONE)
+        linearProgressIndicator.hide()
     }
     
     override val snackContainer: View
