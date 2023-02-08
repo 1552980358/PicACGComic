@@ -2,11 +2,15 @@ package projekt.cloud.piece.pic.ui.comment
 
 import android.graphics.drawable.Drawable
 import android.view.Menu
+import android.view.Menu.NONE
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.MenuItem.SHOW_AS_ACTION_ALWAYS
 import android.view.View
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle.State.CREATED
+import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -101,16 +105,21 @@ abstract class CommentLayoutCompat private constructor(
     
     fun setupActionBar(fragment: Fragment) {
         fragment.setSupportActionBar(toolbar)
+        val likeId = View.generateViewId()
         fragment.requireActivity().addMenuProvider(
             object: MenuProvider {
                 override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                     menu.clear()
-                    menuInflater.inflate(R.menu.menu_comment, menu)
+                    menu.add(NONE, likeId, NONE, R.string.comment_like)
+                        .setIcon(R.drawable.ic_round_favorite_border_24)
+                        .setShowAsAction(SHOW_AS_ACTION_ALWAYS)
                 }
                 override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                     return false
                 }
-            }
+            },
+            fragment.viewLifecycleOwner,
+            CREATED
         )
     }
     
