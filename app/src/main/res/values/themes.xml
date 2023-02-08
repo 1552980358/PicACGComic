@@ -21,9 +21,23 @@
         <item name="postSplashScreenTheme">@style/Theme.Pic</item>
     </style>
     
-    <style name="Theme.DialogFragment.Commenting" parent="Theme.Material3.DayNight.DialogWhenLarge">
-        <item name="windowNoTitle">true</item>
+    <style name="Base.Theme.Pic.Commenting" parent="Theme.Material3.DayNight.DialogWhenLarge">
+        <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsFloating">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowNoTitle">true</item>
+    
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="s">?attr/isLightTheme</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="s">?attr/isLightTheme</item>
+    
+        <item name="android:windowEnterAnimation">@anim/nav_default_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/nav_default_exit_anim</item>
+        
+        <item name="materialCardViewStyle">@style/Widget.MaterialCardView</item>
     </style>
+    
+    <style name="Theme.Pic.Commenting" parent="Base.Theme.Pic.Commenting" />
 
 </resources>
