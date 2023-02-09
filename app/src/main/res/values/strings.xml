@@ -80,6 +80,8 @@
     <string name="comment_level">Lv.%s</string>
     
     <string name="commenting_menu_send">Send</string>
+    <string name="commenting_text_input_comment">Comment</string>
+    <string name="commenting_text_input_reply">Reply</string>
     
     <string name="viewer_image_load_error">Image Load Error.\nClick to retry</string>
     <string name="viewer_fab_next">Next</string>
