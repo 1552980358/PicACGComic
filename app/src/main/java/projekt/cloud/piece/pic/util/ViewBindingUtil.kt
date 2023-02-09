@@ -11,4 +11,7 @@ object ViewBindingUtil {
         else -> VISIBLE
     }
     
+    @JvmStatic
+    fun isNullOrBlank(str: String?) = str.isNullOrBlank()
+    
 }
