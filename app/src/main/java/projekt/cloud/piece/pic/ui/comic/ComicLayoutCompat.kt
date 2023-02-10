@@ -9,6 +9,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton.OnChangedCallback
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigationrail.NavigationRailView
 import com.google.android.material.transition.platform.MaterialSharedAxis
@@ -37,7 +39,7 @@ abstract class ComicLayoutCompat private constructor(protected val binding: Frag
     private val fragmentContainerView: FragmentContainerView
         get() = binding.fragmentContainerView
     
-    val childNavController: NavController
+    protected val childNavController: NavController
         get() = fragmentContainerView.getFragment<NavHostFragment>().navController
     
     protected lateinit var navController: NavController
@@ -147,6 +149,11 @@ abstract class ComicLayoutCompat private constructor(protected val binding: Frag
         private val navHeaderComic: NavHeaderComicBinding
             = NavHeaderComicBinding.bind(navigationView.getHeaderView(0))
         
+        private val like: ExtendedFloatingActionButton
+            get() = navHeaderComic.extendedFloatingActionButtonLikes!!
+        private val comment: ExtendedFloatingActionButton
+            get() = navHeaderComic.extendedFloatingActionButtonComment!!
+        
         override fun setupNavigation(fragment: Fragment) {
             navigationView.setupWithNavController(childNavController)
             navHeaderComic.lifecycleOwner = fragment.viewLifecycleOwner
@@ -158,6 +165,32 @@ abstract class ComicLayoutCompat private constructor(protected val binding: Frag
             navHeaderComic.comicViewModel = comicViewModel
             navHeaderComic.mainViewModel = mainViewModel
             navHeaderComic.lifecycleOwner = lifecycleOwner
+            
+            comment.hide()
+            
+            val onChangedCallback = object: OnChangedCallback() {
+                override fun onHidden(extendedFab: ExtendedFloatingActionButton?) {
+                    when (childNavController.currentDestination?.id) {
+                        R.id.metadata -> {
+                            like.show()
+                        }
+                        R.id.comments -> {
+                            comment.show()
+                        }
+                    }
+                }
+            }
+            
+            childNavController.addOnDestinationChangedListener { _, destination, _ ->
+                when (destination.id) {
+                    R.id.metadata -> {
+                        comment.hide(onChangedCallback)
+                    }
+                    R.id.comments -> {
+                        like.hide(onChangedCallback)
+                    }
+                }
+            }
         }
     
         override fun disableComment() {

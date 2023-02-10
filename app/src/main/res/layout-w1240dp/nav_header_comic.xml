@@ -67,6 +67,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
+        
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/extended_floating_action_button_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/md_spec_spacing_ver_8"
+            android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
+            android:text="@string/comic_comment"
+            app:elevation="0dp"
+            app:icon="@drawable/ic_round_add_24"
+            app:layout_constraintTop_toBottomOf="@id/constraint_layout_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:targetApi="p" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
