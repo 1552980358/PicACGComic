@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <style name="Base.Theme.Pic.Commenting" parent="Theme.Material3.DayNight.DialogWhenLarge">
+    
+        <item name="windowNoTitle">true</item>
+    
+        <item name="android:windowEnterAnimation">@anim/nav_default_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/nav_default_exit_anim</item>
+        
+        <item name="materialCardViewStyle">@style/Widget.MaterialCardView</item>
+        
+    </style>
+    
+</resources>

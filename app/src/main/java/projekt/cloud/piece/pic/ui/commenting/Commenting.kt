@@ -28,7 +28,6 @@ class Commenting: DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.Theme_Pic_Commenting)
-        layoutSizeMode = requireActivity().getLayoutSize()
     }
     
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -47,11 +46,6 @@ class Commenting: DialogFragment() {
     
     override fun onStart() {
         super.onStart()
-        if (layoutSizeMode == COMPACT) {
-            dialog?.window?.let {
-                WindowCompat.setDecorFitsSystemWindows(it, false)
-            }
-        }
     }
     
     override fun onDestroyView() {

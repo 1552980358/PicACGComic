@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <data>
+        <import type="projekt.cloud.piece.pic.MainViewModel" />
+        <variable
+            name="mainViewModel"
+            type="MainViewModel" />
+        
+        <import type="projekt.cloud.piece.pic.util.ViewBindingUtil" />
+        
+        <variable
+            name="comicId"
+            type="String" />
+        <variable
+            name="title"
+            type="String" />
+        <variable
+            name="creator"
+            type="String" />
+        <variable
+            name="commentId"
+            type="String" />
+        <variable
+            name="user"
+            type="String" />
+        <variable
+            name="comment"
+            type="String" />
+    </data>
+    
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface">
+        
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/material_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_round_close_24" />
+            
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/linear_progress_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" />
+        
+        </com.google.android.material.appbar.AppBarLayout>
+        
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+            
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/material_card_view_comic"
+                    android:layout_width="@dimen/constraint_fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
+                    android:layout_marginTop="@dimen/md_spec_spacing_ver_8"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+                    
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/md_spec_spacing_hor_16"
+                        android:paddingVertical="@dimen/md_spec_spacing_ver_8">
+                        
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/material_text_view_title"
+                            android:layout_width="@dimen/constraint_fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{title}"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent" />
+                        
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="@dimen/constraint_fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@{creator}"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                            android:visibility="@{ViewBindingUtil.goneIfBlank(creator)}"
+                            app:layout_constraintTop_toBottomOf="@id/material_text_view_title"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+                        
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    
+                </com.google.android.material.card.MaterialCardView>
+                
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="@dimen/constraint_fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
+                    android:layout_marginVertical="@dimen/md_spec_spacing_ver_8"
+                    app:layout_constraintTop_toBottomOf="@id/material_card_view_comic"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+                    
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="@dimen/md_spec_spacing_hor_16"
+                        android:paddingVertical="@dimen/md_spec_spacing_ver_8">
+    
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="@{ViewBindingUtil.goneIfBlank(user)}">
+        
+                            <projekt.cloud.piece.pic.widget.DefaultedImageView
+                                android:id="@+id/defaulted_image_view_avatar"
+                                android:layout_width="@dimen/md_spec_avatar_size"
+                                android:layout_height="@dimen/md_spec_avatar_size"
+                                app:defaultImage="@drawable/ic_round_account_circle_24"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:shapeAppearance="@style/Widget.ShapeableImageView.Circle" />
+        
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/material_text_view_user"
+                                android:layout_width="@dimen/constraint_fill_parent"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:layout_marginStart="@dimen/md_spec_spacing_hor_16"
+                                android:maxLines="1"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/defaulted_image_view_avatar"
+                                app:layout_constraintEnd_toEndOf="parent" />
+        
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="@dimen/constraint_fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/md_spec_spacing_hor_16"
+                                android:text="@{comment}"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                                app:layout_constraintTop_toBottomOf="@id/material_text_view_user"
+                                app:layout_constraintStart_toEndOf="@id/defaulted_image_view_avatar"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
+    
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/text_input_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@{ViewBindingUtil.isNullOrBlank(commentId) ? @string/commenting_text_input_comment : @string/commenting_text_input_reply}"
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+        
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+    
+                        </com.google.android.material.textfield.TextInputLayout>
+                        
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                    
+                </com.google.android.material.card.MaterialCardView>
+                
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            
+        </androidx.core.widget.NestedScrollView>
+    
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
