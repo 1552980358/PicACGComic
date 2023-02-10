@@ -79,6 +79,7 @@
             android:layout_marginVertical="@dimen/md_spec_spacing_ver_8"
             android:layout_marginHorizontal="@dimen/md_spec_spacing_hor_16"
             android:text="@string/comic_comment"
+            android:onClick="@{() -> layoutCompat.onCommentClicked(comicViewModel.comic.id, comicViewModel.comic.title, comicViewModel.comic.creator.name)}"
             android:outlineAmbientShadowColor="@android:color/transparent"
             android:outlineSpotShadowColor="@android:color/transparent"
             app:elevation="0dp"

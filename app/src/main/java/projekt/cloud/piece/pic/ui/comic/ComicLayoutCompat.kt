@@ -62,6 +62,12 @@ abstract class ComicLayoutCompat private constructor(protected val binding: Frag
         )
     }
     
+    fun onCommentClicked(comicId: String, comicTitle: String, creator: String?) {
+        navController.navigate(
+            ComicDirections.toCommenting(comicId, comicTitle, creator)
+        )
+    }
+    
     fun onBackPressed(): Boolean {
         val childNavController = childNavController
         if (childNavController.currentDestination?.id != R.id.metadata) {
