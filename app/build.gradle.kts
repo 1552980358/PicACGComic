@@ -95,7 +95,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.10")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.4.1")
-    kapt("androidx.databinding:databinding-compiler-common:7.4.0")
+    kapt("androidx.databinding:databinding-compiler-common:7.4.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
