@@ -31,10 +31,10 @@ import projekt.cloud.piece.pic.util.AdapterInterface
 import projekt.cloud.piece.pic.util.CoroutineUtil.default
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
-import projekt.cloud.piece.pic.util.LayoutSizeMode
-import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
-import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
-import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
+import projekt.cloud.piece.pic.util.ScreenDensity
+import projekt.cloud.piece.pic.util.ScreenDensity.COMPACT
+import projekt.cloud.piece.pic.util.ScreenDensity.EXPANDED
+import projekt.cloud.piece.pic.util.ScreenDensity.MEDIUM
 import projekt.cloud.piece.pic.util.SerializeUtil.decodeJson
 import projekt.cloud.piece.pic.widget.DefaultedImageView
 
@@ -44,7 +44,7 @@ abstract class CommentLayoutCompat private constructor(
     
     companion object CommentLayoutCompatUtil {
         @JvmStatic
-        fun FragmentCommentBinding.getLayoutCompat(layoutSizeMode: LayoutSizeMode) = when (layoutSizeMode) {
+        fun FragmentCommentBinding.getLayoutCompat(screenDensity: ScreenDensity) = when (screenDensity) {
             COMPACT -> CommentLayoutCompatImpl(this)
             MEDIUM -> CommentLayoutCompatImpl(this)
             EXPANDED -> CommentLayoutCompatW1240Impl(this)

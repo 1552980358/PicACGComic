@@ -14,10 +14,10 @@ import projekt.cloud.piece.pic.ui.home.Home
 import projekt.cloud.piece.pic.util.AdapterInterface
 import projekt.cloud.piece.pic.util.FragmentUtil.findParentAs
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
-import projekt.cloud.piece.pic.util.LayoutSizeMode
-import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
-import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
-import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
+import projekt.cloud.piece.pic.util.ScreenDensity
+import projekt.cloud.piece.pic.util.ScreenDensity.COMPACT
+import projekt.cloud.piece.pic.util.ScreenDensity.EXPANDED
+import projekt.cloud.piece.pic.util.ScreenDensity.MEDIUM
 
 abstract class CategoryLayoutCompat(
     protected val binding: FragmentCategoryBinding
@@ -25,7 +25,7 @@ abstract class CategoryLayoutCompat(
     
     companion object CategoryLayoutCompatUtil {
         @JvmStatic
-        fun FragmentCategoryBinding.getLayoutCompat(layoutSizeMode: LayoutSizeMode) = when (layoutSizeMode) {
+        fun FragmentCategoryBinding.getLayoutCompat(screenDensity: ScreenDensity) = when (screenDensity) {
             COMPACT -> CategoryLayoutCompatImpl(this)
             MEDIUM -> CategoryLayoutCompatW600dpImpl(this)
             EXPANDED -> CategoryLayoutCompatW1240dpImpl(this)

@@ -5,13 +5,13 @@ import com.google.android.material.transition.platform.MaterialSharedAxis
 import projekt.cloud.piece.pic.base.BaseFragment
 import projekt.cloud.piece.pic.databinding.FragmentSigningBinding
 import projekt.cloud.piece.pic.ui.signing.SigningLayoutCompat.SigningLayoutCompatUtil.getLayoutCompat
-import projekt.cloud.piece.pic.util.LayoutSizeMode
-import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
+import projekt.cloud.piece.pic.util.ScreenDensity
+import projekt.cloud.piece.pic.util.ScreenDensity.COMPACT
 
 class Signing: BaseFragment<FragmentSigningBinding>() {
 
-    override fun onSetupAnimation(layoutSizeMode: LayoutSizeMode) {
-        when (layoutSizeMode) {
+    override fun onSetupAnimation(screenDensity: ScreenDensity) {
+        when (screenDensity) {
             COMPACT -> {
                 enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
                 exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
@@ -27,8 +27,8 @@ class Signing: BaseFragment<FragmentSigningBinding>() {
     
     private lateinit var layoutCompat: SigningLayoutCompat
     
-    override fun onSetupLayoutCompat(binding: FragmentSigningBinding, layoutSizeMode: LayoutSizeMode) {
-        layoutCompat = binding.getLayoutCompat(layoutSizeMode)
+    override fun onSetupLayoutCompat(binding: FragmentSigningBinding, screenDensity: ScreenDensity) {
+        layoutCompat = binding.getLayoutCompat(screenDensity)
         layoutCompat.setNavController(findNavController())
     }
     

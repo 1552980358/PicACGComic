@@ -8,15 +8,15 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigationrail.NavigationRailView
 import projekt.cloud.piece.pic.databinding.FragmentHomeBinding
 import projekt.cloud.piece.pic.databinding.NavRailHeaderHomeBinding
-import projekt.cloud.piece.pic.util.LayoutSizeMode
-import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
-import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
-import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
+import projekt.cloud.piece.pic.util.ScreenDensity
+import projekt.cloud.piece.pic.util.ScreenDensity.COMPACT
+import projekt.cloud.piece.pic.util.ScreenDensity.MEDIUM
+import projekt.cloud.piece.pic.util.ScreenDensity.EXPANDED
 
 abstract class HomeLayoutCompat(protected val binding: FragmentHomeBinding) {
 
     companion object HomeLayoutCompatUtil {
-        fun FragmentHomeBinding.getLayoutCompat(layoutSizeMode: LayoutSizeMode) = when (layoutSizeMode) {
+        fun FragmentHomeBinding.getLayoutCompat(screenDensity: ScreenDensity) = when (screenDensity) {
             COMPACT -> HomeLayoutCompatImpl(this)
             MEDIUM -> HomeLayoutCompatW600dpImpl(this)
             EXPANDED -> HomeLayoutCompatW1240dpImpl(this)

@@ -16,7 +16,7 @@ import projekt.cloud.piece.pic.ui.home.search.SearchViewModel.SearchViewModelUti
 import projekt.cloud.piece.pic.ui.home.search.SearchViewModel.SearchViewModelUtil.SEARCH_PAGE_UPDATE
 import projekt.cloud.piece.pic.ui.home.search.SearchViewModel.SearchViewModelUtil.SEARCH_REJECTED
 import projekt.cloud.piece.pic.util.FragmentUtil.findParentAs
-import projekt.cloud.piece.pic.util.LayoutSizeMode
+import projekt.cloud.piece.pic.util.ScreenDensity
 
 class Search: BaseCallbackFragment<FragmentSearchBinding, SearchViewModel>() {
     
@@ -32,8 +32,8 @@ class Search: BaseCallbackFragment<FragmentSearchBinding, SearchViewModel>() {
         binding.mainViewModel = mainViewModel
     }
 
-    override fun onSetupLayoutCompat(binding: FragmentSearchBinding, layoutSizeMode: LayoutSizeMode) {
-        layoutCompat = binding.getLayoutCompat(layoutSizeMode)
+    override fun onSetupLayoutCompat(binding: FragmentSearchBinding, screenDensity: ScreenDensity) {
+        layoutCompat = binding.getLayoutCompat(screenDensity)
     }
 
     override fun onSetupActionBar(binding: FragmentSearchBinding) {

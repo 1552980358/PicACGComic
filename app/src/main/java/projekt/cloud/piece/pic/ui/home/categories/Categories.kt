@@ -18,7 +18,7 @@ import projekt.cloud.piece.pic.ui.home.categories.CategoriesViewModel.Categories
 import projekt.cloud.piece.pic.ui.home.categories.CategoriesViewModel.CategoriesViewModelUtil.CATEGORIES_IO_EXCEPTION
 import projekt.cloud.piece.pic.ui.home.categories.CategoriesViewModel.CategoriesViewModelUtil.CATEGORIES_REJECTED
 import projekt.cloud.piece.pic.util.FragmentUtil.findParentAs
-import projekt.cloud.piece.pic.util.LayoutSizeMode
+import projekt.cloud.piece.pic.util.ScreenDensity
 
 class Categories: BaseCallbackFragment<FragmentCategoriesBinding, CategoriesViewModel>() {
     
@@ -37,8 +37,8 @@ class Categories: BaseCallbackFragment<FragmentCategoriesBinding, CategoriesView
         binding.mainViewModel = mainViewModel
     }
     
-    override fun onSetupLayoutCompat(binding: FragmentCategoriesBinding, layoutSizeMode: LayoutSizeMode) {
-        layoutCompat = binding.getLayoutCompat(layoutSizeMode)
+    override fun onSetupLayoutCompat(binding: FragmentCategoriesBinding, screenDensity: ScreenDensity) {
+        layoutCompat = binding.getLayoutCompat(screenDensity)
         layoutCompat.setNavController(home.findNavController())
     }
     

@@ -31,10 +31,10 @@ import projekt.cloud.piece.pic.ui.home.HomeDirections
 import projekt.cloud.piece.pic.util.AdapterInterface
 import projekt.cloud.piece.pic.util.BitmapBundle.Companion.toNavArg
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
-import projekt.cloud.piece.pic.util.LayoutSizeMode
-import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
-import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
-import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
+import projekt.cloud.piece.pic.util.ScreenDensity
+import projekt.cloud.piece.pic.util.ScreenDensity.COMPACT
+import projekt.cloud.piece.pic.util.ScreenDensity.MEDIUM
+import projekt.cloud.piece.pic.util.ScreenDensity.EXPANDED
 
 abstract class IndexLayoutCompat private constructor(
     protected val binding: FragmentIndexBinding
@@ -42,7 +42,7 @@ abstract class IndexLayoutCompat private constructor(
     
     companion object IndexLayoutCompatUtil {
         @JvmStatic
-        fun FragmentIndexBinding.getLayoutCompat(layoutSizeMode: LayoutSizeMode) = when (layoutSizeMode) {
+        fun FragmentIndexBinding.getLayoutCompat(screenDensity: ScreenDensity) = when (screenDensity) {
             COMPACT -> IndexLayoutCompatImpl(this)
             MEDIUM -> IndexLayoutCompatW600dpImpl(this)
             EXPANDED -> IndexLayoutCompatW1240dpImpl(this)

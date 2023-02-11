@@ -20,16 +20,16 @@ import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.databinding.ComicNavigationMenuItemActionBinding
 import projekt.cloud.piece.pic.databinding.FragmentComicBinding
 import projekt.cloud.piece.pic.databinding.NavHeaderComicBinding
-import projekt.cloud.piece.pic.util.LayoutSizeMode
-import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
-import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
-import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
+import projekt.cloud.piece.pic.util.ScreenDensity
+import projekt.cloud.piece.pic.util.ScreenDensity.COMPACT
+import projekt.cloud.piece.pic.util.ScreenDensity.MEDIUM
+import projekt.cloud.piece.pic.util.ScreenDensity.EXPANDED
 
 abstract class ComicLayoutCompat private constructor(protected val binding: FragmentComicBinding) {
     
     companion object ComicLayoutCompatUtil {
         @JvmStatic
-        fun FragmentComicBinding.getLayoutCompat(layoutSizeMode: LayoutSizeMode) = when (layoutSizeMode) {
+        fun FragmentComicBinding.getLayoutCompat(screenDensity: ScreenDensity) = when (screenDensity) {
             COMPACT -> ComicLayoutCompatImpl(this)
             MEDIUM -> ComicLayoutCompatW600dpImpl(this)
             EXPANDED -> ComicLayoutCompatW1240dpImpl(this)

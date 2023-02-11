@@ -27,7 +27,7 @@ import projekt.cloud.piece.pic.ui.comic.comments.CommentsViewModel.CommentsViewM
 import projekt.cloud.piece.pic.ui.comic.comments.CommentsViewModel.CommentsViewModelUtil.LIKE_IO_EXCEPTION
 import projekt.cloud.piece.pic.ui.comic.comments.CommentsViewModel.CommentsViewModelUtil.LIKE_REJECTED
 import projekt.cloud.piece.pic.util.FragmentUtil.findParentAs
-import projekt.cloud.piece.pic.util.LayoutSizeMode
+import projekt.cloud.piece.pic.util.ScreenDensity
 
 class Comments: BaseCallbackFragment<FragmentCommentsBinding, CommentsViewModel>() {
     
@@ -43,8 +43,8 @@ class Comments: BaseCallbackFragment<FragmentCommentsBinding, CommentsViewModel>
         binding.mainViewModel = mainViewModel
     }
     
-    override fun onSetupLayoutCompat(binding: FragmentCommentsBinding, layoutSizeMode: LayoutSizeMode) {
-        layoutCompat = binding.getLayoutCompat(layoutSizeMode)
+    override fun onSetupLayoutCompat(binding: FragmentCommentsBinding, screenDensity: ScreenDensity) {
+        layoutCompat = binding.getLayoutCompat(screenDensity)
     }
     
     override fun onSetupActionBar(binding: FragmentCommentsBinding) {

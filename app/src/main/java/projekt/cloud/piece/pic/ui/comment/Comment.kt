@@ -23,7 +23,7 @@ import projekt.cloud.piece.pic.ui.comment.CommentViewModel.CommentViewModelUtil.
 import projekt.cloud.piece.pic.ui.comment.CommentViewModel.CommentViewModelUtil.LIKE_INVALID_STATE_CODE
 import projekt.cloud.piece.pic.ui.comment.CommentViewModel.CommentViewModelUtil.LIKE_IO_EXCEPTION
 import projekt.cloud.piece.pic.ui.comment.CommentViewModel.CommentViewModelUtil.LIKE_REJECTED
-import projekt.cloud.piece.pic.util.LayoutSizeMode
+import projekt.cloud.piece.pic.util.ScreenDensity
 
 class Comment: BaseCallbackFragment<FragmentCommentBinding, CommentViewModel>() {
     
@@ -35,7 +35,7 @@ class Comment: BaseCallbackFragment<FragmentCommentBinding, CommentViewModel>() 
     
     private lateinit var layoutCompat: CommentLayoutCompat
     
-    override fun onSetupAnimation(layoutSizeMode: LayoutSizeMode) {
+    override fun onSetupAnimation(screenDensity: ScreenDensity) {
         enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
         exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
     }
@@ -49,8 +49,8 @@ class Comment: BaseCallbackFragment<FragmentCommentBinding, CommentViewModel>() 
         }
     }
     
-    override fun onSetupLayoutCompat(binding: FragmentCommentBinding, layoutSizeMode: LayoutSizeMode) {
-        layoutCompat = binding.getLayoutCompat(layoutSizeMode)
+    override fun onSetupLayoutCompat(binding: FragmentCommentBinding, screenDensity: ScreenDensity) {
+        layoutCompat = binding.getLayoutCompat(screenDensity)
     }
     
     override fun onSetupView(binding: FragmentCommentBinding) {

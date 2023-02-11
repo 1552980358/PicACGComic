@@ -42,17 +42,17 @@ import projekt.cloud.piece.pic.ui.comic.ComicViewModel
 import projekt.cloud.piece.pic.util.AdapterInterface
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
-import projekt.cloud.piece.pic.util.LayoutSizeMode
-import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
-import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
-import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
+import projekt.cloud.piece.pic.util.ScreenDensity
+import projekt.cloud.piece.pic.util.ScreenDensity.COMPACT
+import projekt.cloud.piece.pic.util.ScreenDensity.MEDIUM
+import projekt.cloud.piece.pic.util.ScreenDensity.EXPANDED
 import projekt.cloud.piece.pic.widget.DefaultedImageView
 
 abstract class MetadataLayoutCompat(protected val binding: FragmentMetadataBinding): SnackLayoutCompat(), AdapterInterface {
 
     companion object MetadataLayoutCompatUtil {
         @JvmStatic
-        fun FragmentMetadataBinding.getLayoutCompat(layoutSizeMode: LayoutSizeMode) = when (layoutSizeMode) {
+        fun FragmentMetadataBinding.getLayoutCompat(screenDensity: ScreenDensity) = when (screenDensity) {
             COMPACT -> MetadataLayoutCompatImpl(this)
             MEDIUM -> MetadataLayoutCompatW600dpImpl(this)
             EXPANDED -> MetadataLayoutCompatW1240dpImpl(this)

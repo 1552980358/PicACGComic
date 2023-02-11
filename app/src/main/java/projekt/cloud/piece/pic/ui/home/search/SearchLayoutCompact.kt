@@ -31,15 +31,15 @@ import projekt.cloud.piece.pic.ui.home.HomeDirections
 import projekt.cloud.piece.pic.util.AdapterInterface
 import projekt.cloud.piece.pic.util.BitmapBundle.Companion.toNavArg
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
-import projekt.cloud.piece.pic.util.LayoutSizeMode
-import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
-import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
-import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
+import projekt.cloud.piece.pic.util.ScreenDensity
+import projekt.cloud.piece.pic.util.ScreenDensity.COMPACT
+import projekt.cloud.piece.pic.util.ScreenDensity.MEDIUM
+import projekt.cloud.piece.pic.util.ScreenDensity.EXPANDED
 
 open class SearchLayoutCompact private constructor(protected val binding: FragmentSearchBinding): AdapterInterface {
 
     companion object SearchLayoutCompactUtil {
-        fun FragmentSearchBinding.getLayoutCompat(layoutSizeMode: LayoutSizeMode) = when (layoutSizeMode) {
+        fun FragmentSearchBinding.getLayoutCompat(screenDensity: ScreenDensity) = when (screenDensity) {
             COMPACT -> SearchLayoutCompactImpl(this)
             MEDIUM -> SearchLayoutCompactW600dpImpl(this)
             EXPANDED -> SearchLayoutCompactW1240dpImpl(this)

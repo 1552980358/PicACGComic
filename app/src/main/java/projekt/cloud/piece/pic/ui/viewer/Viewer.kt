@@ -14,7 +14,7 @@ import projekt.cloud.piece.pic.ui.viewer.ViewerViewModel.ViewerViewModelCallback
 import projekt.cloud.piece.pic.ui.viewer.ViewerViewModel.ViewerViewModelCallbackCode.VIEWER_INVALID_STATE_CODE
 import projekt.cloud.piece.pic.ui.viewer.ViewerViewModel.ViewerViewModelCallbackCode.VIEWER_IO_EXCEPTION
 import projekt.cloud.piece.pic.ui.viewer.ViewerViewModel.ViewerViewModelCallbackCode.VIEWER_REJECTED
-import projekt.cloud.piece.pic.util.LayoutSizeMode
+import projekt.cloud.piece.pic.util.ScreenDensity
 
 class Viewer: BaseCallbackFragment<FragmentViewerBinding, ViewerViewModel>() {
     
@@ -51,8 +51,8 @@ class Viewer: BaseCallbackFragment<FragmentViewerBinding, ViewerViewModel>() {
         
     }
     
-    override fun onSetupLayoutCompat(binding: FragmentViewerBinding, layoutSizeMode: LayoutSizeMode) {
-        layoutCompat = binding.getLayoutCompat(layoutSizeMode)
+    override fun onSetupLayoutCompat(binding: FragmentViewerBinding, screenDensity: ScreenDensity) {
+        layoutCompat = binding.getLayoutCompat(screenDensity)
     }
     
     override fun onSetupActionBar(binding: FragmentViewerBinding) {

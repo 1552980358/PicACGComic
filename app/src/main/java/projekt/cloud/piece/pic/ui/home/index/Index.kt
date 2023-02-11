@@ -18,7 +18,7 @@ import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConsta
 import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.INDEX_IO_EXCEPTION
 import projekt.cloud.piece.pic.ui.home.index.IndexViewModel.IndexViewModelConstants.INDEX_REJECTED
 import projekt.cloud.piece.pic.util.FragmentUtil.findParentAs
-import projekt.cloud.piece.pic.util.LayoutSizeMode
+import projekt.cloud.piece.pic.util.ScreenDensity
 
 class Index: BaseCallbackFragment<FragmentIndexBinding, IndexViewModel>() {
     
@@ -33,8 +33,8 @@ class Index: BaseCallbackFragment<FragmentIndexBinding, IndexViewModel>() {
     
     private val mainViewModel: MainViewModel by activityViewModels()
     
-    override fun onSetupLayoutCompat(binding: FragmentIndexBinding, layoutSizeMode: LayoutSizeMode) {
-        layoutCompat = binding.getLayoutCompat(layoutSizeMode)
+    override fun onSetupLayoutCompat(binding: FragmentIndexBinding, screenDensity: ScreenDensity) {
+        layoutCompat = binding.getLayoutCompat(screenDensity)
         layoutCompat.setNavController(home.findNavController())
     }
     

@@ -9,8 +9,8 @@ import androidx.activity.OnBackPressedDispatcher
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import projekt.cloud.piece.pic.util.LayoutSizeMode
-import projekt.cloud.piece.pic.util.LayoutSizeMode.LayoutSizeModeUtil.getLayoutSize
+import projekt.cloud.piece.pic.util.ScreenDensity
+import projekt.cloud.piece.pic.util.ScreenDensity.ScreenDensityUtil.screenDensity
 import java.lang.reflect.ParameterizedType
 import projekt.cloud.piece.pic.util.ViewBindingInflater
 
@@ -27,7 +27,7 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
         ((this::class.java.genericSuperclass as ParameterizedType)
             .actualTypeArguments.first() as Class<VB>)
 
-    protected lateinit var layoutSizeMode: LayoutSizeMode
+    protected lateinit var screenDensity: ScreenDensity
         private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,12 +42,12 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
                 }
             }
         })
-
-        layoutSizeMode = requireActivity().getLayoutSize()
-        onSetupAnimation(layoutSizeMode)
+    
+        screenDensity = requireActivity().screenDensity
+        onSetupAnimation(screenDensity)
     }
 
-    protected open fun onSetupAnimation(layoutSizeMode: LayoutSizeMode) = Unit
+    protected open fun onSetupAnimation(screenDensity: ScreenDensity) = Unit
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = ViewBindingInflater(viewBindingClass).inflate(inflater, container, false)
@@ -63,12 +63,12 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     protected open fun onBindData(binding: VB) = Unit
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        onSetupLayoutCompat(binding, layoutSizeMode)
+        onSetupLayoutCompat(binding, screenDensity)
         onSetupActionBar(binding)
         onSetupView(binding)
     }
 
-    protected open fun onSetupLayoutCompat(binding: VB, layoutSizeMode: LayoutSizeMode) = Unit
+    protected open fun onSetupLayoutCompat(binding: VB, screenDensity: ScreenDensity) = Unit
 
     protected open fun onSetupActionBar(binding: VB) = Unit
 

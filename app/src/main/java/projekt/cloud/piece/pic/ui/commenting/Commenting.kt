@@ -13,9 +13,8 @@ import projekt.cloud.piece.pic.MainViewModel
 import projekt.cloud.piece.pic.R
 import projekt.cloud.piece.pic.databinding.DialogFragmentCommentingBinding
 import projekt.cloud.piece.pic.ui.commenting.CommentingLayoutCompat.CommentingLayoutCompatUtil.getLayoutCompat
-import projekt.cloud.piece.pic.util.LayoutSizeMode
-import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
-import projekt.cloud.piece.pic.util.LayoutSizeMode.LayoutSizeModeUtil.getLayoutSize
+import projekt.cloud.piece.pic.util.ScreenDensity
+import projekt.cloud.piece.pic.util.ScreenDensity.ScreenDensityUtil.screenDensity
 
 class Commenting: DialogFragment() {
     
@@ -23,7 +22,7 @@ class Commenting: DialogFragment() {
     private val binding: DialogFragmentCommentingBinding
         get() = _binding!!
     
-    private lateinit var layoutSizeMode: LayoutSizeMode
+    private lateinit var screenDensity: ScreenDensity
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +36,7 @@ class Commenting: DialogFragment() {
     }
     
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.getLayoutCompat(requireActivity().getLayoutSize()).let { layoutCompat ->
+        binding.getLayoutCompat(requireContext().screenDensity).let { layoutCompat ->
             layoutCompat.setupActionBar(this)
             layoutCompat.setupWithArgument(this, requireArguments())
             layoutCompat.setupMenu(this)

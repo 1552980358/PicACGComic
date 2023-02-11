@@ -21,11 +21,11 @@ import projekt.cloud.piece.pic.util.ActivityUtil.startActivity
 import projekt.cloud.piece.pic.util.ContextUtil.defaultSharedPreference
 import projekt.cloud.piece.pic.util.CoroutineUtil.io
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
-import projekt.cloud.piece.pic.util.LayoutSizeMode
-import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
-import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
-import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
-import projekt.cloud.piece.pic.util.LayoutSizeMode.LayoutSizeModeUtil.getLayoutSize
+import projekt.cloud.piece.pic.util.ScreenDensity
+import projekt.cloud.piece.pic.util.ScreenDensity.COMPACT
+import projekt.cloud.piece.pic.util.ScreenDensity.MEDIUM
+import projekt.cloud.piece.pic.util.ScreenDensity.EXPANDED
+import projekt.cloud.piece.pic.util.ScreenDensity.ScreenDensityUtil.screenDensity
 import projekt.cloud.piece.pic.util.SplashScreenCompat
 import projekt.cloud.piece.pic.util.SplashScreenCompat.Companion.applySplashScreenCompat
 
@@ -76,7 +76,7 @@ class LauncherActivity: AppCompatActivity() {
 
         navController = fragmentContainerView.getFragment<NavHostFragment>().navController
 
-        val layoutCompat = binding.getLayoutCompat(getLayoutSize())
+        val layoutCompat = binding.getLayoutCompat(screenDensity)
         layoutCompat.setupNavigation(navController)
         
         lifecycleScope.ui {
@@ -100,7 +100,7 @@ class LauncherActivity: AppCompatActivity() {
         }
     }
     
-    private fun ActivityLauncherBinding.getLayoutCompat(layoutSizeMode: LayoutSizeMode) = when (layoutSizeMode) {
+    private fun ActivityLauncherBinding.getLayoutCompat(screenDensity: ScreenDensity) = when (screenDensity) {
         COMPACT -> LauncherLayoutCompatImpl(this)
         MEDIUM -> LauncherLayoutCompatW600dpImpl(this)
         EXPANDED -> LauncherLayoutCompatW1240dpImpl(this)

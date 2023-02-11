@@ -17,7 +17,7 @@ import projekt.cloud.piece.pic.ui.category.CategoryViewModel.CategoryViewModelUt
 import projekt.cloud.piece.pic.ui.category.CategoryViewModel.CategoryViewModelUtil.CATEGORY_IO_EXCEPTION
 import projekt.cloud.piece.pic.ui.category.CategoryViewModel.CategoryViewModelUtil.CATEGORY_REJECTED
 import projekt.cloud.piece.pic.ui.category.CategoryViewModel.CategoryViewModelUtil.CATEGORY_UPDATED
-import projekt.cloud.piece.pic.util.LayoutSizeMode
+import projekt.cloud.piece.pic.util.ScreenDensity
 
 class Category: BaseCallbackFragment<FragmentCategoryBinding, CategoryViewModel>() {
     
@@ -27,7 +27,7 @@ class Category: BaseCallbackFragment<FragmentCategoryBinding, CategoryViewModel>
     
     private val mainViewModel: MainViewModel by activityViewModels()
     
-    override fun onSetupAnimation(layoutSizeMode: LayoutSizeMode) {
+    override fun onSetupAnimation(screenDensity: ScreenDensity) {
         enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
         exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
     }
@@ -39,8 +39,8 @@ class Category: BaseCallbackFragment<FragmentCategoryBinding, CategoryViewModel>
         binding.categoryViewModel = viewModel
     }
     
-    override fun onSetupLayoutCompat(binding: FragmentCategoryBinding, layoutSizeMode: LayoutSizeMode) {
-        layoutCompat = binding.getLayoutCompat(layoutSizeMode)
+    override fun onSetupLayoutCompat(binding: FragmentCategoryBinding, screenDensity: ScreenDensity) {
+        layoutCompat = binding.getLayoutCompat(screenDensity)
         layoutCompat.setNavController(this)
     }
     

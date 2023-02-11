@@ -5,15 +5,15 @@ import com.google.android.material.transition.platform.MaterialSharedAxis
 import projekt.cloud.piece.pic.base.BaseFragment
 import projekt.cloud.piece.pic.databinding.FragmentBrowsingBinding
 import projekt.cloud.piece.pic.ui.browsing.BrowsingLayoutCompat.BrowsingLayoutCompatUtil.getLayoutCompat
-import projekt.cloud.piece.pic.util.LayoutSizeMode
-import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
+import projekt.cloud.piece.pic.util.ScreenDensity
+import projekt.cloud.piece.pic.util.ScreenDensity.COMPACT
 
 class Browsing: BaseFragment<FragmentBrowsingBinding>() {
 
     private lateinit var layoutCompat: BrowsingLayoutCompat
 
-    override fun onSetupAnimation(layoutSizeMode: LayoutSizeMode) {
-        when (layoutSizeMode) {
+    override fun onSetupAnimation(screenDensity: ScreenDensity) {
+        when (screenDensity) {
             COMPACT -> {
                 enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
                 exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
@@ -27,8 +27,8 @@ class Browsing: BaseFragment<FragmentBrowsingBinding>() {
         }
     }
 
-    override fun onSetupLayoutCompat(binding: FragmentBrowsingBinding, layoutSizeMode: LayoutSizeMode) {
-        layoutCompat = binding.getLayoutCompat(layoutSizeMode)
+    override fun onSetupLayoutCompat(binding: FragmentBrowsingBinding, screenDensity: ScreenDensity) {
+        layoutCompat = binding.getLayoutCompat(screenDensity)
         layoutCompat.setNavController(findNavController())
     }
 

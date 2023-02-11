@@ -27,10 +27,10 @@ import projekt.cloud.piece.pic.util.AdapterInterface
 import projekt.cloud.piece.pic.util.ContextUtil.defaultSharedPreference
 import projekt.cloud.piece.pic.util.ContextUtil.dpToPx
 import projekt.cloud.piece.pic.util.FragmentUtil.setSupportActionBar
-import projekt.cloud.piece.pic.util.LayoutSizeMode
-import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
-import projekt.cloud.piece.pic.util.LayoutSizeMode.EXPANDED
-import projekt.cloud.piece.pic.util.LayoutSizeMode.MEDIUM
+import projekt.cloud.piece.pic.util.ScreenDensity
+import projekt.cloud.piece.pic.util.ScreenDensity.COMPACT
+import projekt.cloud.piece.pic.util.ScreenDensity.EXPANDED
+import projekt.cloud.piece.pic.util.ScreenDensity.MEDIUM
 
 abstract class ViewerLayoutCompat private constructor(
     private val binding: FragmentViewerBinding
@@ -38,7 +38,7 @@ abstract class ViewerLayoutCompat private constructor(
     
     companion object ViewerLayoutCompatUtil {
         @JvmStatic
-        fun FragmentViewerBinding.getLayoutCompat(layoutSizeMode: LayoutSizeMode) = when (layoutSizeMode) {
+        fun FragmentViewerBinding.getLayoutCompat(screenDensity: ScreenDensity) = when (screenDensity) {
             COMPACT -> ViewerLayoutCompatImpl(this)
             MEDIUM -> ViewerLayoutCompatW600dpImpl(this)
             EXPANDED -> ViewerLayoutCompatW1240dpImpl(this)

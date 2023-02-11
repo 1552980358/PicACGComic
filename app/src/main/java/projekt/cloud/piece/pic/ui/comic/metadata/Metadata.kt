@@ -33,7 +33,7 @@ import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCod
 import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.METADATA_INVALID_STATE_CODE
 import projekt.cloud.piece.pic.ui.comic.metadata.MetadataLayoutCompat.MetadataLayoutCompatUtil.getLayoutCompat
 import projekt.cloud.piece.pic.util.FragmentUtil.findParentAs
-import projekt.cloud.piece.pic.util.LayoutSizeMode
+import projekt.cloud.piece.pic.util.ScreenDensity
 
 class Metadata: BaseCallbackFragment<FragmentMetadataBinding, ComicViewModel>() {
     
@@ -51,8 +51,8 @@ class Metadata: BaseCallbackFragment<FragmentMetadataBinding, ComicViewModel>() 
     override val viewModelOwner: ViewModelStoreOwner
         get() = findParentAs<Comic>()
     
-    override fun onSetupLayoutCompat(binding: FragmentMetadataBinding, layoutSizeMode: LayoutSizeMode) {
-        layoutCompat = binding.getLayoutCompat(layoutSizeMode)
+    override fun onSetupLayoutCompat(binding: FragmentMetadataBinding, screenDensity: ScreenDensity) {
+        layoutCompat = binding.getLayoutCompat(screenDensity)
         layoutCompat.setNavController(comic.findNavController())
     }
     

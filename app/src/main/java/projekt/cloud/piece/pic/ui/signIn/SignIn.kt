@@ -15,15 +15,15 @@ import projekt.cloud.piece.pic.ui.signIn.SignInLayoutCompat.SignInLayoutCompatUt
 import projekt.cloud.piece.pic.util.CoroutineUtil.ui
 import projekt.cloud.piece.pic.util.HttpRequest.HttpRequestUtil.HttpRequestState.STATE_EXCEPTION
 import projekt.cloud.piece.pic.util.HttpRequest.HttpRequestUtil.HttpRequestState.STATE_IO_EXCEPTION
-import projekt.cloud.piece.pic.util.LayoutSizeMode
-import projekt.cloud.piece.pic.util.LayoutSizeMode.COMPACT
+import projekt.cloud.piece.pic.util.ScreenDensity
+import projekt.cloud.piece.pic.util.ScreenDensity.COMPACT
 
 class SignIn: BaseFragment<FragmentSignInBinding>() {
 
     private var job: Job? = null
 
-    override fun onSetupAnimation(layoutSizeMode: LayoutSizeMode) {
-        when (layoutSizeMode) {
+    override fun onSetupAnimation(screenDensity: ScreenDensity) {
+        when (screenDensity) {
             COMPACT -> {
                 enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
                 exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
@@ -39,8 +39,8 @@ class SignIn: BaseFragment<FragmentSignInBinding>() {
 
     private lateinit var layoutCompat: SignInLayoutCompat
 
-    override fun onSetupLayoutCompat(binding: FragmentSignInBinding, layoutSizeMode: LayoutSizeMode) {
-        layoutCompat = binding.getLayoutCompat(layoutSizeMode)
+    override fun onSetupLayoutCompat(binding: FragmentSignInBinding, screenDensity: ScreenDensity) {
+        layoutCompat = binding.getLayoutCompat(screenDensity)
         layoutCompat.setNavController(findNavController())
     }
 

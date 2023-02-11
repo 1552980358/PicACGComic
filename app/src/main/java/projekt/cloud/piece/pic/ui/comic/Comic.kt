@@ -12,7 +12,7 @@ import projekt.cloud.piece.pic.databinding.FragmentComicBinding
 import projekt.cloud.piece.pic.ui.comic.ComicLayoutCompat.ComicLayoutCompatUtil.getLayoutCompat
 import projekt.cloud.piece.pic.ui.comic.ComicViewModel.ComicViewModelCallbackCode.METADATA_COMPLETE
 import projekt.cloud.piece.pic.util.BitmapBundle.Companion.getBitmapAndClose
-import projekt.cloud.piece.pic.util.LayoutSizeMode
+import projekt.cloud.piece.pic.util.ScreenDensity
 
 class Comic: BaseCallbackFragment<FragmentComicBinding, ComicViewModel>() {
     
@@ -22,7 +22,7 @@ class Comic: BaseCallbackFragment<FragmentComicBinding, ComicViewModel>() {
     
     private lateinit var childNavController: NavController
     
-    override fun onSetupAnimation(layoutSizeMode: LayoutSizeMode) {
+    override fun onSetupAnimation(screenDensity: ScreenDensity) {
         enterTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
         exitTransition = MaterialSharedAxis(MaterialSharedAxis.X, true)
         reenterTransition = MaterialSharedAxis(MaterialSharedAxis.X, false)
@@ -32,8 +32,8 @@ class Comic: BaseCallbackFragment<FragmentComicBinding, ComicViewModel>() {
         binding.mainViewModel = mainViewModel
     }
     
-    override fun onSetupLayoutCompat(binding: FragmentComicBinding, layoutSizeMode: LayoutSizeMode) {
-        layoutCompat = binding.getLayoutCompat(layoutSizeMode)
+    override fun onSetupLayoutCompat(binding: FragmentComicBinding, screenDensity: ScreenDensity) {
+        layoutCompat = binding.getLayoutCompat(screenDensity)
         layoutCompat.setNavController(findNavController())
         layoutCompat.setupNavigation(this)
         layoutCompat.setupHeader(viewModel, mainViewModel, viewLifecycleOwner)
